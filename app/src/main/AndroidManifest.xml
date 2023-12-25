@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.TK_APP"
+        tools:targetApi="31">
+        <activity
+            android:name=".classify_product.admin_products.ProductsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".pay.PurchaseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".classify_product.electronic_device.DetailElectronicDeviceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".classify_product.electronic_device.ElectronicDeviceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".classify_product.phones_accessories.DetailPhonesAccessoriesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".classify_product.phones_accessories.PhonesAccessoriesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".classify_product.women_fashion.DetailProductsWomenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".classify_product.CartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".classify_product.women_fashion.WomenFashionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".classify_product.men_fashion.DetailProductsMenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".classify_product.men_fashion.MenFashionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".classify_product.ClassifyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".account.EditAccountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".account.AdminActivity"
+            android:exported="false" />
+        <activity
+            android:name=".account.LoginActivity"
+            android:exported="true" />
+        <activity
+            android:name=".account.RegisterActivity"
+            android:exported="true" />
+        <activity
+            android:name=".fragment.CategoryFragment"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

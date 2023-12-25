@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".classify_product.women_fashion.WomenFashionActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:gravity="center">
+        <Button
+            android:id="@+id/btn_click_images2"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="Chọn ảnh"
+            app:layout_constraintTop_toBottomOf="@+id/chkAuthentic2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageView
+            android:id="@+id/tv_showimages2"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            />
+
+        <Spinner
+            android:id="@+id/click_classify2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <EditText
+            android:id="@+id/tv_name_product2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tên sản phẩm" />
+
+        <EditText
+            android:id="@+id/tv_price2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Giá"/>
+
+        <EditText
+            android:id="@+id/tv_details2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Chi tiết"/>
+
+        <EditText
+            android:id="@+id/tv_origin2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Xuất xứ"/>
+
+        <EditText
+            android:id="@+id/tv_material2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Chất liệu"/>
+        <EditText
+            android:id="@+id/tv_quantity2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Số lượng"/>
+
+        <CheckBox
+            android:id="@+id/chkAuthentic2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btn_click_save2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

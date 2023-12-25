@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "1067824142774",
+    "firebase_url": "https://testappbandodientu-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "testappbandodientu",
+    "storage_bucket": "testappbandodientu.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1067824142774:android:3aec2c56947f5a79178917",
+        "android_client_info": {
+          "package_name": "com.example.tk_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3i776ivwU5YbQH09_mx-ueRzpZnUF_1s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

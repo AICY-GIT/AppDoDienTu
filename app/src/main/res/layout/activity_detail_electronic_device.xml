@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".classify_product.electronic_device.DetailElectronicDeviceActivity">
+    <ImageView
+        android:id="@+id/ig_images_product_electronic"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/baseline_person_24" />
+
+    <TextView
+        android:id="@+id/tv_type_product_electronic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ig_images_product_electronic"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/tv_name_product_electronic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_type_product_electronic"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/tv_price_product_electronic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_name_product_electronic"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/tv_details_product_electronic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_price_product_electronic"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/tv_origin_product_electronic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_details_product_electronic"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/tv_material_product_electronic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_origin_product_electronic"
+        android:layout_centerHorizontal="true" />
+    <TextView
+        android:id="@+id/tv_quantity_product_electronic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_material_product_electronic"
+        android:layout_centerHorizontal="true" />
+    <Button
+        android:id="@+id/btn_show_details4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thêm vào giỏ hàng"
+        android:layout_marginStart="100dp"
+        android:onClick="goToCartActivity"
+        android:layout_below="@+id/tv_quantity_product_electronic"
+
+        />
+</RelativeLayout>

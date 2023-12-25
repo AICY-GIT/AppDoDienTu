@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/totalPriceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Price: $0.00"
+        android:textSize="18sp"
+        android:layout_margin="16dp"/>
+
+    <TextView
+        android:id="@+id/productListTextView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@id/totalPriceTextView"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="Product List:"
+        android:textSize="18sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/productListTextView"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp" />
+    <TextView
+        android:id="@+id/userNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User Name:"
+        android:layout_below="@id/recyclerView"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <TextView
+        android:id="@+id/userEmailTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User Email:"
+        android:layout_below="@id/userNameTextView"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"/>
+
+    <TextView
+        android:id="@+id/userPhoneTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User Phone:"
+        android:layout_below="@id/userEmailTextView"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"/>
+    <EditText
+        android:id="@+id/shippingAddressEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Địa chỉ nhận hàng"
+        android:layout_below="@id/userPhoneTextView"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
+    <CheckBox
+        android:id="@+id/cashOnDeliveryCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thanh toán khi nhận hàng"
+        android:layout_below="@id/shippingAddressEditText"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mua hàng"
+        android:layout_below="@id/cashOnDeliveryCheckBox"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"/>
+</RelativeLayout>
