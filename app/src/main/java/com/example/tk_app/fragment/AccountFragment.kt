@@ -7,10 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.tk_app.R
 import com.example.tk_app.account.EditAccountActivity
 import com.example.tk_app.account.LoginActivity
+import com.example.tk_app.classify_product.CartActivity
+import com.example.tk_app.pay.PurchaseActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -38,8 +42,9 @@ class AccountFragment : Fragment() {
     private lateinit var proName: TextView
     private lateinit var proEmail: TextView
     private lateinit var proPhone: TextView
-    private lateinit var btnSignout: Button
-    private lateinit var btnChangePro: Button
+    private lateinit var btnSignout: LinearLayout
+    private lateinit var btnChangePro: TextView
+    private lateinit var proCart: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +59,7 @@ class AccountFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_account, container, false)
+        return inflater.inflate(R.layout.fragment_account_2, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,6 +72,7 @@ class AccountFragment : Fragment() {
         proPhone = view.findViewById(R.id.proPhone)
         btnSignout = view.findViewById(R.id.btnSignout)
         btnChangePro = view.findViewById(R.id.btnChangePro)
+        proCart=view.findViewById(R.id.proCart)
 
         val databaseReference: DatabaseReference = FirebaseDatabase.getInstance().getReference("Account/User").child(userId)
 
@@ -99,6 +105,10 @@ class AccountFragment : Fragment() {
             intent.putExtra("email", proEmail.text.toString())
             intent.putExtra("name", proName.text.toString())
             intent.putExtra("phone", proPhone.text.toString())
+            startActivity(intent)
+        }
+        proCart.setOnClickListener {
+            val intent = Intent(requireActivity(), CartActivity::class.java)
             startActivity(intent)
         }
     }

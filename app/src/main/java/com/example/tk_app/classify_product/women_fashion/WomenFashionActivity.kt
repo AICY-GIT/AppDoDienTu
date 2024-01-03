@@ -42,15 +42,16 @@ class WomenFashionActivity : AppCompatActivity() {
     private lateinit var btn_Click_Images2: Button
 
     // Khai báo cho việc chọn ảnh
-    private val requestPermissionLauncher: ActivityResultLauncher<String> = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            openImageChooser2()
-        } else {
-            Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+    private val requestPermissionLauncher: ActivityResultLauncher<String> =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                openImageChooser2()
+            } else {
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+            }
         }
-    }
 
     private val takePictureLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -62,10 +63,13 @@ class WomenFashionActivity : AppCompatActivity() {
             }
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_women_fashion)
-        databaseReference = FirebaseDatabase.getInstance().reference.child("Product").child("Classify").child("Women_Fashion")
+        databaseReference =
+            FirebaseDatabase.getInstance().reference.child("Product").child("Classify")
+                .child("Women_Fashion")
 
         click_Classify2 = findViewById(R.id.click_classify2)
         tv_Name_Product2 = findViewById(R.id.tv_name_product2)
@@ -131,8 +135,10 @@ class WomenFashionActivity : AppCompatActivity() {
         Toast.makeText(this, "Sản phẩm đã được lưu", Toast.LENGTH_SHORT).show()
         finish()
     }
+
     private fun saveImageToStorage(bitmap: Bitmap, productId: String) {
-        val storageReference = FirebaseStorage.getInstance().reference.child("admin_add_product/product_women_fashion/$uid2/$productId.jpg")
+        val storageReference =
+            FirebaseStorage.getInstance().reference.child("admin_add_product/product_women_fashion/$uid2/$productId.jpg")
         val baos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
@@ -162,7 +168,11 @@ class WomenFashionActivity : AppCompatActivity() {
     }
 
     private fun checkPermissionAndOpenImageChooser() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             openImageChooser2()
         } else {
             requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -173,9 +183,11 @@ class WomenFashionActivity : AppCompatActivity() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         takePictureLauncher.launch(intent)
     }
+
     private fun isNumeric(str: String): Boolean {
         return str.matches("-?\\d+(\\.\\d+)?".toRegex())
     }
+
     private fun formatPrice(price: Double): String {
         val priceString = String.format("%.0f", price) // Chuyển đổi giá thành chuỗi số nguyên
         val reversedPrice = priceString.reversed() // Đảo ngược chuỗi
