@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import com.example.tk_app.R
+import com.example.tk_app.classify_product.CartActivity
+import com.example.tk_app.fragment.AccountFragment
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -24,10 +26,11 @@ class EditAccountActivity : AppCompatActivity() {
     private lateinit var edName: TextInputEditText
     private lateinit var edPhone: TextInputEditText
     private lateinit var btnSave: Button
+    private lateinit var btnOut: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_account)
+        setContentView(R.layout.activity_edit_account_2)
         val intent: Intent = intent
         userID = intent.getStringExtra("userId")
         name = intent.getStringExtra("name")
@@ -39,6 +42,7 @@ class EditAccountActivity : AppCompatActivity() {
         edName = findViewById(R.id.edName)
         edPhone = findViewById(R.id.edPhone)
         btnSave = findViewById(R.id.btnSave)
+        btnOut = findViewById(R.id.btnOut)
 
         auth = FirebaseAuth.getInstance()
         databaseReference = FirebaseDatabase.getInstance().reference.child("Account/User").child(userID!!)
@@ -61,6 +65,10 @@ class EditAccountActivity : AppCompatActivity() {
 
             Toast.makeText(this@EditAccountActivity, "Cập nhật thành công", Toast.LENGTH_SHORT).show()
             finish()
+        }
+
+        btnOut.setOnClickListener{
+            onBackPressed()
         }
     }
 }
