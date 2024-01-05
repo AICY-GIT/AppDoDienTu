@@ -58,9 +58,9 @@
             android:padding="20dp"
             android:paddingLeft="20dp"
             android:paddingTop="40dp"
-            android:text="ĐĂNG NHẬP"
+            android:text="Login"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/textView"
@@ -79,9 +79,9 @@
             android:backgroundTint="#79C88D"
             android:padding="20dp"
             android:paddingLeft="20dp"
-            android:text="ĐĂNG KÝ"
+            android:text="SIGN UP"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
