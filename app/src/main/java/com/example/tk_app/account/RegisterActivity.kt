@@ -108,6 +108,7 @@ class RegisterActivity : AppCompatActivity() {
                             "Name" to name,
                             "Email" to email,
                             "Phone" to phone,
+                            "Image" to "https://firebasestorage.googleapis.com/v0/b/testappbandodientu.appspot.com/o/Profile%2FenYxNXGIY4a0HxcX16yBzOZOzNa2.jpg?alt=media&token=6e21c196-90b4-4baa-b903-df0430994392",
                             "userType" to "user"
                         )
 

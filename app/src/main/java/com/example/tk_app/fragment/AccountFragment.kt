@@ -1,6 +1,7 @@
 package com.example.tk_app.fragment
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,6 +22,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -38,6 +41,7 @@ class AccountFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var auth: FirebaseAuth
+
     private lateinit var userId: String
     private lateinit var proName: TextView
     private lateinit var proEmail: TextView
@@ -45,6 +49,7 @@ class AccountFragment : Fragment() {
     private lateinit var btnSignout: LinearLayout
     private lateinit var btnChangePro: TextView
     private lateinit var proCart: TextView
+    private lateinit var imagePro: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +69,7 @@ class AccountFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         auth = FirebaseAuth.getInstance()
         userId = auth.currentUser?.uid.toString()
 
@@ -73,6 +79,7 @@ class AccountFragment : Fragment() {
         btnSignout = view.findViewById(R.id.btnSignout)
         btnChangePro = view.findViewById(R.id.btnChangePro)
         proCart=view.findViewById(R.id.proCart)
+        imagePro=view.findViewById(R.id.iv)
 
         val databaseReference: DatabaseReference = FirebaseDatabase.getInstance().getReference("Account/User").child(userId)
 
@@ -82,9 +89,23 @@ class AccountFragment : Fragment() {
                     val name = dataSnapshot.child("Name").value.toString()
                     val email = dataSnapshot.child("Email").value.toString()
                     val phone = dataSnapshot.child("Phone").value.toString()
+                    val imageUrl = dataSnapshot.child("Image").value.toString()
                     proName.text = name
                     proEmail.text = email
                     proPhone.text = phone
+                    Picasso.get().load(imageUrl).into(imagePro)
+
+                    btnChangePro.setOnClickListener {
+                        val intent = Intent(requireActivity(), EditAccountActivity::class.java)
+
+                        intent.putExtra("userId", userId)
+                        intent.putExtra("email", proEmail.text.toString())
+                        intent.putExtra("name", proName.text.toString())
+                        intent.putExtra("phone", proPhone.text.toString())
+                        // Truyền đường dẫn hình ảnh
+                        intent.putExtra("imageUrl", imageUrl)
+                        startActivity(intent)
+                    }
                 }
             }
 
@@ -99,14 +120,8 @@ class AccountFragment : Fragment() {
             startActivity(intent)
         }
 
-        btnChangePro.setOnClickListener {
-            val intent = Intent(requireActivity(), EditAccountActivity::class.java)
-            intent.putExtra("userId", userId)
-            intent.putExtra("email", proEmail.text.toString())
-            intent.putExtra("name", proName.text.toString())
-            intent.putExtra("phone", proPhone.text.toString())
-            startActivity(intent)
-        }
+
+
         proCart.setOnClickListener {
             val intent = Intent(requireActivity(), CartActivity::class.java)
             startActivity(intent)

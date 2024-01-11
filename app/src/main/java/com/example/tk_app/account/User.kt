@@ -5,7 +5,8 @@ data class User(
     var email: String? = null,
     var phone: String? = null,
     var address: String? = null,
+    val imageUrl:String? = null,
     var cashOnDelivery: Boolean = false // default value for cash on delivery
 ) {
-    constructor() : this("", "", "", "", false)
+    constructor() : this("", "", "", "","", false)
 }
