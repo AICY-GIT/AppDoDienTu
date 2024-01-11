@@ -40,7 +40,7 @@ class RegisterActivity : AppCompatActivity() {
             val email = etREmail.text.toString().trim()
             val password = etRPassword.text.toString().trim()
             val vpassword = etVPassword.text.toString().trim()
-            val image = "";
+//            val image = "";
             val emailPattern = "[a-zA-Z0-9._-]+@gmail\\.com"
             val emailMatcher = Pattern.compile(emailPattern).matcher(email)
             if (!emailMatcher.matches()) {
