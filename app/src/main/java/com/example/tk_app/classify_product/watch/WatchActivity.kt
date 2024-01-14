@@ -1,4 +1,4 @@
-package com.example.tk_app.classify_product.electronic_device
+package com.example.tk_app.classify_product.watch
 
 import android.Manifest
 import android.content.Intent
@@ -26,7 +26,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import java.io.ByteArrayOutputStream
 
-class ElectronicDeviceActivity : AppCompatActivity() {
+class WatchActivity : AppCompatActivity() {
     private lateinit var databaseReference: DatabaseReference
     private val uid4 = FirebaseAuth.getInstance().currentUser?.uid ?: ""
     private lateinit var click_Classify4: Spinner
@@ -79,7 +79,7 @@ class ElectronicDeviceActivity : AppCompatActivity() {
         tv_Showimages4 = findViewById(R.id.tv_showimages4)
         btn_Click_Images4 = findViewById(R.id.btn_click_images4)
 
-        val productTypes4 = resources.getStringArray(R.array.product_types4)
+        val productTypes4 = resources.getStringArray(R.array.product_types_watch)
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, productTypes4)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         click_Classify4.adapter = adapter

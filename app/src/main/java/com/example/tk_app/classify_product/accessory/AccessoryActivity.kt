@@ -1,4 +1,4 @@
-package com.example.tk_app.classify_product.phones_accessories
+package com.example.tk_app.classify_product.accessory
 
 import android.Manifest
 import android.content.Intent
@@ -26,20 +26,20 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import java.io.ByteArrayOutputStream
 
-class PhonesAccessoriesActivity : AppCompatActivity() {
+class AccessoryActivity : AppCompatActivity() {
     private lateinit var databaseReference: DatabaseReference
-    private val uid3 = FirebaseAuth.getInstance().currentUser?.uid ?: ""
-    private lateinit var click_Classify3: Spinner
-    private lateinit var tv_Name_Product3: EditText
-    private lateinit var tv_Price3: EditText
-    private lateinit var tv_Details3: EditText
-    private lateinit var tv_Origin3: EditText
-    private lateinit var tv_Material3: EditText
-    private lateinit var tv_Quantity3: EditText
-    private lateinit var chkAuthentic3: CheckBox
-    private lateinit var btn_Click_Save3: Button
-    private lateinit var tv_Showimages3: ImageView
-    private lateinit var btn_Click_Images3: Button
+    private val uid2 = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+    private lateinit var click_Classify2: Spinner
+    private lateinit var tv_Name_Product2: EditText
+    private lateinit var tv_Price2: EditText
+    private lateinit var tv_Details2: EditText
+    private lateinit var tv_Origin2: EditText
+    private lateinit var tv_Material2: EditText
+    private lateinit var tv_Quantity2: EditText
+    private lateinit var chkAuthentic2: CheckBox
+    private lateinit var btn_Click_Save2: Button
+    private lateinit var tv_Showimages2: ImageView
+    private lateinit var btn_Click_Images2: Button
 
     // Khai báo cho việc chọn ảnh
     private val requestPermissionLauncher: ActivityResultLauncher<String> =
@@ -47,7 +47,7 @@ class PhonesAccessoriesActivity : AppCompatActivity() {
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (isGranted) {
-                openImageChooser3()
+                openImageChooser2()
             } else {
                 Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
             }
@@ -59,61 +59,61 @@ class PhonesAccessoriesActivity : AppCompatActivity() {
         if (result.resultCode == RESULT_OK) {
             val selectedImageUri = result.data?.data
             if (selectedImageUri != null) {
-                tv_Showimages3.setImageURI(selectedImageUri)
+                tv_Showimages2.setImageURI(selectedImageUri)
             }
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_phones_accessories)
+        setContentView(R.layout.activity_women_fashion)
         databaseReference =
             FirebaseDatabase.getInstance().reference.child("Product").child("Classify")
-                .child("Phones_Accessories")
+                .child("Women_Fashion")
 
-        click_Classify3 = findViewById(R.id.click_classify3)
-        tv_Name_Product3 = findViewById(R.id.tv_name_product3)
-        tv_Price3 = findViewById(R.id.tv_price3)
-        tv_Details3 = findViewById(R.id.tv_details3)
-        tv_Origin3 = findViewById(R.id.tv_origin3)
-        tv_Material3 = findViewById(R.id.tv_material3)
-        tv_Quantity3 = findViewById(R.id.tv_quantity3)
-        chkAuthentic3 = findViewById(R.id.chkAuthentic3)
-        btn_Click_Save3 = findViewById(R.id.btn_click_save3)
-        tv_Showimages3 = findViewById(R.id.tv_showimages3)
-        btn_Click_Images3 = findViewById(R.id.btn_click_images3)
+        click_Classify2 = findViewById(R.id.click_classify2)
+        tv_Name_Product2 = findViewById(R.id.tv_name_product2)
+        tv_Price2 = findViewById(R.id.tv_price2)
+        tv_Details2 = findViewById(R.id.tv_details2)
+        tv_Origin2 = findViewById(R.id.tv_origin2)
+        tv_Material2 = findViewById(R.id.tv_material2)
+        tv_Quantity2 = findViewById(R.id.tv_quantity2)
+        chkAuthentic2 = findViewById(R.id.chkAuthentic2)
+        btn_Click_Save2 = findViewById(R.id.btn_click_save2)
+        tv_Showimages2 = findViewById(R.id.tv_showimages2)
+        btn_Click_Images2 = findViewById(R.id.btn_click_images2)
 
-        val productTypes3 = resources.getStringArray(R.array.product_types3)
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, productTypes3)
+        val productTypes2 = resources.getStringArray(R.array.product_types_accessory)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, productTypes2)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        click_Classify3.adapter = adapter
+        click_Classify2.adapter = adapter
 
 
         // Xử lý sự kiện khi nút "Lưu" được click
-        btn_Click_Save3.setOnClickListener {
+        btn_Click_Save2.setOnClickListener {
             saveProduct()
         }
-        btn_Click_Images3.setOnClickListener {
+        btn_Click_Images2.setOnClickListener {
             checkPermissionAndOpenImageChooser()
         }
     }
 
     private fun saveProduct() {
-        val type = click_Classify3.selectedItem.toString()
-        val name = tv_Name_Product3.text.toString()
-        var price = tv_Price3.text.toString()
-        val details = tv_Details3.text.toString()
-        val origin = tv_Origin3.text.toString()
-        val material = tv_Material3.text.toString()
-        val quantity = tv_Quantity3.text.toString()
-        val authentic = chkAuthentic3.isChecked
+        val type = click_Classify2.selectedItem.toString()
+        val name = tv_Name_Product2.text.toString()
+        var price = tv_Price2.text.toString()
+        val details = tv_Details2.text.toString()
+        val origin = tv_Origin2.text.toString()
+        val material = tv_Material2.text.toString()
+        val quantity = tv_Quantity2.text.toString()
+        val authentic = chkAuthentic2.isChecked
         price = formatPrice(price.toDouble())
 
-        val productphoneId = databaseReference.push().key
+        val productWomenId = databaseReference.push().key
 
-        if (productphoneId != null) {
-            val productReference = databaseReference.child(productphoneId)
-            productReference.child("productphoneId").setValue(productphoneId)
+        if (productWomenId != null) {
+            val productReference = databaseReference.child(productWomenId)
+            productReference.child("productWomenId").setValue(productWomenId)
             productReference.child("type").setValue(type)
             productReference.child("name").setValue(name)
             productReference.child("price").setValue(price)
@@ -122,10 +122,10 @@ class PhonesAccessoriesActivity : AppCompatActivity() {
             productReference.child("material").setValue(material)
             productReference.child("quantity").setValue(quantity)
             productReference.child("authentic").setValue(authentic)
-            val imgSelectedDrawable = tv_Showimages3.drawable
+            val imgSelectedDrawable = tv_Showimages2.drawable
             if (imgSelectedDrawable != null && imgSelectedDrawable is BitmapDrawable) {
                 val bitmap = imgSelectedDrawable.bitmap
-                val selectedImageUri = saveImageToStorage(bitmap, productphoneId)
+                val selectedImageUri = saveImageToStorage(bitmap, productWomenId)
                 productReference.child("imageUrl").setValue(selectedImageUri.toString())
             } else {
                 // Handle case when there is no selected image
@@ -138,7 +138,7 @@ class PhonesAccessoriesActivity : AppCompatActivity() {
 
     private fun saveImageToStorage(bitmap: Bitmap, productId: String) {
         val storageReference =
-            FirebaseStorage.getInstance().reference.child("admin_add_product/phones_accessories/$uid3/$productId.jpg")
+            FirebaseStorage.getInstance().reference.child("admin_add_product/product_women_fashion/$uid2/$productId.jpg")
         val baos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
@@ -173,13 +173,13 @@ class PhonesAccessoriesActivity : AppCompatActivity() {
                 Manifest.permission.READ_EXTERNAL_STORAGE
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            openImageChooser3()
+            openImageChooser2()
         } else {
             requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
     }
 
-    private fun openImageChooser3() {
+    private fun openImageChooser2() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         takePictureLauncher.launch(intent)
     }

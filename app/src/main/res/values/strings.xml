@@ -14,14 +14,14 @@
         <item>Flycam</item>
     </string-array>
     <!--    Đồng hồ-->
-    <string-array name="product_types4">
+    <string-array name="product_types_watch">
         <item>Đồng hồ thông minh</item>
         <item>Vòng đeo tay thông minh</item>
         <item>Đồng hồ định vị trẻ em</item>
         <item>Dây đeo</item>
     </string-array>
     <!--    Tai nghe-->
-    <string-array name="product_types3">
+    <string-array name="product_types_earhone">
         <item>Tai nghe Bluetooth</item>
         <item>Tai nghe chụp tai</item>
         <item>Tai nghe có dây</item>
@@ -29,7 +29,7 @@
         <item>Tai nghe Gaming</item>
     </string-array>
     <!--    Phụ kiện-->
-    <string-array name="product_types2">
+    <string-array name="product_types_accessory">
         <item>Phụ kiện Apple</item>
         <item>Ốp lưng và bao da</item>
         <item>Kính cường lực</item>
@@ -40,7 +40,7 @@
         <item>Phụ kiện tiện ích</item>
     </string-array>
     <!--    Điện thoại-->
-    <string-array name="product_types">
+    <string-array name="product_types_phone">
         <item>Apple(Iphone)</item>
         <item>Oppo</item>
         <item>Samssung</item>

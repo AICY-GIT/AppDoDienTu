@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.example.tk_app.classify_product.men_fashion.details_men.FirstFragment"
+        android:name="com.example.tk_app.classify_product.phones.details_men.FirstFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_first" >
 
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.example.tk_app.classify_product.men_fashion.details_men.SecondFragment"
+        android:name="com.example.tk_app.classify_product.phones.details_men.SecondFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second" >
 

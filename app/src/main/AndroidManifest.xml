@@ -21,31 +21,31 @@
             android:name=".pay.PurchaseActivity"
             android:exported="false" />
         <activity
-            android:name=".classify_product.electronic_device.DetailElectronicDeviceActivity"
+            android:name=".classify_product.watch.DetailWatchActivity"
             android:exported="false" />
         <activity
-            android:name=".classify_product.electronic_device.ElectronicDeviceActivity"
+            android:name=".classify_product.watch.WatchActivity"
             android:exported="false" />
         <activity
-            android:name=".classify_product.phones_accessories.DetailPhonesAccessoriesActivity"
+            android:name=".classify_product.earphones_accessories.DetailEarPhoneActivity"
             android:exported="false" />
         <activity
-            android:name=".classify_product.phones_accessories.PhonesAccessoriesActivity"
+            android:name=".classify_product.earphones_accessories.EarPhoneActivity"
             android:exported="false" />
         <activity
-            android:name=".classify_product.women_fashion.DetailProductsWomenActivity"
+            android:name=".classify_product.accessory.DetailAccessoryActivity"
             android:exported="false" />
         <activity
             android:name=".classify_product.CartActivity"
             android:exported="false" />
         <activity
-            android:name=".classify_product.women_fashion.WomenFashionActivity"
+            android:name=".classify_product.accessory.AccessoryActivity"
             android:exported="false" />
         <activity
-            android:name=".classify_product.men_fashion.DetailProductsMenActivity"
+            android:name=".classify_product.phones.DetailProductsPhoneActivity"
             android:exported="false" />
         <activity
-            android:name=".classify_product.men_fashion.MenFashionActivity"
+            android:name=".classify_product.phones.PhoneActivity"
             android:exported="false" />
         <activity
             android:name=".classify_product.ClassifyActivity"

@@ -1,7 +1,7 @@
-package com.example.tk_app.classify_product.electronic_device
+package com.example.tk_app.classify_product.accessory
 
-class ProductElectronicDevice (
-    var productelectronicId: String?,
+class ProductAccessory (
+    var productWomenId: String?,
     var imageUrl: String?,
     var material: String?,
     var price: String?,

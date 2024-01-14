@@ -6,22 +6,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.tk_app.R
 import com.example.tk_app.classify_product.CartActivity
-import com.example.tk_app.classify_product.electronic_device.ElectronicDeviceAdapter
-import com.example.tk_app.classify_product.electronic_device.ProductElectronicDevice
-import com.example.tk_app.classify_product.men_fashion.ProductMenFashion
-import com.example.tk_app.classify_product.men_fashion.ProductsMenFashionAdapter
-import com.example.tk_app.classify_product.phones_accessories.PhonesAccessoriesAdapter
-import com.example.tk_app.classify_product.phones_accessories.ProductPhonesAccessories
-import com.example.tk_app.classify_product.women_fashion.ProductWomenFashion
-import com.example.tk_app.classify_product.women_fashion.ProductsWomenFashionAdapter
+import com.example.tk_app.classify_product.watch.WatchAdapter
+import com.example.tk_app.classify_product.watch.ProductWatch
+import com.example.tk_app.classify_product.phones.ProductPhone
+import com.example.tk_app.classify_product.phones.ProductsPhoneAdapter
+import com.example.tk_app.classify_product.earphones_accessories.EarPhonesAccessoriesAdapter
+import com.example.tk_app.classify_product.earphones_accessories.ProductEarPhonesAccessories
+import com.example.tk_app.classify_product.accessory.ProductAccessory
+import com.example.tk_app.classify_product.accessory.ProductsAccessoryAdapter
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -42,14 +40,14 @@ class HomeFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private lateinit var productAdapter: ProductsMenFashionAdapter
-    private lateinit var productAdapter2: ProductsWomenFashionAdapter
-    private lateinit var productAdapter3: PhonesAccessoriesAdapter
-    private lateinit var productAdapter4: ElectronicDeviceAdapter
-    private val productsList = mutableListOf<ProductMenFashion>()
-    private val productsList2 = mutableListOf<ProductWomenFashion>()
-    private val productsList3 = mutableListOf<ProductPhonesAccessories>()
-    private val productsList4 = mutableListOf<ProductElectronicDevice>()
+    private lateinit var productAdapter: ProductsPhoneAdapter
+    private lateinit var productAdapter2: ProductsAccessoryAdapter
+    private lateinit var productAdapter3: EarPhonesAccessoriesAdapter
+    private lateinit var productAdapter4: WatchAdapter
+    private val productsList = mutableListOf<ProductPhone>()
+    private val productsList2 = mutableListOf<ProductAccessory>()
+    private val productsList3 = mutableListOf<ProductEarPhonesAccessories>()
+    private val productsList4 = mutableListOf<ProductWatch>()
 
     private lateinit var btn_Click_On_Cart: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,23 +68,23 @@ class HomeFragment : Fragment() {
         val show_List_Phone = view.findViewById<RecyclerView>(R.id.show_list_phone)
         val show_List_Electronic = view.findViewById<RecyclerView>(R.id.show_list_electronic)
         show_List_Men_Fashion.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        productAdapter = ProductsMenFashionAdapter(productsList)
+        productAdapter = ProductsPhoneAdapter(productsList)
         show_List_Men_Fashion.adapter = productAdapter
         // Gọi hàm để lấy dữ liệu từ Firebase Realtime Database
         fetchProductData()
 
         show_List_Women_Fashion.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        productAdapter2 = ProductsWomenFashionAdapter(productsList2)
+        productAdapter2 = ProductsAccessoryAdapter(productsList2)
         show_List_Women_Fashion.adapter = productAdapter2
         fetchProductData2()
 
         show_List_Phone.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        productAdapter3 = PhonesAccessoriesAdapter(productsList3)
+        productAdapter3 = EarPhonesAccessoriesAdapter(productsList3)
         show_List_Phone.adapter = productAdapter3
         fetchProductData3()
 
         show_List_Electronic.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        productAdapter4 = ElectronicDeviceAdapter(productsList4)
+        productAdapter4 = WatchAdapter(productsList4)
         show_List_Electronic.adapter = productAdapter4
         // Gọi hàm để lấy dữ liệu từ Firebase Realtime Database
         fetchProductData4()
@@ -106,7 +104,7 @@ class HomeFragment : Fragment() {
         val uid = "HJqF0S5j3cM7VImvgyTjxhE4D6e2"
         val databaseReference =
             FirebaseDatabase.getInstance().reference.child("Product").child("Classify")
-                .child("Men_Fashion")
+                .child("Phones")
 
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -122,7 +120,7 @@ class HomeFragment : Fragment() {
                     val quantity = productSnapshot.child("quantoty").value.toString()
                     val origin = productSnapshot.child("origin").value.toString()
 
-                    val product = ProductMenFashion(productId, imageUrl, material, price, name, type, details, origin, quantity)
+                    val product = ProductPhone(productId, imageUrl, material, price, name, type, details, origin, quantity)
                     productsList.add(product)
                 }
                 productAdapter.notifyDataSetChanged()
@@ -138,7 +136,7 @@ class HomeFragment : Fragment() {
         val uid = "HJqF0S5j3cM7VImvgyTjxhE4D6e2"
         val databaseReference =
             FirebaseDatabase.getInstance().reference.child("Product").child("Classify")
-                .child("Women_Fashion")
+                .child("Accessory")
 
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -154,7 +152,7 @@ class HomeFragment : Fragment() {
                     val quantity = productSnapshot.child("quantity").value.toString()
                     val origin = productSnapshot.child("origin").value.toString()
 
-                    val product2 = ProductWomenFashion(productId, imageUrl, material, price, name, type, details, origin, quantity)
+                    val product2 = ProductAccessory(productId, imageUrl, material, price, name, type, details, origin, quantity)
                     productsList2.add(product2)
                 }
                 productAdapter2.notifyDataSetChanged()
@@ -169,7 +167,7 @@ class HomeFragment : Fragment() {
         val uid = "HJqF0S5j3cM7VImvgyTjxhE4D6e2"
         val databaseReference =
             FirebaseDatabase.getInstance().reference.child("Product").child("Classify")
-                .child("Phones_Accessories")
+                .child("Ear_Phones")
 
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -185,7 +183,7 @@ class HomeFragment : Fragment() {
                     val quantity = productSnapshot.child("quantity").value.toString()
                     val origin = productSnapshot.child("origin").value.toString()
 
-                    val product3 = ProductPhonesAccessories(productId, imageUrl, material, price, name, type, details, origin, quantity)
+                    val product3 = ProductEarPhonesAccessories(productId, imageUrl, material, price, name, type, details, origin, quantity)
                     productsList3.add(product3)
                 }
                 productAdapter2.notifyDataSetChanged() // Cập nhật adapter thích hợp
@@ -200,7 +198,7 @@ class HomeFragment : Fragment() {
         val uid = "HJqF0S5j3cM7VImvgyTjxhE4D6e2"
         val databaseReference =
             FirebaseDatabase.getInstance().reference.child("Product").child("Classify")
-                .child("Electronic_Device")
+                .child("Watch")
 
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -216,7 +214,7 @@ class HomeFragment : Fragment() {
                     val quantity = productSnapshot.child("quantity").value.toString()
                     val origin = productSnapshot.child("origin").value.toString()
 
-                    val product4 = ProductElectronicDevice(productId, imageUrl, material, price, name, type, details, origin, quantity)
+                    val product4 = ProductWatch(productId, imageUrl, material, price, name, type, details, origin, quantity)
                     productsList4.add(product4)
                 }
                 productAdapter2.notifyDataSetChanged() // Cập nhật adapter thích hợp

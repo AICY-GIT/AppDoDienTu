@@ -1,4 +1,4 @@
-package com.example.tk_app.classify_product.men_fashion
+package com.example.tk_app.classify_product.phones
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.tk_app.R
 
-class ProductsMenFashionAdapter(private val products: List<ProductMenFashion>) : RecyclerView.Adapter<ProductsMenFashionAdapter.ViewHolder>() {
+class ProductsPhoneAdapter(private val products: List<ProductPhone>) : RecyclerView.Adapter<ProductsPhoneAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tv_Images_Show_Men: ImageView = view.findViewById(R.id.tv_images_show_men)
@@ -38,7 +38,7 @@ class ProductsMenFashionAdapter(private val products: List<ProductMenFashion>) :
         holder.tv_Name_Show_Men.text = "name: ${product.name}"
 
         holder.itemView.setOnClickListener {
-            val intent = Intent(holder.itemView.context, DetailProductsMenActivity::class.java)
+            val intent = Intent(holder.itemView.context, DetailProductsPhoneActivity::class.java)
             val productmenId = product.productmenId // Lấy productmenId từ sản phẩm hiện tại
             intent.putExtra("productmenId", productmenId) // Truyền productmenId qua Intent
             holder.itemView.context.startActivity(intent)

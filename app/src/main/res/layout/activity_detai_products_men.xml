@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".classify_product.men_fashion.DetailProductsMenActivity">
+    tools:context=".classify_product.phones.DetailProductsPhoneActivity">
 
     <ImageView
         android:id="@+id/ig_images_product_men"

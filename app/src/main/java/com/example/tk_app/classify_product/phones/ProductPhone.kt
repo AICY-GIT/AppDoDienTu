@@ -1,5 +1,5 @@
-package com.example.tk_app.classify_product.men_fashion
-class ProductMenFashion(
+package com.example.tk_app.classify_product.phones
+class ProductPhone(
     var productmenId: String?,
     var imageUrl: String?,
     var material: String?,

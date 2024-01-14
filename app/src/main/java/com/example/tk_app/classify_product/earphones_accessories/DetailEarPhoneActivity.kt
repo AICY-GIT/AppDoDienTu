@@ -1,4 +1,4 @@
-package com.example.tk_app.classify_product.electronic_device
+package com.example.tk_app.classify_product.earphones_accessories
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -14,68 +14,68 @@ import com.bumptech.glide.Glide
 import com.example.tk_app.R
 import com.example.tk_app.account.LoginActivity
 import com.example.tk_app.classify_product.CartActivity
-import com.example.tk_app.classify_product.women_fashion.ProductWomenFashion
+import com.example.tk_app.classify_product.accessory.ProductAccessory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class DetailElectronicDeviceActivity : AppCompatActivity() {
-    private lateinit var tv_Type_Product_Electronic: TextView
-    private lateinit var tv_Name_Product_Electronic: TextView
-    private lateinit var tv_Price_Product_Electronic: TextView
-    private lateinit var tv_Details_Product_Electronic: TextView
-    private lateinit var tv_Origin_Product_Electronic: TextView
-    private lateinit var tv_Material_Product_Electronic: TextView
-    private lateinit var tv_Quantity_Product_Electronic: TextView
-    private lateinit var ig_Images_Product_Electronic: ImageView
-    private val uid4 = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+class DetailEarPhoneActivity : AppCompatActivity() {
+    private lateinit var tv_Type_Product_Phone: TextView
+    private lateinit var tv_Name_Product_Phone: TextView
+    private lateinit var tv_Price_Product_Phone: TextView
+    private lateinit var tv_Details_Product_Phone: TextView
+    private lateinit var tv_Origin_Product_Phone: TextView
+    private lateinit var tv_Material_Product_Phone: TextView
+    private lateinit var tv_Quantity_Product_Phone: TextView
+    private lateinit var ig_Images_Product_Phone: ImageView
+    private val uid3 = FirebaseAuth.getInstance().currentUser?.uid ?: ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail_electronic_device)
-        tv_Type_Product_Electronic = findViewById(R.id.tv_type_product_electronic)
-        tv_Name_Product_Electronic = findViewById(R.id.tv_name_product_electronic)
-        tv_Price_Product_Electronic = findViewById(R.id.tv_price_product_electronic)
-        ig_Images_Product_Electronic = findViewById(R.id.ig_images_product_electronic)
-        tv_Origin_Product_Electronic = findViewById(R.id.tv_origin_product_electronic)
-        tv_Material_Product_Electronic = findViewById(R.id.tv_material_product_electronic)
-        tv_Quantity_Product_Electronic = findViewById(R.id.tv_quantity_product_electronic)
-        tv_Details_Product_Electronic = findViewById(R.id.tv_details_product_electronic)
+        setContentView(R.layout.activity_detail_phones_accessories)
+        tv_Type_Product_Phone = findViewById(R.id.tv_type_product_phone)
+        tv_Name_Product_Phone = findViewById(R.id.tv_name_product_phone)
+        tv_Price_Product_Phone = findViewById(R.id.tv_price_product_phone)
+        ig_Images_Product_Phone = findViewById(R.id.ig_images_product_phone)
+        tv_Origin_Product_Phone = findViewById(R.id.tv_origin_product_phone)
+        tv_Material_Product_Phone = findViewById(R.id.tv_material_product_phone)
+        tv_Quantity_Product_Phone = findViewById(R.id.tv_quantity_product_phone)
+        tv_Details_Product_Phone = findViewById(R.id.tv_details_product_phone)
         // Lấy productmenId từ Intent
-        val productelectronicId = intent.getStringExtra("productelectronicId") ?: ""
+        val productphoneId = intent.getStringExtra("productphoneId") ?: ""
 
         val uid = "HJqF0S5j3cM7VImvgyTjxhE4D6e2"
         // Tải thông tin sản phẩm từ Firebase bằng productmenId
         val databaseReference =
             FirebaseDatabase.getInstance().reference.child("Product").child("Classify")
-                .child("Electronic_Device").child(productelectronicId)
+                .child("Phones_Accessories").child(productphoneId)
 
         databaseReference.addValueEventListener(object : ValueEventListener {
             @SuppressLint("SuspiciousIndentation")
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-                    val product4 = snapshot.getValue(ProductElectronicDevice::class.java)
-                    if (product4 != null) {
+                    val product3 = snapshot.getValue(ProductAccessory::class.java)
+                    if (product3 != null) {
                         // Hiển thị thông tin sản phẩm trong các TextView và ImageView
-                        tv_Type_Product_Electronic.text = "Type: ${product4?.type}"
-                        tv_Name_Product_Electronic.text = "Product Name: ${product4?.name}"
-                        tv_Price_Product_Electronic.text = "Price: ${product4?.price}"
-                        tv_Details_Product_Electronic.text = "Details: ${product4?.details}"
-                        tv_Origin_Product_Electronic.text = "Origin: ${product4?.origin}"
-                        tv_Material_Product_Electronic.text = "Material: ${product4?.material}"
-                        tv_Quantity_Product_Electronic.text = "Quantity: ${product4?.quantity}"
+                        tv_Type_Product_Phone.text = "Type: ${product3?.type}"
+                        tv_Name_Product_Phone.text = "Product Name: ${product3?.name}"
+                        tv_Price_Product_Phone.text = "Price: ${product3?.price}"
+                        tv_Details_Product_Phone.text = "Details: ${product3?.details}"
+                        tv_Origin_Product_Phone.text = "Origin: ${product3?.origin}"
+                        tv_Material_Product_Phone.text = "Material: ${product3?.material}"
+                        tv_Quantity_Product_Phone.text = "Quantity: ${product3?.quantity}"
 
 
-                        if (product4?.imageUrl != null) {
-                            Glide.with(this@DetailElectronicDeviceActivity)
-                                .load(product4.imageUrl)
-                                .into(ig_Images_Product_Electronic)
+                        if (product3?.imageUrl != null) {
+                            Glide.with(this@DetailEarPhoneActivity)
+                                .load(product3.imageUrl)
+                                .into(ig_Images_Product_Phone)
                         }
-                        val btnShowDetails4 = findViewById<Button>(R.id.btn_show_details4)
+                        val btnShowDetails3 = findViewById<Button>(R.id.btn_show_details3)
                         // Set an onClickListener for the button
-                        btnShowDetails4.setOnClickListener {
-                            val dialogBuilder = AlertDialog.Builder(this@DetailElectronicDeviceActivity)
+                        btnShowDetails3.setOnClickListener {
+                            val dialogBuilder = AlertDialog.Builder(this@DetailEarPhoneActivity)
                             dialogBuilder.setTitle("Product Details")
 
                             val dialogView = layoutInflater.inflate(R.layout.dialog_product_cart, null)
@@ -92,16 +92,16 @@ class DetailElectronicDeviceActivity : AppCompatActivity() {
 
 
                             // Load the image into the dialog
-                            if (product4.imageUrl != null) {
-                                Glide.with(this@DetailElectronicDeviceActivity)
-                                    .load(product4.imageUrl)
+                            if (product3.imageUrl != null) {
+                                Glide.with(this@DetailEarPhoneActivity)
+                                    .load(product3.imageUrl)
                                     .into(dialogImageView)
                             }
 
                             // Set the product name in the dialog
-                            tv_Quantity_Show_Add_Men.text = product4.quantity
-                            dialogProductName.text = product4.name
-                            dialogProductPrice.text = "Price: ${product4.price}"
+                            tv_Quantity_Show_Add_Men.text = product3.quantity
+                            dialogProductName.text = product3.name
+                            dialogProductPrice.text = "Price: ${product3.price}"
                             editQuantity.setText("1")
                             btnDecrease.setOnClickListener {
                                 val currentQuantity = editQuantity.text.toString().toInt()
@@ -118,7 +118,7 @@ class DetailElectronicDeviceActivity : AppCompatActivity() {
                             val btnSaveToDatabase = dialogView.findViewById<Button>(R.id.btn_save_to_database)
                             val currentUser = FirebaseAuth.getInstance().currentUser
                             if (currentUser == null) {
-                                val intent = Intent(this@DetailElectronicDeviceActivity, LoginActivity::class.java)
+                                val intent = Intent(this@DetailEarPhoneActivity, LoginActivity::class.java)
                                 startActivity(intent)
                                 finish() // Đóng màn hình giỏ hàng
                             } else {
@@ -133,22 +133,22 @@ class DetailElectronicDeviceActivity : AppCompatActivity() {
                                                 .child("Cart_Fashion").child(userUID)
 
                                         // Lấy các thuộc tính bạn muốn lưu
-                                        val productName = product4.name
-                                        val productPrice = product4.price
+                                        val productName = product3.name
+                                        val productPrice = product3.price
                                         val quantity = editQuantity.text.toString()
-                                        val imageUrl = product4.imageUrl
+                                        val imageUrl = product3.imageUrl
 
                                         val productData = mapOf(
                                             "userUID" to userUID,
                                             "name" to productName,
                                             "price" to productPrice,
                                             "quantity" to quantity,
-                                            "productelectronicId" to productelectronicId,
+                                            "productphoneId" to productphoneId,
                                             "status" to "confirmation pending",
                                             "imageUrl" to imageUrl
                                         )
-                                        val query = databaseReference.orderByChild("productelectronicId")
-                                            .equalTo(productelectronicId)
+                                        val query = databaseReference.orderByChild("productphoneId")
+                                            .equalTo(productphoneId)
 
                                         query.addListenerForSingleValueEvent(object : ValueEventListener {
                                             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -170,7 +170,7 @@ class DetailElectronicDeviceActivity : AppCompatActivity() {
 
 
                                         val cartIntent = Intent(
-                                            this@DetailElectronicDeviceActivity,
+                                            this@DetailEarPhoneActivity,
                                             CartActivity::class.java
                                         )
                                         startActivity(cartIntent)

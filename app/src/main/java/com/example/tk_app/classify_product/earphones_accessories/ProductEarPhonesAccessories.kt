@@ -1,7 +1,7 @@
-package com.example.tk_app.classify_product.women_fashion
+package com.example.tk_app.classify_product.earphones_accessories
 
-class ProductWomenFashion (
-    var productWomenId: String?,
+class ProductEarPhonesAccessories (
+    var productphoneId: String?,
     var imageUrl: String?,
     var material: String?,
     var price: String?,
