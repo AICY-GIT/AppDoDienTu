@@ -1,4 +1,5 @@
 package com.example.tk_app.fragment
+
 import android.content.Intent
 import android.os.Bundle
 
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.tk_app.R
+import com.example.tk_app.account.SearchActivity
 import com.example.tk_app.classify_product.CartActivity
 import com.example.tk_app.classify_product.watch.WatchAdapter
 import com.example.tk_app.classify_product.watch.ProductWatch
@@ -50,6 +52,7 @@ class HomeFragment : Fragment() {
     private val productsList4 = mutableListOf<ProductWatch>()
 
     private lateinit var btn_Click_On_Cart: TextView
+    private lateinit var btn_Click_Search: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -67,23 +70,27 @@ class HomeFragment : Fragment() {
         val show_List_Women_Fashion = view.findViewById<RecyclerView>(R.id.show_list_women_fashion)
         val show_List_Phone = view.findViewById<RecyclerView>(R.id.show_list_phone)
         val show_List_Electronic = view.findViewById<RecyclerView>(R.id.show_list_electronic)
-        show_List_Men_Fashion.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        show_List_Men_Fashion.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         productAdapter = ProductsPhoneAdapter(productsList)
         show_List_Men_Fashion.adapter = productAdapter
         // Gọi hàm để lấy dữ liệu từ Firebase Realtime Database
         fetchProductData()
 
-        show_List_Women_Fashion.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        show_List_Women_Fashion.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         productAdapter2 = ProductsAccessoryAdapter(productsList2)
         show_List_Women_Fashion.adapter = productAdapter2
         fetchProductData2()
 
-        show_List_Phone.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        show_List_Phone.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         productAdapter3 = EarPhonesAccessoriesAdapter(productsList3)
         show_List_Phone.adapter = productAdapter3
         fetchProductData3()
 
-        show_List_Electronic.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        show_List_Electronic.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         productAdapter4 = WatchAdapter(productsList4)
         show_List_Electronic.adapter = productAdapter4
         // Gọi hàm để lấy dữ liệu từ Firebase Realtime Database
@@ -93,6 +100,12 @@ class HomeFragment : Fragment() {
         btn_Click_On_Cart.setOnClickListener {
             // Chuyển đến trang CartActivity khi nút "Go to Cart" được nhấn
             val intent = Intent(requireContext(), CartActivity::class.java)
+            startActivity(intent)
+        }
+        //search
+        btn_Click_Search = view.findViewById(R.id.btn_click_search)
+        btn_Click_Search.setOnClickListener {
+            val intent = Intent(requireContext(), SearchActivity::class.java)
             startActivity(intent)
         }
 
@@ -120,7 +133,17 @@ class HomeFragment : Fragment() {
                     val quantity = productSnapshot.child("quantoty").value.toString()
                     val origin = productSnapshot.child("origin").value.toString()
 
-                    val product = ProductPhone(productId, imageUrl, material, price, name, type, details, origin, quantity)
+                    val product = ProductPhone(
+                        productId,
+                        imageUrl,
+                        material,
+                        price,
+                        name,
+                        type,
+                        details,
+                        origin,
+                        quantity
+                    )
                     productsList.add(product)
                 }
                 productAdapter.notifyDataSetChanged()
@@ -132,6 +155,7 @@ class HomeFragment : Fragment() {
         })
 
     }
+
     private fun fetchProductData2() {
         val uid = "HJqF0S5j3cM7VImvgyTjxhE4D6e2"
         val databaseReference =
@@ -152,7 +176,17 @@ class HomeFragment : Fragment() {
                     val quantity = productSnapshot.child("quantity").value.toString()
                     val origin = productSnapshot.child("origin").value.toString()
 
-                    val product2 = ProductAccessory(productId, imageUrl, material, price, name, type, details, origin, quantity)
+                    val product2 = ProductAccessory(
+                        productId,
+                        imageUrl,
+                        material,
+                        price,
+                        name,
+                        type,
+                        details,
+                        origin,
+                        quantity
+                    )
                     productsList2.add(product2)
                 }
                 productAdapter2.notifyDataSetChanged()
@@ -163,6 +197,7 @@ class HomeFragment : Fragment() {
             }
         })
     }
+
     private fun fetchProductData3() {
         val uid = "HJqF0S5j3cM7VImvgyTjxhE4D6e2"
         val databaseReference =
@@ -183,7 +218,17 @@ class HomeFragment : Fragment() {
                     val quantity = productSnapshot.child("quantity").value.toString()
                     val origin = productSnapshot.child("origin").value.toString()
 
-                    val product3 = ProductEarPhonesAccessories(productId, imageUrl, material, price, name, type, details, origin, quantity)
+                    val product3 = ProductEarPhonesAccessories(
+                        productId,
+                        imageUrl,
+                        material,
+                        price,
+                        name,
+                        type,
+                        details,
+                        origin,
+                        quantity
+                    )
                     productsList3.add(product3)
                 }
                 productAdapter2.notifyDataSetChanged() // Cập nhật adapter thích hợp
@@ -194,6 +239,7 @@ class HomeFragment : Fragment() {
             }
         })
     }
+
     private fun fetchProductData4() {
         val uid = "HJqF0S5j3cM7VImvgyTjxhE4D6e2"
         val databaseReference =
@@ -214,7 +260,17 @@ class HomeFragment : Fragment() {
                     val quantity = productSnapshot.child("quantity").value.toString()
                     val origin = productSnapshot.child("origin").value.toString()
 
-                    val product4 = ProductWatch(productId, imageUrl, material, price, name, type, details, origin, quantity)
+                    val product4 = ProductWatch(
+                        productId,
+                        imageUrl,
+                        material,
+                        price,
+                        name,
+                        type,
+                        details,
+                        origin,
+                        quantity
+                    )
                     productsList4.add(product4)
                 }
                 productAdapter2.notifyDataSetChanged() // Cập nhật adapter thích hợp

@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
 import com.example.tk_app.R
@@ -45,11 +46,12 @@ class DetailEarPhoneActivity : AppCompatActivity() {
         // Lấy productmenId từ Intent
         val productphoneId = intent.getStringExtra("productphoneId") ?: ""
 
+
         val uid = "HJqF0S5j3cM7VImvgyTjxhE4D6e2"
         // Tải thông tin sản phẩm từ Firebase bằng productmenId
         val databaseReference =
             FirebaseDatabase.getInstance().reference.child("Product").child("Classify")
-                .child("Phones_Accessories").child(productphoneId)
+                .child("Ear_Phones").child(productphoneId)
 
         databaseReference.addValueEventListener(object : ValueEventListener {
             @SuppressLint("SuspiciousIndentation")

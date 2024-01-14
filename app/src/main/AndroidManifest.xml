@@ -15,6 +15,11 @@
         android:theme="@style/Theme.TK_APP"
         tools:targetApi="31">
         <activity
+            android:name=".account.SearchActivity"
+            android:exported="false" >
+
+        </activity>
+        <activity
             android:name=".classify_product.admin_products.ProductsActivity"
             android:exported="false" />
         <activity

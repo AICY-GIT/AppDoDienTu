@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -46,7 +47,7 @@ class DetailProductsPhoneActivity : AppCompatActivity() {
         // Tải thông tin sản phẩm từ Firebase bằng productmenId
         val databaseReference =
             FirebaseDatabase.getInstance().reference.child("Product").child("Classify")
-                .child("Men_Fashion").child(productmenId)
+                .child("Phones").child(productmenId)
 
         databaseReference.addValueEventListener(object : ValueEventListener {
             @SuppressLint("SuspiciousIndentation")
