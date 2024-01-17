@@ -1,4 +1,4 @@
-package com.example.tk_app.classify_product.earphones_accessories
+package com.example.tk_app.classify_product.earphones
 
 import android.Manifest
 import android.content.Intent
@@ -66,10 +66,8 @@ class EarPhoneActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_phones_accessories)
-        databaseReference =
-            FirebaseDatabase.getInstance().reference.child("Product").child("Classify")
-                .child("Phones_Accessories")
+        setContentView(R.layout.activity_admin_add_earphone)
+        databaseReference = FirebaseDatabase.getInstance().reference.child("Product").child("Classify").child("Phones_Accessories")
 
         click_Classify3 = findViewById(R.id.click_classify3)
         tv_Name_Product3 = findViewById(R.id.tv_name_product3)

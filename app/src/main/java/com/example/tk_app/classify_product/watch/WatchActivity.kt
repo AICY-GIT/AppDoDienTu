@@ -64,7 +64,7 @@ class WatchActivity : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_electronic_device)
+        setContentView(R.layout.activity_admin_add_watch)
         databaseReference = FirebaseDatabase.getInstance().reference.child("Product").child("Classify").child("Electronic_Device")
 
         click_Classify4 = findViewById(R.id.click_classify4)

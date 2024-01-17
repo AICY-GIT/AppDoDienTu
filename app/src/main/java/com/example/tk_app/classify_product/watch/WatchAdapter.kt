@@ -20,7 +20,7 @@ class WatchAdapter  (private val products4: List<ProductWatch>) : RecyclerView.A
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_products_electronic, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_products_watch, parent, false)
         return ViewHolder(view)
     }
 

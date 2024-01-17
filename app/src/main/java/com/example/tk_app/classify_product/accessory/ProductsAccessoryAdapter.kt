@@ -19,7 +19,7 @@ class ProductsAccessoryAdapter (private val products2: List<ProductAccessory>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_products_womensfashion, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_products_accessory, parent, false)
         return ViewHolder(view)
     }
 

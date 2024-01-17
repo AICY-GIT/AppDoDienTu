@@ -33,7 +33,7 @@ class DetailEarPhoneActivity : AppCompatActivity() {
     private val uid3 = FirebaseAuth.getInstance().currentUser?.uid ?: ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail_phones_accessories)
+        setContentView(R.layout.activity_detail_earphone)
         tv_Type_Product_Phone = findViewById(R.id.tv_type_product_phone)
         tv_Name_Product_Phone = findViewById(R.id.tv_name_product_phone)
         tv_Price_Product_Phone = findViewById(R.id.tv_price_product_phone)

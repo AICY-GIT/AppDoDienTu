@@ -1,4 +1,4 @@
-package com.example.tk_app.classify_product.earphones_accessories
+package com.example.tk_app.classify_product.earphones
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.tk_app.R
+import com.example.tk_app.classify_product.earphones_accessories.DetailEarPhoneActivity
 
 class EarPhonesAccessoriesAdapter(private val products3: List<ProductEarPhonesAccessories>) : RecyclerView.Adapter<EarPhonesAccessoriesAdapter.ViewHolder>() {
 
@@ -19,7 +20,7 @@ class EarPhonesAccessoriesAdapter(private val products3: List<ProductEarPhonesAc
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_products_phone, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_products_earphone, parent, false)
         return ViewHolder(view)
     }
 

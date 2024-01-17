@@ -7,13 +7,13 @@ import android.widget.TextView
 import com.example.tk_app.R
 import com.example.tk_app.classify_product.watch.WatchActivity
 import com.example.tk_app.classify_product.phones.PhoneActivity
-import com.example.tk_app.classify_product.earphones_accessories.EarPhoneActivity
+import com.example.tk_app.classify_product.earphones.EarPhoneActivity
 import com.example.tk_app.classify_product.accessory.AccessoryActivity
 
 class ClassifyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_classify)
+        setContentView(R.layout.activity_admin_select_to_add)
         val btn_Click_Add_An_Classify = findViewById<TextView>(R.id.btn_click_add_phone_classify)
         val btn_Click_Add_An_Classify2 = findViewById<TextView>(R.id.btn_click_add_accessory_classify)
         val btn_click_add_Phone_classify = findViewById<TextView>(R.id.btn_click_add_earphone_classify)

@@ -19,7 +19,7 @@ class ProductsPhoneAdapter(private val products: List<ProductPhone>) : RecyclerV
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_products_mensfashion, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_products_phone, parent, false)
         return ViewHolder(view)
     }
 
