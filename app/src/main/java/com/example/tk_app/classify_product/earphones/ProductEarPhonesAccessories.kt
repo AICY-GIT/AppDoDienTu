@@ -1,4 +1,4 @@
-package com.example.tk_app.classify_product.earphones_accessories
+package com.example.tk_app.classify_product.earphones
 
 class ProductEarPhonesAccessories (
     var productphoneId: String?,

@@ -32,7 +32,7 @@ class DetailAccessoryActivity : AppCompatActivity() {
     private val uid2 = FirebaseAuth.getInstance().currentUser?.uid ?: ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail_products_women)
+        setContentView(R.layout.activity_detail_accessory)
         tv_Type_Product_Women = findViewById(R.id.tv_type_product_women)
         tv_Name_Product_Women = findViewById(R.id.tv_name_product_women)
         tv_Price_Product_Women = findViewById(R.id.tv_price_product_women)

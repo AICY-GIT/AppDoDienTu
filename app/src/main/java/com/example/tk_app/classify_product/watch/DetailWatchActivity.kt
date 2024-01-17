@@ -32,7 +32,7 @@ class DetailWatchActivity : AppCompatActivity() {
     private val uid4 = FirebaseAuth.getInstance().currentUser?.uid ?: ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail_electronic_device)
+        setContentView(R.layout.activity_detail_watch)
         tv_Type_Product_Electronic = findViewById(R.id.tv_type_product_electronic)
         tv_Name_Product_Electronic = findViewById(R.id.tv_name_product_electronic)
         tv_Price_Product_Electronic = findViewById(R.id.tv_price_product_electronic)

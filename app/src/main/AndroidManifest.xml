@@ -30,7 +30,7 @@
             android:name=".classify_product.earphones_accessories.DetailEarPhoneActivity"
             android:exported="false" />
         <activity
-            android:name=".classify_product.earphones_accessories.EarPhoneActivity"
+            android:name=".classify_product.earphones.EarPhoneActivity"
             android:exported="false" />
         <activity
             android:name=".classify_product.accessory.DetailAccessoryActivity"

@@ -66,7 +66,7 @@ class AccessoryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_women_fashion)
+        setContentView(R.layout.activity_admin_add_accessory)
         databaseReference =
             FirebaseDatabase.getInstance().reference.child("Product").child("Classify")
                 .child("Women_Fashion")

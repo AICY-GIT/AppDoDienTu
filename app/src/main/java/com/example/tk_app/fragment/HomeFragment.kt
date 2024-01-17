@@ -16,8 +16,8 @@ import com.example.tk_app.classify_product.watch.WatchAdapter
 import com.example.tk_app.classify_product.watch.ProductWatch
 import com.example.tk_app.classify_product.phones.ProductPhone
 import com.example.tk_app.classify_product.phones.ProductsPhoneAdapter
-import com.example.tk_app.classify_product.earphones_accessories.EarPhonesAccessoriesAdapter
-import com.example.tk_app.classify_product.earphones_accessories.ProductEarPhonesAccessories
+import com.example.tk_app.classify_product.earphones.EarPhonesAccessoriesAdapter
+import com.example.tk_app.classify_product.earphones.ProductEarPhonesAccessories
 import com.example.tk_app.classify_product.accessory.ProductAccessory
 import com.example.tk_app.classify_product.accessory.ProductsAccessoryAdapter
 
@@ -63,10 +63,10 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-        val show_List_Men_Fashion = view.findViewById<RecyclerView>(R.id.show_list_men_fashion)
-        val show_List_Women_Fashion = view.findViewById<RecyclerView>(R.id.show_list_women_fashion)
-        val show_List_Phone = view.findViewById<RecyclerView>(R.id.show_list_phone)
-        val show_List_Electronic = view.findViewById<RecyclerView>(R.id.show_list_electronic)
+        val show_List_Men_Fashion = view.findViewById<RecyclerView>(R.id.rv_home_phone)
+        val show_List_Women_Fashion = view.findViewById<RecyclerView>(R.id.rv_home_accessory)
+        val show_List_Phone = view.findViewById<RecyclerView>(R.id.rv_home_earrphone)
+        val show_List_Electronic = view.findViewById<RecyclerView>(R.id.rv_home_watch)
         show_List_Men_Fashion.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         productAdapter = ProductsPhoneAdapter(productsList)
         show_List_Men_Fashion.adapter = productAdapter

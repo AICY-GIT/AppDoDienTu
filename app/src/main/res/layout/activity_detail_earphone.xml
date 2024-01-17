@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".classify_product.earphones_accessories.DetailEarPhoneActivity">
+    tools:context=".classify_product.earphones.DetailEarPhoneActivity">
     <ImageView
         android:id="@+id/ig_images_product_phone"
         android:layout_width="150dp"

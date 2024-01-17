@@ -30,7 +30,7 @@ class DetailProductsPhoneActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detai_products_men)
+        setContentView(R.layout.activity_detai_products_phone)
 
         tv_Type_Product_Men = findViewById(R.id.tv_type_product_men)
         tv_Name_Product_Men = findViewById(R.id.tv_name_product_men)
