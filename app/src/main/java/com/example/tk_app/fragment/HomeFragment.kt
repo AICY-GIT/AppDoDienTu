@@ -186,7 +186,7 @@ class HomeFragment : Fragment() {
                     val product3 = ProductEarPhonesAccessories(productId, imageUrl, material, price, name, type, details, origin, quantity)
                     productsList3.add(product3)
                 }
-                productAdapter2.notifyDataSetChanged() // Cập nhật adapter thích hợp
+                productAdapter3.notifyDataSetChanged() // Cập nhật adapter thích hợp
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -217,13 +217,19 @@ class HomeFragment : Fragment() {
                     val product4 = ProductWatch(productId, imageUrl, material, price, name, type, details, origin, quantity)
                     productsList4.add(product4)
                 }
-                productAdapter2.notifyDataSetChanged() // Cập nhật adapter thích hợp
+                productAdapter4.notifyDataSetChanged() // Cập nhật adapter thích hợp
             }
 
             override fun onCancelled(error: DatabaseError) {
                 // Xử lý lỗi nếu cần
             }
         })
+    }
+    fun reloadFragment() {
+        fetchProductData()
+        fetchProductData2()
+        fetchProductData3()
+        fetchProductData4()
     }
 
     companion object {
@@ -245,4 +251,5 @@ class HomeFragment : Fragment() {
                 }
             }
     }
+
 }

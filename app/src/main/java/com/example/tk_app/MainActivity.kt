@@ -40,4 +40,14 @@ class MainActivity : AppCompatActivity() {
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             .commit()
     }
+
+    override fun onResume() {
+        super.onResume()
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
+
+        // Check if it's an instance of HomeFragment and then call reloadFragment
+        if (currentFragment is HomeFragment) {
+            currentFragment.reloadFragment()
+        }
+    }
 }

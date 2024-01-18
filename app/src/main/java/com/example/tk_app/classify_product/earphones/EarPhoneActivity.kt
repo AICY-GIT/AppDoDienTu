@@ -67,7 +67,9 @@ class EarPhoneActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_add_earphone)
-        databaseReference = FirebaseDatabase.getInstance().reference.child("Product").child("Classify").child("Phones_Accessories")
+        databaseReference =FirebaseDatabase.getInstance().reference.child("Product").child("Classify")
+            .child("Ear_Phones")
+
 
         click_Classify3 = findViewById(R.id.click_classify3)
         tv_Name_Product3 = findViewById(R.id.tv_name_product3)

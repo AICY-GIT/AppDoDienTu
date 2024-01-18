@@ -66,7 +66,8 @@ class PhoneActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_add_phone)
 
-        databaseReference = FirebaseDatabase.getInstance().reference.child("Product").child("Classify").child("Men_Fashion")
+        databaseReference = FirebaseDatabase.getInstance().reference.child("Product").child("Classify").child("Phones")
+
 
         click_Classify1 = findViewById(R.id.click_classify1)
         tv_Name_Product1 = findViewById(R.id.tv_name_product1)
