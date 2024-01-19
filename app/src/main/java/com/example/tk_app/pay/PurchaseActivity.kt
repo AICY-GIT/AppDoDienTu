@@ -4,6 +4,7 @@ import CartAdapter
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.StrictMode
 import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
@@ -14,6 +15,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tk_app.HMac.Api.CreateOrder
 import com.example.tk_app.MainActivity
 import com.example.tk_app.R
 import com.example.tk_app.account.User
@@ -29,6 +31,10 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import vn.momo.momo_partner.AppMoMoLib
+import vn.zalopay.sdk.Environment
+import vn.zalopay.sdk.ZaloPayError
+import vn.zalopay.sdk.ZaloPaySDK
+import vn.zalopay.sdk.listeners.PayOrderListener
 
 class PurchaseActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
@@ -56,6 +62,7 @@ class PurchaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_purchase)
+        //mapping
         userNameTextView = findViewById(R.id.userNameTextView)
         userEmailTextView = findViewById(R.id.userEmailTextView)
         userPhoneTextView = findViewById(R.id.userPhoneTextView)
@@ -64,7 +71,11 @@ class PurchaseActivity : AppCompatActivity() {
         rbPayWithMomo=findViewById(R.id.rb_withMomo_purchase)
         rbPayWithZalo=findViewById(R.id.rb_withZalo_purchase)
         rgPaymentMethod=findViewById(R.id.rg_paymentMenthod_purchase)
-
+        //khoi tao zalo
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+        ZaloPaySDK.init(2553, Environment.SANDBOX);
+        //khoi tao momo
         AppMoMoLib.getInstance().setEnvironment(AppMoMoLib.ENVIRONMENT.DEVELOPMENT); // AppMoMoLib.ENVIRONMENT.PRODUCTION
         totalPriceTextView = findViewById(R.id.totalPriceTextView)
         productListTextView = findViewById(R.id.productListTextView)
@@ -141,10 +152,10 @@ class PurchaseActivity : AppCompatActivity() {
             updatePaymentToFirebase(shippingAddress,userID)
         }else if(isPayWithMomo){
             if (userID != null) {
-                requestPayment(userID)
+                requestPaymentMomo(userID)
             }
         }else if(isPayWithZalo){
-            // thanh toan zalo
+            RequestZalo()
         }
     }
     private fun updatePaymentToFirebase(shippingAddress: String,userID:String?){
@@ -184,7 +195,7 @@ class PurchaseActivity : AppCompatActivity() {
     }
 
     //Get token through MoMo app
-    private fun requestPayment(IdDonHang : String) {
+    private fun requestPaymentMomo(IdDonHang : String) {
         AppMoMoLib.getInstance().setAction(AppMoMoLib.ACTION.PAYMENT)
         AppMoMoLib.getInstance().setActionType(AppMoMoLib.ACTION_TYPE.GET_TOKEN)
 
@@ -272,5 +283,40 @@ class PurchaseActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this,"message: that bai",Toast.LENGTH_SHORT)
         }
+    }
+    private fun RequestZalo(){
+        val orderApi = CreateOrder()
+        try {
+            val data = orderApi.createOrder(amount)
+            Log.d("Amount", amount)
+            val code = data.getString("return_code")
+            Toast.makeText(applicationContext, "return_code: $code", Toast.LENGTH_LONG).show()
+            Log.e( "RequestZalo: ",data.toString() )
+            if (code == "1") {
+                val token: String = data.getString("zp_trans_token")
+                ZaloPaySDK.getInstance().payOrder(this@PurchaseActivity,token,"demozpdk://app",object :
+                    PayOrderListener {
+                    override fun onPaymentSucceeded(p0: String?, p1: String?, p2: String?) {
+                        TODO("Not yet implemented")
+                        val userID = FirebaseAuth.getInstance().currentUser?.uid
+                        val shippingAddress = shippingAddressEditText.text.toString()
+                        updatePaymentToFirebase(shippingAddress, userID)
+                    }
+                    override fun onPaymentCanceled(p0: String?, p1: String?) {
+                        TODO("Not yet implemented")
+                    }
+                    override fun onPaymentError(p0: ZaloPayError?, p1: String?, p2: String?) {
+                        TODO("Not yet implemented")
+                    }
+
+                });
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        ZaloPaySDK.getInstance().onResult(intent)
     }
 }
