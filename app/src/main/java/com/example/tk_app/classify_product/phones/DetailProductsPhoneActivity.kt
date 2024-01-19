@@ -46,7 +46,7 @@ class DetailProductsPhoneActivity : AppCompatActivity() {
         // Tải thông tin sản phẩm từ Firebase bằng productmenId
         val databaseReference =
             FirebaseDatabase.getInstance().reference.child("Product").child("Classify")
-                .child("Men_Fashion").child(productmenId)
+                .child("Phones").child(productmenId)
 
         databaseReference.addValueEventListener(object : ValueEventListener {
             @SuppressLint("SuspiciousIndentation")

@@ -8,8 +8,10 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tk_app.MainActivity
 import com.example.tk_app.R
 import com.example.tk_app.account.LoginActivity
+import com.example.tk_app.fragment.HomeFragment
 import com.example.tk_app.pay.PurchaseActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -26,11 +28,18 @@ class CartActivity : AppCompatActivity() {
     private val productList: MutableList<CartItem> = ArrayList()
     var totalCartPrice: BigDecimal = BigDecimal.ZERO
     lateinit var btnBuy: Button
+    lateinit var btnReturn:Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart)
         btnBuy = findViewById<Button>(R.id.btnBuy)
+        btnReturn= findViewById(R.id.btn_return_cart)
+        btnReturn.setOnClickListener{
+            val intent = Intent(this@CartActivity, MainActivity::class.java)
+            startActivity(intent)
+            finishAffinity()
+        }
         btnBuy.setOnClickListener {
             // Tạo intent và đưa dữ liệu vào intent
             val intent = Intent(this, PurchaseActivity::class.java)

@@ -4,13 +4,18 @@ import CartAdapter
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.StrictMode
+import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tk_app.HMac.Api.CreateOrder
 import com.example.tk_app.MainActivity
 import com.example.tk_app.R
 import com.example.tk_app.account.User
@@ -21,6 +26,15 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.gson.Gson
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
+import vn.momo.momo_partner.AppMoMoLib
+import vn.zalopay.sdk.Environment
+import vn.zalopay.sdk.ZaloPayError
+import vn.zalopay.sdk.ZaloPaySDK
+import vn.zalopay.sdk.listeners.PayOrderListener
 
 class PurchaseActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
@@ -32,16 +46,40 @@ class PurchaseActivity : AppCompatActivity() {
     private lateinit var userPhoneTextView: TextView
     private lateinit var databaseReference: DatabaseReference
     private lateinit var shippingAddressEditText: EditText
-    private lateinit var cashOnDeliveryCheckBox: CheckBox
+    private lateinit var rbCashOnDelivery: RadioButton
+    private lateinit var rbPayWithZalo:RadioButton
+    private lateinit var rbPayWithMomo:RadioButton
+    private lateinit var rgPaymentMethod:RadioGroup
+    private var amount = "10000"
+    private val fee = "0"
+    var environment = 0 //developer default
+    private val merchantName = "APP DO DIEN TU"
+    private val merchantCode = "CGV19072017"
+    private val merchantNameLabel = "APP DO DIEN TU"
+    private val description = "Thanh toan MoMo"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_purchase)
-
+        //mapping
+        userNameTextView = findViewById(R.id.userNameTextView)
+        userEmailTextView = findViewById(R.id.userEmailTextView)
+        userPhoneTextView = findViewById(R.id.userPhoneTextView)
+        shippingAddressEditText = findViewById(R.id.shippingAddressEditText)
+        rbCashOnDelivery = findViewById(R.id.rb_whenship_purchase)
+        rbPayWithMomo=findViewById(R.id.rb_withMomo_purchase)
+        rbPayWithZalo=findViewById(R.id.rb_withZalo_purchase)
+        rgPaymentMethod=findViewById(R.id.rg_paymentMenthod_purchase)
+        //khoi tao zalo
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+        ZaloPaySDK.init(2553, Environment.SANDBOX);
+        //khoi tao momo
+        AppMoMoLib.getInstance().setEnvironment(AppMoMoLib.ENVIRONMENT.DEVELOPMENT); // AppMoMoLib.ENVIRONMENT.PRODUCTION
         totalPriceTextView = findViewById(R.id.totalPriceTextView)
         productListTextView = findViewById(R.id.productListTextView)
-        val saveButton: Button = findViewById(R.id.saveButton)
+        val saveButton: Button = findViewById(R.id.btn_buy_purchase)
         saveButton.setOnClickListener {
             savePaymentInfoToFirebase()
         }
@@ -50,8 +88,10 @@ class PurchaseActivity : AppCompatActivity() {
         val productList = intent.getParcelableArrayListExtra<CartItem>("productList")
 
         if (productList != null) {
-            totalPriceTextView.text = "Total Price: $$totalCartPrice"
-
+            totalPriceTextView.text = "$totalCartPrice"
+            if (totalCartPrice != null) {
+                amount=totalCartPrice
+            };
             recyclerView = findViewById(R.id.recyclerView)
             recyclerView.layoutManager = LinearLayoutManager(this)
             cartAdapter = CartAdapter(this, productList)
@@ -65,11 +105,7 @@ class PurchaseActivity : AppCompatActivity() {
         } else {
             // Handle the case when productList is null
         }
-        userNameTextView = findViewById(R.id.userNameTextView)
-        userEmailTextView = findViewById(R.id.userEmailTextView)
-        userPhoneTextView = findViewById(R.id.userPhoneTextView)
-        shippingAddressEditText = findViewById(R.id.shippingAddressEditText)
-        cashOnDeliveryCheckBox = findViewById(R.id.cashOnDeliveryCheckBox)
+
 
         // Tham chiếu đến Firebase Database và lấy thông tin người dùng
         val userID = FirebaseAuth.getInstance().currentUser?.uid
@@ -92,36 +128,44 @@ class PurchaseActivity : AppCompatActivity() {
                 // Xử lý khi có lỗi xảy ra khi truy xuất dữ liệu từ Firebase
             }
         })
-        cashOnDeliveryCheckBox.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                // Xử lý khi người dùng chọn thanh toán khi nhận hàng
-            } else {
-                // Xử lý khi người dùng không chọn thanh toán khi nhận hàng
-            }
-        }
     }
     private fun savePaymentInfoToFirebase() {
         val userID = FirebaseAuth.getInstance().currentUser?.uid
         val shippingAddress = shippingAddressEditText.text.toString()
-        val isCashOnDeliveryChecked = cashOnDeliveryCheckBox.isChecked
+        val isCashOnDeliveryChecked = rbCashOnDelivery.isChecked
+        val isPayWithZalo=rbPayWithZalo.isChecked
+        val isPayWithMomo=rbPayWithMomo.isChecked
+        //to here!
 
-        if (shippingAddress.isBlank() || !isCashOnDeliveryChecked) {
+        val checkedRadioButtonId=rgPaymentMethod.checkedRadioButtonId
+
+        if (shippingAddress.isBlank() || checkedRadioButtonId==-1) {
             val errorMessage = when {
-                shippingAddress.isBlank() && !isCashOnDeliveryChecked -> "Hãy nhập địa chỉ và chọn phương thức thanh toán!"
+                shippingAddress.isBlank() && checkedRadioButtonId==-1 -> "Hãy nhập địa chỉ và chọn phương thức thanh toán!"
                 shippingAddress.isBlank() -> "Hãy nhập địa chỉ thanh toán!"
                 else -> "Bạn phải chọn phương thức thanh toán!"
             }
             Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
             return // Dừng quá trình lưu nếu không đủ điều kiện
         }
-
+        if(isCashOnDeliveryChecked){
+            updatePaymentToFirebase(shippingAddress,userID)
+        }else if(isPayWithMomo){
+            if (userID != null) {
+                requestPaymentMomo(userID)
+            }
+        }else if(isPayWithZalo){
+            RequestZalo()
+        }
+    }
+    private fun updatePaymentToFirebase(shippingAddress: String,userID:String?){
         // Lưu thông tin thanh toán
+        val isCashOnDeliveryChecked = rbCashOnDelivery.isChecked
+        val isPayWithZalo = rbPayWithZalo.isChecked
+        val isPayWithMomo = rbPayWithMomo.isChecked
+
         val paymentRef = FirebaseDatabase.getInstance().reference.child("Payments").child(userID!!)
-        val paymentInfo = Payment(
-            totalPriceTextView.text.toString(),
-            shippingAddress,
-            isCashOnDeliveryChecked
-        )
+        val paymentInfo = Payment(totalPriceTextView.text.toString(), shippingAddress, isCashOnDeliveryChecked, isPayWithMomo, isPayWithZalo)
         paymentRef.setValue(paymentInfo)
             .addOnSuccessListener {
                 val cartReference = FirebaseDatabase.getInstance().reference.child("Cart").child("Cart_Fashion").child(userID!!)
@@ -150,4 +194,129 @@ class PurchaseActivity : AppCompatActivity() {
             }
     }
 
+    //Get token through MoMo app
+    private fun requestPaymentMomo(IdDonHang : String) {
+        AppMoMoLib.getInstance().setAction(AppMoMoLib.ACTION.PAYMENT)
+        AppMoMoLib.getInstance().setActionType(AppMoMoLib.ACTION_TYPE.GET_TOKEN)
+
+        val eventValue: MutableMap<String, Any> = HashMap()
+        //client Required
+        eventValue["merchantname"] =
+            merchantName //Tên đối tác. được đăng ký tại https://business.momo.vn. VD: Google, Apple, Tiki , CGV Cinemas
+        eventValue["merchantcode"] =
+            merchantCode //Mã đối tác, được cung cấp bởi MoMo tại https://business.momo.vn
+        eventValue["amount"] = amount //Kiểu integer
+        eventValue["orderId"] =
+            IdDonHang //uniqueue id cho Bill order, giá trị duy nhất cho mỗi đơn hàng
+        eventValue["orderLabel"] = "Mã đơn hàng" //gán nhãn
+
+        //client Optional - bill info
+        eventValue["merchantnamelabel"] = "Dịch vụ" //gán nhãn
+        eventValue["fee"] = fee //Kiểu integer
+        eventValue["description"] = description //mô tả đơn hàng - short description
+
+        //client extra data
+        eventValue["requestId"] = merchantCode + "merchant_billId_" + System.currentTimeMillis()
+        eventValue["partnerCode"] = merchantCode
+        val productList = intent.getParcelableArrayListExtra<CartItem>("productList")
+        //Example extra data
+        val gson = Gson()
+        val cartItemJsonArray = JSONArray()
+
+        if (productList != null) {
+            for (cartItem in productList) {
+                val cartItemJsonString = gson.toJson(cartItem)
+                val cartItemJsonObject = JSONObject(cartItemJsonString)
+                cartItemJsonArray.put(cartItemJsonObject)
+            }
+        }
+        val objExtraData = JSONObject()
+        try {
+            objExtraData.put("cart_items", cartItemJsonArray)
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+        eventValue["extraData"] = objExtraData.toString()
+        eventValue["extra"] = ""
+        AppMoMoLib.getInstance().requestMoMoCallBack(this, eventValue)
+    }
+    //Get token callback from MoMo app an submit to server side
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppMoMoLib.getInstance().REQUEST_CODE_MOMO && resultCode == -1) {
+            if (data != null) {
+                if (data.getIntExtra("status", -1) == 0) {
+                    //TOKEN IS AVAILABLE
+                    Toast.makeText(this,"message: Thanh cong" +"Get token " + data.getStringExtra("message"),Toast.LENGTH_SHORT)
+                    val token = data.getStringExtra("data") //Token response
+                    Log.d("Token ",token.toString())
+                    val phoneNumber = data.getStringExtra("phonenumber")
+                    var env = data.getStringExtra("env")
+                    if (env == null) {
+                        env = "app"
+                    }
+                    if (token != null && token != "") {
+                        // TODO: send phoneNumber & token to your server side to process payment with MoMo server
+                        // IF Momo topup success, continue to process your order
+                        // Call updatePaymentToFirebase function here
+                        val userID = FirebaseAuth.getInstance().currentUser?.uid
+                        val shippingAddress = shippingAddressEditText.text.toString()
+                        updatePaymentToFirebase(shippingAddress, userID)
+                    } else {
+                        Toast.makeText(this,"message: that bai",Toast.LENGTH_SHORT)
+                    }
+                } else if (data.getIntExtra("status", -1) == 1) {
+                    //TOKEN FAIL
+                    val message =
+                        if (data.getStringExtra("message") != null) data.getStringExtra("message") else "Thất bại"
+                    Toast.makeText(this,"message: $message",Toast.LENGTH_SHORT)
+                } else if (data.getIntExtra("status", -1) == 2) {
+                    //TOKEN FAIL
+                    Toast.makeText(this,"message: that bai",Toast.LENGTH_SHORT)
+                } else {
+                    //TOKEN FAIL
+                    Toast.makeText(this,"message: that bai",Toast.LENGTH_SHORT)
+                }
+            } else {
+                Toast.makeText(this,"message: that bai",Toast.LENGTH_SHORT)
+            }
+        } else {
+            Toast.makeText(this,"message: that bai",Toast.LENGTH_SHORT)
+        }
+    }
+    private fun RequestZalo(){
+        val orderApi = CreateOrder()
+        try {
+            val data = orderApi.createOrder(amount)
+            Log.d("Amount", amount)
+            val code = data.getString("return_code")
+            Toast.makeText(applicationContext, "return_code: $code", Toast.LENGTH_LONG).show()
+            Log.e( "RequestZalo: ",data.toString() )
+            if (code == "1") {
+                val token: String = data.getString("zp_trans_token")
+                ZaloPaySDK.getInstance().payOrder(this@PurchaseActivity,token,"demozpdk://app",object :
+                    PayOrderListener {
+                    override fun onPaymentSucceeded(p0: String?, p1: String?, p2: String?) {
+                        TODO("Not yet implemented")
+                        val userID = FirebaseAuth.getInstance().currentUser?.uid
+                        val shippingAddress = shippingAddressEditText.text.toString()
+                        updatePaymentToFirebase(shippingAddress, userID)
+                    }
+                    override fun onPaymentCanceled(p0: String?, p1: String?) {
+                        TODO("Not yet implemented")
+                    }
+                    override fun onPaymentError(p0: ZaloPayError?, p1: String?, p2: String?) {
+                        TODO("Not yet implemented")
+                    }
+
+                });
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        ZaloPaySDK.getInstance().onResult(intent)
+    }
 }

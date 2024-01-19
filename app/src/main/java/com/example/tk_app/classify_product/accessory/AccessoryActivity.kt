@@ -69,7 +69,7 @@ class AccessoryActivity : AppCompatActivity() {
         setContentView(R.layout.activity_admin_add_accessory)
         databaseReference =
             FirebaseDatabase.getInstance().reference.child("Product").child("Classify")
-                .child("Women_Fashion")
+                .child("Accessory")
 
         click_Classify2 = findViewById(R.id.click_classify2)
         tv_Name_Product2 = findViewById(R.id.tv_name_product2)

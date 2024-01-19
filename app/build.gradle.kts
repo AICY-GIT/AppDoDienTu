@@ -52,9 +52,18 @@ dependencies {
     implementation("com.google.firebase:firebase-database:20.3.0")
     implementation("com.google.firebase:firebase-storage:20.3.0")
     implementation("com.google.firebase:firebase-firestore:24.10.0")
+    implementation(fileTree(mapOf(
+        "dir" to "../ZaloPay",
+        "include" to listOf("*.aar", "*.jar"),
+    )))
     testImplementation("junit:junit:4.13.2")
     implementation ("com.github.bumptech.glide:glide:4.11.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     implementation ("com.squareup.picasso:picasso:2.8")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation ("com.github.momo-wallet:mobile-sdk:1.0.7")
+    implementation ("com.google.code.gson:gson:2.8.9")
+    implementation("com.squareup.okhttp3:okhttp:4.6.0")
+    implementation("commons-codec:commons-codec:1.14")
+
 }
