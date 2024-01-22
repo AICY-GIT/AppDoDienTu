@@ -77,17 +77,20 @@ class DetailAccessoryActivity : AppCompatActivity() {
                             val dialogBuilder = AlertDialog.Builder(this@DetailAccessoryActivity)
                             dialogBuilder.setTitle("Product Details")
 
-                            val dialogView = layoutInflater.inflate(R.layout.dialog_product_cart, null)
+                            val dialogView =
+                                layoutInflater.inflate(R.layout.dialog_product_cart, null)
 
-                            val dialogImageView = dialogView.findViewById<ImageView>(R.id.dialogImageView)
-                            val dialogProductName = dialogView.findViewById<TextView>(R.id.dialogProductName)
-                            val dialogProductPrice = dialogView.findViewById<TextView>(R.id.dialogProductPrice)
+                            val dialogImageView =
+                                dialogView.findViewById<ImageView>(R.id.dialogImageView)
+                            val dialogProductName =
+                                dialogView.findViewById<TextView>(R.id.dialogProductName)
+                            val dialogProductPrice =
+                                dialogView.findViewById<TextView>(R.id.dialogProductPrice)
                             val btnDecrease = dialogView.findViewById<Button>(R.id.btnDecrease)
                             val editQuantity = dialogView.findViewById<EditText>(R.id.editQuantity)
                             val btnIncrease = dialogView.findViewById<Button>(R.id.btnIncrease)
-                            val tv_Quantity_Show_Add_Men = dialogView.findViewById<TextView>(R.id.tv_quantity_show_add_men)
-
-
+                            val tv_Quantity_Show_Add_Men =
+                                dialogView.findViewById<TextView>(R.id.tv_quantity_show_add_men)
 
 
                             // Load the image into the dialog
@@ -114,67 +117,69 @@ class DetailAccessoryActivity : AppCompatActivity() {
                                 val currentQuantity = editQuantity.text.toString().toInt()
                                 editQuantity.setText((currentQuantity + 1).toString())
                             }
-                            val btnSaveToDatabase = dialogView.findViewById<Button>(R.id.btn_save_to_database)
+                            val btnSaveToDatabase =
+                                dialogView.findViewById<Button>(R.id.btn_save_to_database)
                             val currentUser = FirebaseAuth.getInstance().currentUser
                             if (currentUser == null) {
-                                val intent = Intent(this@DetailAccessoryActivity, LoginActivity::class.java)
+                                val intent =
+                                    Intent(this@DetailAccessoryActivity, LoginActivity::class.java)
                                 startActivity(intent)
                                 finish() // Đóng màn hình giỏ hàng
                             } else {
-                            btnSaveToDatabase.setOnClickListener {
-                                // Lấy ID người dùng từ Firebase Authentication
-                                val userUID = FirebaseAuth.getInstance().currentUser?.uid
+                                btnSaveToDatabase.setOnClickListener {
+                                    // Lấy ID người dùng từ Firebase Authentication
+                                    val userUID = FirebaseAuth.getInstance().currentUser?.uid
 
-                                if (userUID != null) {
-                                    // Tạo một đối tượng Firebase Realtime Database
-                                    val databaseReference =
-                                        FirebaseDatabase.getInstance().reference.child("Cart")
-                                            .child("Cart_Fashion").child(userUID)
+                                    if (userUID != null) {
+                                        // Tạo một đối tượng Firebase Realtime Database
+                                        val databaseReference =
+                                            FirebaseDatabase.getInstance().reference.child("Cart")
+                                                .child("Cart_Fashion").child(userUID)
 
-                                    // Lấy các thuộc tính bạn muốn lưu
-                                    val productName = product2.name
-                                    val productPrice = product2.price
-                                    val quantity = editQuantity.text.toString()
-                                    val imageUrl = product2.imageUrl
+                                        // Lấy các thuộc tính bạn muốn lưu
+                                        val productName = product2.name
+                                        val productPrice = product2.price
+                                        val quantity = editQuantity.text.toString()
+                                        val imageUrl = product2.imageUrl
 
-                                    val productData = mapOf(
-                                        "userUID" to userUID,
-                                        "name" to productName,
-                                        "price" to productPrice,
-                                        "quantity" to quantity,
-                                        "productWomenId" to productWomenId,
-                                        "status" to "confirmation pending",
-                                        "imageUrl" to imageUrl
-                                    )
-                                    val query = databaseReference.orderByChild("productWomenId")
-                                        .equalTo(productWomenId)
+                                        val productData = mapOf(
+                                            "userUID" to userUID,
+                                            "name" to productName,
+                                            "price" to productPrice,
+                                            "quantity" to quantity,
+                                            "productWomenId" to productWomenId,
+                                            "status" to "confirmation pending",
+                                            "imageUrl" to imageUrl
+                                        )
+                                        val query = databaseReference.orderByChild("productWomenId")
+                                            .equalTo(productWomenId)
 
-                                    query.addListenerForSingleValueEvent(object :
-                                        ValueEventListener {
-                                        override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                            if (dataSnapshot.exists()) {
-                                                for (childSnapshot in dataSnapshot.children) {
-                                                    // Cập nhật thông tin sản phẩm trong giỏ hàng
-                                                    childSnapshot.ref.updateChildren(productData)
+                                        query.addListenerForSingleValueEvent(object : ValueEventListener {
+                                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                                if (dataSnapshot.exists()) {
+                                                    for (childSnapshot in dataSnapshot.children) {
+                                                        // Cập nhật thông tin sản phẩm trong giỏ hàng và thêm trạng thái "wait"
+                                                        childSnapshot.ref.updateChildren(productData + mapOf("status" to "wait"))
+                                                    }
+                                                } else {
+                                                    // Sản phẩm không tồn tại trong giỏ hàng, tạo mới với trạng thái "wait"
+                                                    databaseReference.push().setValue(productData + mapOf("status" to "wait"))
                                                 }
-                                            } else {
-                                                // Sản phẩm không tồn tại trong giỏ hàng, tạo mới
-                                                databaseReference.push().setValue(productData)
                                             }
-                                        }
 
-                                        override fun onCancelled(databaseError: DatabaseError) {
-                                            // Xử lý lỗi nếu cần
-                                        }
-                                    })
+                                            override fun onCancelled(databaseError: DatabaseError) {
+                                                // Xử lý lỗi nếu cần
+                                            }
+                                        })
 
-                                    val cartIntent = Intent(
-                                        this@DetailAccessoryActivity,
-                                        CartActivity::class.java
-                                    )
-                                    startActivity(cartIntent)
+
+                                        val cartIntent = Intent(
+                                            this@DetailAccessoryActivity,
+                                            CartActivity::class.java
+                                        )
+                                        startActivity(cartIntent)
+                                    }
                                 }
-                            }
                             }
 
                             dialogBuilder.setView(dialogView)

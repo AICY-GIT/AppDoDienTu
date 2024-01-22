@@ -20,7 +20,11 @@
         android:layout_marginTop="8dp"
         android:text="Product Name"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:maxLength="8"
+        android:ellipsize="end"
+        android:maxLines="1"
+        />
 
     <TextView
         android:id="@+id/product_price_text_view"

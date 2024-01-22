@@ -15,6 +15,7 @@ import com.example.tk_app.R
 import com.example.tk_app.account.EditAccountActivity
 import com.example.tk_app.account.LoginActivity
 import com.example.tk_app.classify_product.CartActivity
+import com.example.tk_app.customer.OrderActivity
 import com.example.tk_app.pay.PurchaseActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -51,6 +52,8 @@ class AccountFragment : Fragment() {
     private lateinit var proCart: TextView
     private lateinit var imagePro: ImageView
 
+    private lateinit var proOrder:TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -80,6 +83,8 @@ class AccountFragment : Fragment() {
         btnChangePro = view.findViewById(R.id.btnChangePro)
         proCart=view.findViewById(R.id.proCart)
         imagePro=view.findViewById(R.id.iv)
+
+        proOrder=view.findViewById(R.id.proOrder)
 
         val databaseReference: DatabaseReference = FirebaseDatabase.getInstance().getReference("Account/User").child(userId)
 
@@ -124,6 +129,11 @@ class AccountFragment : Fragment() {
 
         proCart.setOnClickListener {
             val intent = Intent(requireActivity(), CartActivity::class.java)
+            startActivity(intent)
+        }
+
+        proOrder.setOnClickListener {
+            val intent = Intent(requireActivity(), OrderActivity::class.java)
             startActivity(intent)
         }
     }

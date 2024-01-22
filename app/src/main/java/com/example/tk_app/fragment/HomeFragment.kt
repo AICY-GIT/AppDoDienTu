@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.tk_app.R
+import com.example.tk_app.account.SearchActivity
 import com.example.tk_app.classify_product.CartActivity
 import com.example.tk_app.classify_product.watch.WatchAdapter
 import com.example.tk_app.classify_product.watch.ProductWatch
@@ -50,6 +51,7 @@ class HomeFragment : Fragment() {
     private val productsList4 = mutableListOf<ProductWatch>()
 
     private lateinit var btn_Click_On_Cart: TextView
+    private lateinit var btn_Click_Search: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -93,6 +95,12 @@ class HomeFragment : Fragment() {
         btn_Click_On_Cart.setOnClickListener {
             // Chuyển đến trang CartActivity khi nút "Go to Cart" được nhấn
             val intent = Intent(requireContext(), CartActivity::class.java)
+            startActivity(intent)
+        }
+
+        btn_Click_Search = view.findViewById(R.id.btn_click_search)
+        btn_Click_Search.setOnClickListener {
+            val intent = Intent(requireContext(), SearchActivity::class.java)
             startActivity(intent)
         }
 

@@ -158,15 +158,24 @@ class PurchaseActivity : AppCompatActivity() {
             RequestZalo()
         }
     }
-    private fun updatePaymentToFirebase(shippingAddress: String,userID:String?){
+    private fun updatePaymentToFirebase(shippingAddress: String, userID: String?) {
         // Lưu thông tin thanh toán
+
         val isCashOnDeliveryChecked = rbCashOnDelivery.isChecked
         val isPayWithZalo = rbPayWithZalo.isChecked
         val isPayWithMomo = rbPayWithMomo.isChecked
 
         val paymentRef = FirebaseDatabase.getInstance().reference.child("Payments").child(userID!!)
-        val paymentInfo = Payment(totalPriceTextView.text.toString(), shippingAddress, isCashOnDeliveryChecked, isPayWithMomo, isPayWithZalo)
-        paymentRef.setValue(paymentInfo)
+        val newPaymentKey = paymentRef.push().key
+
+        // Sử dụng child() để xác định đường dẫn cụ thể trong Firebase
+        val path = "Payments/$userID/$newPaymentKey"
+        val paymentInfoRef = FirebaseDatabase.getInstance().reference.child(path)
+
+        val paymentInfo = Payment(newPaymentKey, totalPriceTextView.text.toString(), shippingAddress, isCashOnDeliveryChecked, isPayWithMomo, isPayWithZalo)
+
+        // Sử dụng setValue() để lưu thông tin thanh toán theo đường dẫn cụ thể
+        paymentInfoRef.setValue(paymentInfo)
             .addOnSuccessListener {
                 val cartReference = FirebaseDatabase.getInstance().reference.child("Cart").child("Cart_Fashion").child(userID!!)
                 // Update status to 'complete' in the cart
@@ -193,6 +202,7 @@ class PurchaseActivity : AppCompatActivity() {
                 Toast.makeText(this, "Lỗi khi lưu thông tin thanh toán!", Toast.LENGTH_SHORT).show()
             }
     }
+
 
     //Get token through MoMo app
     private fun requestPaymentMomo(IdDonHang : String) {
