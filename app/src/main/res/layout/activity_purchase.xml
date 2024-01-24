@@ -1,101 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/totalPriceTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="Total Price: $0.00"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/productListTextView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="Product List:"
-        android:textSize="18sp" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/userNameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Name:" />
+        <TextView
+            android:id="@+id/totalPriceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="Total Price: $0.00"
+            android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/userEmailTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Email:" />
+        <TextView
+            android:id="@+id/productListTextView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
 
-    <TextView
-        android:id="@+id/userPhoneTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Phone:" />
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="Product List:"
+            android:textSize="18sp" />
 
-    <EditText
-        android:id="@+id/shippingAddressEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:hint="Địa chỉ nhận hàng" />
-
-    <RadioGroup
-        android:id="@+id/rg_paymentMenthod_purchase"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <RadioButton
-            android:id="@+id/rb_whenship_purchase"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Thanh toán khi nhận hàng" />
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp" />
 
-        <RadioButton
-            android:id="@+id/rb_withZalo_purchase"
+        <TextView
+            android:id="@+id/userNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Name:" />
+
+        <TextView
+            android:id="@+id/userEmailTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Email:" />
+
+        <TextView
+            android:id="@+id/userPhoneTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Phone:" />
+
+        <EditText
+            android:id="@+id/shippingAddressEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Thanh toán bằng Zalo" />
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:hint="Địa chỉ nhận hàng" />
 
-        <RadioButton
-            android:id="@+id/rb_withMomo_purchase"
+        <RadioGroup
+            android:id="@+id/rg_paymentMenthod_purchase"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/rb_whenship_purchase"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Thanh toán khi nhận hàng" />
+
+            <RadioButton
+                android:id="@+id/rb_withZalo_purchase"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Thanh toán bằng Zalo" />
+
+            <RadioButton
+                android:id="@+id/rb_withMomo_purchase"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Thanh toán bằng Momo" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btn_buy_purchase"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Thanh toán bằng Momo" />
-    </RadioGroup>
+            android:layout_marginBottom="6dp"
+            android:text="Mua hàng" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_buy_purchase"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="6dp"
-        android:text="Mua hàng" />
-</LinearLayout>
+</ScrollView>

@@ -30,13 +30,23 @@ class EarPhonesAccessoriesAdapter(private val products3: List<ProductEarPhonesAc
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = products3[position]
+        //giới hạn kí tự
+        val maxNameLength = 8
+        val truncatedName = product.name?.let { name ->
+            if (name.length > maxNameLength) {
+                "${name.substring(0, maxNameLength)}..."
+            } else {
+                name
+            }
+        } ?: ""
 
         Glide.with(holder.tv_Images_Show_Phone.context)
             .load(product.imageUrl)
             .placeholder(R.drawable.baseline_person_24)
             .into(holder.tv_Images_Show_Phone)
+
         holder.tv_Price_Show_Phone.text = "price: ${product.price}"
-        holder.tv_Name_Show_Phone.text = "name: ${product.name}"
+        holder.tv_Name_Show_Phone.text = "name: ${truncatedName}"
 
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, DetailEarPhoneActivity::class.java)

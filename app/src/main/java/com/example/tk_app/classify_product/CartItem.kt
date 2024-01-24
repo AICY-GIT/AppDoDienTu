@@ -6,7 +6,7 @@
         val name: String? = null,
         val price: String? = null,
         val quantity: String? = null,
-        val productmenId: String? = null,
+        var productmenId: String? = null,
         val status: String? = null,
         var imageUrl: String? = null
     ) : Parcelable {

@@ -30,17 +30,28 @@ class ProductsAccessoryAdapter (private val products2: List<ProductAccessory>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = products2[position]
 
+        //giới hạn kí tự
+        val maxNameLength = 8
+        val truncatedName = product.name?.let { name ->
+            if (name.length > maxNameLength) {
+                "${name.substring(0, maxNameLength)}..."
+            } else {
+                name
+            }
+        } ?: ""
+
         Glide.with(holder.tv_Images_Show_Women.context)
             .load(product.imageUrl)
             .placeholder(R.drawable.baseline_person_24)
             .into(holder.tv_Images_Show_Women)
+
         holder.tv_Price_Show_Women.text = "price: ${product.price}"
-        holder.tv_Name_Show_Women.text = "name: ${product.name}"
+        holder.tv_Name_Show_Women.text = "name: $truncatedName"
 
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, DetailAccessoryActivity::class.java)
-            val productWomenId = product.productWomenId // Lấy productmenId từ sản phẩm hiện tại
-            intent.putExtra("productWomenId", productWomenId) // Truyền productmenId qua Intent
+            val productWomenId = product.productWomenId
+            intent.putExtra("productWomenId", productWomenId)
             holder.itemView.context.startActivity(intent)
         }
     }

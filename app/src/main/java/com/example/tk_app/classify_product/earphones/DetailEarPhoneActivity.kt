@@ -78,17 +78,20 @@ class DetailEarPhoneActivity : AppCompatActivity() {
                             val dialogBuilder = AlertDialog.Builder(this@DetailEarPhoneActivity)
                             dialogBuilder.setTitle("Product Details")
 
-                            val dialogView = layoutInflater.inflate(R.layout.dialog_product_cart, null)
+                            val dialogView =
+                                layoutInflater.inflate(R.layout.dialog_product_cart, null)
 
-                            val dialogImageView = dialogView.findViewById<ImageView>(R.id.dialogImageView)
-                            val dialogProductName = dialogView.findViewById<TextView>(R.id.dialogProductName)
-                            val dialogProductPrice = dialogView.findViewById<TextView>(R.id.dialogProductPrice)
+                            val dialogImageView =
+                                dialogView.findViewById<ImageView>(R.id.dialogImageView)
+                            val dialogProductName =
+                                dialogView.findViewById<TextView>(R.id.dialogProductName)
+                            val dialogProductPrice =
+                                dialogView.findViewById<TextView>(R.id.dialogProductPrice)
                             val btnDecrease = dialogView.findViewById<Button>(R.id.btnDecrease)
                             val editQuantity = dialogView.findViewById<EditText>(R.id.editQuantity)
                             val btnIncrease = dialogView.findViewById<Button>(R.id.btnIncrease)
-                            val tv_Quantity_Show_Add_Men = dialogView.findViewById<TextView>(R.id.tv_quantity_show_add_men)
-
-
+                            val tv_Quantity_Show_Add_Men =
+                                dialogView.findViewById<TextView>(R.id.tv_quantity_show_add_men)
 
 
                             // Load the image into the dialog
@@ -115,10 +118,12 @@ class DetailEarPhoneActivity : AppCompatActivity() {
                                 val currentQuantity = editQuantity.text.toString().toInt()
                                 editQuantity.setText((currentQuantity + 1).toString())
                             }
-                            val btnSaveToDatabase = dialogView.findViewById<Button>(R.id.btn_save_to_database)
+                            val btnSaveToDatabase =
+                                dialogView.findViewById<Button>(R.id.btn_save_to_database)
                             val currentUser = FirebaseAuth.getInstance().currentUser
                             if (currentUser == null) {
-                                val intent = Intent(this@DetailEarPhoneActivity, LoginActivity::class.java)
+                                val intent =
+                                    Intent(this@DetailEarPhoneActivity, LoginActivity::class.java)
                                 startActivity(intent)
                                 finish() // Đóng màn hình giỏ hàng
                             } else {
@@ -150,16 +155,22 @@ class DetailEarPhoneActivity : AppCompatActivity() {
                                         val query = databaseReference.orderByChild("productphoneId")
                                             .equalTo(productphoneId)
 
-                                        query.addListenerForSingleValueEvent(object : ValueEventListener {
+                                        query.addListenerForSingleValueEvent(object :
+                                            ValueEventListener {
                                             override fun onDataChange(dataSnapshot: DataSnapshot) {
                                                 if (dataSnapshot.exists()) {
                                                     for (childSnapshot in dataSnapshot.children) {
                                                         // Cập nhật thông tin sản phẩm trong giỏ hàng và thêm trạng thái "wait"
-                                                        childSnapshot.ref.updateChildren(productData + mapOf("status" to "wait"))
+                                                        childSnapshot.ref.updateChildren(
+                                                            productData + mapOf(
+                                                                "status" to "wait"
+                                                            )
+                                                        )
                                                     }
                                                 } else {
                                                     // Sản phẩm không tồn tại trong giỏ hàng, tạo mới với trạng thái "wait"
-                                                    databaseReference.push().setValue(productData + mapOf("status" to "wait"))
+                                                    databaseReference.push()
+                                                        .setValue(productData + mapOf("status" to "wait"))
                                                 }
                                             }
 
@@ -167,7 +178,6 @@ class DetailEarPhoneActivity : AppCompatActivity() {
                                                 // Xử lý lỗi nếu cần
                                             }
                                         })
-
 
                                         val cartIntent = Intent(
                                             this@DetailEarPhoneActivity,
