@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.tk_app.R
 import com.example.tk_app.classify_product.CartItem
 import com.example.tk_app.classify_product.accessory.DetailAccessoryActivity
-import com.example.tk_app.classify_product.earphones_accessories.DetailEarPhoneActivity
+import com.example.tk_app.classify_product.earphones.DetailEarPhoneActivity
 import com.example.tk_app.classify_product.phones.DetailProductsPhoneActivity
 import com.example.tk_app.classify_product.watch.DetailWatchActivity
 import com.google.firebase.database.DataSnapshot

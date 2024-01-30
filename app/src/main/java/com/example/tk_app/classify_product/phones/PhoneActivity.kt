@@ -107,12 +107,13 @@ class PhoneActivity : AppCompatActivity() {
         val authentic = chkAuthentic.isChecked
         price = formatPrice(price.toDouble())
 
+        val rate = 0.00
         // Tạo một mã sản phẩm ngẫu nhiên
         val productMenId = databaseReference.push().key
 
         if (productMenId != null) {
             val productReference = databaseReference.child(productMenId)
-            productReference.child("productMenId").setValue(productMenId)
+            productReference.child("productmenId").setValue(productMenId)
             productReference.child("type").setValue(type)
             productReference.child("name").setValue(name)
             productReference.child("price").setValue(price)
@@ -121,6 +122,10 @@ class PhoneActivity : AppCompatActivity() {
             productReference.child("material").setValue(material)
             productReference.child("quantity").setValue(quantity)
             productReference.child("authentic").setValue(authentic)
+
+            //thêm rate
+            productReference.child("rate").setValue(rate)
+
             val imgSelectedDrawable = tv_Showimages1.drawable
             if (imgSelectedDrawable != null && imgSelectedDrawable is BitmapDrawable) {
                 val bitmap = imgSelectedDrawable.bitmap

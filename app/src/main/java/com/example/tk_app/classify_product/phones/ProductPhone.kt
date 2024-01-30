@@ -8,8 +8,9 @@ class ProductPhone(
     var type: String?,
     var details: String?,
     var origin: String?,
-    var quantity: String?
+    var quantity: String?,
+    var rate: Double?
 ) {
-    constructor() : this("", "", "", "", "", "", "", "","")
+    constructor() : this("", "", "", "", "", "", "", "","",null)
 
 }

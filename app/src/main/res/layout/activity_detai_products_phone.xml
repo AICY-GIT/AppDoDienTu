@@ -61,13 +61,26 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_material_product_men"
         android:layout_centerHorizontal="true" />
+    <TextView
+        android:id="@+id/tv_rate_product_men"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_quantity_product_men"
+        android:layout_centerHorizontal="true" />
     <Button
         android:id="@+id/btn_show_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Thêm vào giỏ hàng"
         android:layout_marginStart="100dp"
-        android:layout_below="@+id/tv_quantity_product_men"
-
+        android:layout_below="@+id/tv_rate_product_men"
         />
+
+    <Button
+        android:id="@+id/btn_review"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_show_details"
+        android:layout_centerInParent="true"
+        android:text="Đánh giá" />
 </RelativeLayout>

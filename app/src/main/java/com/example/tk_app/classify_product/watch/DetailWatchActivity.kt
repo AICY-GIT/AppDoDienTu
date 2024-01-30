@@ -8,15 +8,19 @@ import android.view.Gravity
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
 import com.example.tk_app.R
 import com.example.tk_app.account.LoginActivity
 import com.example.tk_app.classify_product.CartActivity
+import com.example.tk_app.review.Review
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
@@ -29,6 +33,9 @@ class DetailWatchActivity : AppCompatActivity() {
     private lateinit var tv_Material_Product_Electronic: TextView
     private lateinit var tv_Quantity_Product_Electronic: TextView
     private lateinit var ig_Images_Product_Electronic: ImageView
+
+    private lateinit var tv_Rate_Product: TextView
+
     private val uid4 = FirebaseAuth.getInstance().currentUser?.uid ?: ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +48,9 @@ class DetailWatchActivity : AppCompatActivity() {
         tv_Material_Product_Electronic = findViewById(R.id.tv_material_product_electronic)
         tv_Quantity_Product_Electronic = findViewById(R.id.tv_quantity_product_electronic)
         tv_Details_Product_Electronic = findViewById(R.id.tv_details_product_electronic)
+
+        tv_Rate_Product = findViewById(R.id.tv_rate_product_electronic)
+
         // Lấy productmenId từ Intent
         val productelectronicId = intent.getStringExtra("productelectronicId") ?: ""
 
@@ -71,23 +81,149 @@ class DetailWatchActivity : AppCompatActivity() {
                                 .load(product4.imageUrl)
                                 .into(ig_Images_Product_Electronic)
                         }
+
+                        //thêm rate
+                        val reviewsReference =
+                            FirebaseDatabase.getInstance().reference.child("Reviews")
+                        val productIdToCheck = product4?.productelectronicId
+
+                        // Kiểm tra xem productId có tồn tại
+                        if (productIdToCheck != null) {
+                            reviewsReference.orderByChild("productId")
+                                .equalTo(productIdToCheck)
+                                .addListenerForSingleValueEvent(object : ValueEventListener {
+                                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                        var totalRating = 0.0
+                                        var numberOfReviews = 0
+
+                                        // Duyệt qua tất cả các đánh giá
+                                        for (reviewSnapshot in dataSnapshot.children) {
+                                            val review = reviewSnapshot.getValue(Review::class.java)
+                                            review?.let {
+                                                // Lấy giá trị rate từ đánh giá và cộng dồn
+                                                val rate = it.rate
+                                                if (rate != null) {
+                                                    totalRating += rate
+                                                    numberOfReviews++
+                                                }
+                                            }
+                                        }
+
+                                        // Tính trung bình rate
+                                        val averageRating = if (numberOfReviews > 0) {
+                                            totalRating / numberOfReviews
+                                        } else {
+                                            1.0 // Hoặc giá trị mặc định khác tùy thuộc vào yêu cầu của bạn
+                                        }
+
+                                        // Lưu giá trị trung bình rate vào product2
+                                        product4.rate = averageRating
+                                        tv_Rate_Product.text = "Rate: %.2f".format(averageRating)
+                                    }
+
+                                    override fun onCancelled(databaseError: DatabaseError) {
+                                        // Xử lý lỗi nếu cần
+                                    }
+                                })
+                        } else {
+                            // Xử lý khi productWomenId không tồn tại (ví dụ: hiển thị giá trị mặc định)
+                            tv_Rate_Product.text = "Rate: N/A"
+                        }
+
+                        //thêm rate
+                        val btnReview4 = findViewById<Button>(R.id.btn_review4)
+
+                        btnReview4.setOnClickListener {
+                            val userUID = FirebaseAuth.getInstance().currentUser?.uid
+                            if (userUID != null) {
+                                val cartFashionReference =
+                                    FirebaseDatabase.getInstance().reference.child("Cart")
+                                        .child("Cart_Fashion")
+                                        .child(userUID)
+
+                                // Kiểm tra sự tồn tại của productId trong Cart_Fashion của người dùng
+                                val productIdToCheck = product4.productelectronicId
+                                cartFashionReference.orderByChild("productelectronicId")
+                                    .equalTo(productIdToCheck)
+                                    .addListenerForSingleValueEvent(object :
+                                        ValueEventListener {
+                                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                            if (dataSnapshot.exists()) {
+                                                // Nếu productId tồn tại, cho phép người dùng đánh giá
+                                                val dialogBuilder =
+                                                    AlertDialog.Builder(this@DetailWatchActivity)
+                                                dialogBuilder.setTitle("Đánh giá \"${product4.name}\"")
+
+                                                val dialogView = layoutInflater.inflate(
+                                                    R.layout.rating_dialog,
+                                                    null
+                                                )
+                                                val ratingBar =
+                                                    dialogView.findViewById<RatingBar>(R.id.ratingBar)
+
+                                                dialogBuilder.setView(dialogView)
+
+                                                dialogBuilder.setPositiveButton("Lưu") { dialog, _ ->
+                                                    val userRating = ratingBar.rating.toDouble()
+                                                    val review = Review(
+                                                        productId = product4.productelectronicId,
+                                                        userId = userUID,
+                                                        rate = userRating
+                                                    )
+
+                                                    // Thêm đánh giá vào Firebase Realtime Database
+                                                    saveReviewToFirebase(review)
+
+                                                    // Cập nhật thông tin hiển thị trên màn hình
+                                                    recreate()
+
+                                                    dialog.dismiss()
+                                                }
+                                                dialogBuilder.setNegativeButton("Hủy") { dialog, _ ->
+                                                    dialog.dismiss()
+                                                }
+
+                                                val dialog = dialogBuilder.create()
+                                                dialog.show()
+
+                                            } else {
+                                                // Nếu productId không tồn tại, thông báo lỗi
+                                                Toast.makeText(
+                                                    this@DetailWatchActivity,
+                                                    "Bạn cần mua sản phẩm để đánh giá.",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                            }
+                                        }
+
+                                        override fun onCancelled(databaseError: DatabaseError) {
+                                            // Xử lý lỗi nếu cần
+                                        }
+                                    })
+
+
+                            }
+                        }
                         val btnShowDetails4 = findViewById<Button>(R.id.btn_show_details4)
                         // Set an onClickListener for the button
                         btnShowDetails4.setOnClickListener {
                             val dialogBuilder = AlertDialog.Builder(this@DetailWatchActivity)
                             dialogBuilder.setTitle("Product Details")
 
-                            val dialogView = layoutInflater.inflate(R.layout.dialog_product_cart, null)
+                            val dialogView =
+                                layoutInflater.inflate(R.layout.dialog_product_cart, null)
 
-                            val dialogImageView = dialogView.findViewById<ImageView>(R.id.dialogImageView)
-                            val dialogProductName = dialogView.findViewById<TextView>(R.id.dialogProductName)
-                            val dialogProductPrice = dialogView.findViewById<TextView>(R.id.dialogProductPrice)
+                            val dialogImageView =
+                                dialogView.findViewById<ImageView>(R.id.dialogImageView)
+                            val dialogProductName =
+                                dialogView.findViewById<TextView>(R.id.dialogProductName)
+                            val dialogProductPrice =
+                                dialogView.findViewById<TextView>(R.id.dialogProductPrice)
                             val btnDecrease = dialogView.findViewById<Button>(R.id.btnDecrease)
                             val editQuantity = dialogView.findViewById<EditText>(R.id.editQuantity)
                             val btnIncrease = dialogView.findViewById<Button>(R.id.btnIncrease)
-                            val tv_Quantity_Show_Add_Men = dialogView.findViewById<TextView>(R.id.tv_quantity_show_add_men)
-
-
+                            val tv_Quantity_Show_Add_Men =
+                                dialogView.findViewById<TextView>(R.id.tv_quantity_show_add_men)
 
 
                             // Load the image into the dialog
@@ -114,10 +250,12 @@ class DetailWatchActivity : AppCompatActivity() {
                                 val currentQuantity = editQuantity.text.toString().toInt()
                                 editQuantity.setText((currentQuantity + 1).toString())
                             }
-                            val btnSaveToDatabase = dialogView.findViewById<Button>(R.id.btn_save_to_database)
+                            val btnSaveToDatabase =
+                                dialogView.findViewById<Button>(R.id.btn_save_to_database)
                             val currentUser = FirebaseAuth.getInstance().currentUser
                             if (currentUser == null) {
-                                val intent = Intent(this@DetailWatchActivity, LoginActivity::class.java)
+                                val intent =
+                                    Intent(this@DetailWatchActivity, LoginActivity::class.java)
                                 startActivity(intent)
                                 finish() // Đóng màn hình giỏ hàng
                             } else {
@@ -146,19 +284,26 @@ class DetailWatchActivity : AppCompatActivity() {
                                             "status" to "confirmation pending",
                                             "imageUrl" to imageUrl
                                         )
-                                        val query = databaseReference.orderByChild("productelectronicId")
-                                            .equalTo(productelectronicId)
+                                        val query =
+                                            databaseReference.orderByChild("productelectronicId")
+                                                .equalTo(productelectronicId)
 
-                                        query.addListenerForSingleValueEvent(object : ValueEventListener {
+                                        query.addListenerForSingleValueEvent(object :
+                                            ValueEventListener {
                                             override fun onDataChange(dataSnapshot: DataSnapshot) {
                                                 if (dataSnapshot.exists()) {
                                                     for (childSnapshot in dataSnapshot.children) {
                                                         // Cập nhật thông tin sản phẩm trong giỏ hàng và thêm trạng thái "wait"
-                                                        childSnapshot.ref.updateChildren(productData + mapOf("status" to "wait"))
+                                                        childSnapshot.ref.updateChildren(
+                                                            productData + mapOf(
+                                                                "status" to "wait"
+                                                            )
+                                                        )
                                                     }
                                                 } else {
                                                     // Sản phẩm không tồn tại trong giỏ hàng, tạo mới với trạng thái "wait"
-                                                    databaseReference.push().setValue(productData + mapOf("status" to "wait"))
+                                                    databaseReference.push()
+                                                        .setValue(productData + mapOf("status" to "wait"))
                                                 }
                                             }
 
@@ -194,5 +339,18 @@ class DetailWatchActivity : AppCompatActivity() {
                 // Xử lý lỗi nếu cần
             }
         })
+    }
+
+    private fun saveReviewToFirebase(review: Review) {
+        val databaseReference: DatabaseReference =
+            FirebaseDatabase.getInstance().reference.child("Reviews")
+
+        // Tạo một key mới cho đánh giá
+        val reviewKey = databaseReference.push().key
+
+        // Đặt giá trị của đánh giá tại key mới tạo
+        reviewKey?.let {
+            databaseReference.child(it).setValue(review)
+        }
     }
 }
