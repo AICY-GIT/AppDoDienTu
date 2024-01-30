@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.tk_app.R
-import com.example.tk_app.classify_product.earphones_accessories.DetailEarPhoneActivity
+import com.example.tk_app.classify_product.earphones.DetailEarPhoneActivity
 
 class EarPhonesAccessoriesAdapter(private val products3: List<ProductEarPhonesAccessories>) : RecyclerView.Adapter<EarPhonesAccessoriesAdapter.ViewHolder>() {
 

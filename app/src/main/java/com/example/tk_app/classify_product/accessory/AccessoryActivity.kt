@@ -107,6 +107,7 @@ class AccessoryActivity : AppCompatActivity() {
         val material = tv_Material2.text.toString()
         val quantity = tv_Quantity2.text.toString()
         val authentic = chkAuthentic2.isChecked
+        val rate = 0.00
         price = formatPrice(price.toDouble())
 
         val productWomenId = databaseReference.push().key
@@ -122,6 +123,9 @@ class AccessoryActivity : AppCompatActivity() {
             productReference.child("material").setValue(material)
             productReference.child("quantity").setValue(quantity)
             productReference.child("authentic").setValue(authentic)
+            //thêm rate
+            productReference.child("rate").setValue(rate)
+
             val imgSelectedDrawable = tv_Showimages2.drawable
             if (imgSelectedDrawable != null && imgSelectedDrawable is BitmapDrawable) {
                 val bitmap = imgSelectedDrawable.bitmap

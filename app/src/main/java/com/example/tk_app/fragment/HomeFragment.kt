@@ -128,7 +128,11 @@ class HomeFragment : Fragment() {
                     val quantity = productSnapshot.child("quantoty").value.toString()
                     val origin = productSnapshot.child("origin").value.toString()
 
-                    val product = ProductPhone(productId, imageUrl, material, price, name, type, details, origin, quantity)
+                    //thêm rate
+                    val rateString = productSnapshot.child("rate").value.toString()
+
+                    val rateDouble = rateString.toDoubleOrNull() ?: 0.0  // Mặc định là 0.0 nếu chuyển đổi thất bại
+                    val product = ProductPhone(productId, imageUrl, material, price, name, type, details, origin, quantity,rateDouble)
                     productsList.add(product)
                 }
                 productAdapter.notifyDataSetChanged()
@@ -160,7 +164,12 @@ class HomeFragment : Fragment() {
                     val quantity = productSnapshot.child("quantity").value.toString()
                     val origin = productSnapshot.child("origin").value.toString()
 
-                    val product2 = ProductAccessory(productId, imageUrl, material, price, name, type, details, origin, quantity)
+                    //thêm rate
+                    val rateString = productSnapshot.child("rate").value.toString()
+
+                    val rateDouble = rateString.toDoubleOrNull() ?: 0.0  // Mặc định là 0.0 nếu chuyển đổi thất bại
+
+                    val product2 = ProductAccessory(productId, imageUrl, material, price, name, type, details, origin, quantity, rateDouble)
                     productsList2.add(product2)
                 }
                 productAdapter2.notifyDataSetChanged()
@@ -191,7 +200,11 @@ class HomeFragment : Fragment() {
                     val quantity = productSnapshot.child("quantity").value.toString()
                     val origin = productSnapshot.child("origin").value.toString()
 
-                    val product3 = ProductEarPhonesAccessories(productId, imageUrl, material, price, name, type, details, origin, quantity)
+                    //thêm rate
+                    val rateString = productSnapshot.child("rate").value.toString()
+
+                    val rateDouble = rateString.toDoubleOrNull() ?: 0.0  // Mặc định là 0.0 nếu chuyển đổi thất bại
+                    val product3 = ProductEarPhonesAccessories(productId, imageUrl, material, price, name, type, details, origin, quantity, rateDouble)
                     productsList3.add(product3)
                 }
                 productAdapter3.notifyDataSetChanged() // Cập nhật adapter thích hợp
@@ -221,8 +234,11 @@ class HomeFragment : Fragment() {
                     val details = productSnapshot.child("details").value.toString()
                     val quantity = productSnapshot.child("quantity").value.toString()
                     val origin = productSnapshot.child("origin").value.toString()
+                    //thêm rate
+                    val rateString = productSnapshot.child("rate").value.toString()
 
-                    val product4 = ProductWatch(productId, imageUrl, material, price, name, type, details, origin, quantity)
+                    val rateDouble = rateString.toDoubleOrNull() ?: 0.0  // Mặc định là 0.0 nếu chuyển đổi thất bại
+                    val product4 = ProductWatch(productId, imageUrl, material, price, name, type, details, origin, quantity,rateDouble)
                     productsList4.add(product4)
                 }
                 productAdapter4.notifyDataSetChanged() // Cập nhật adapter thích hợp

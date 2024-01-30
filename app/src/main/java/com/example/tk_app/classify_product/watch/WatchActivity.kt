@@ -65,7 +65,7 @@ class WatchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_add_watch)
-        databaseReference = FirebaseDatabase.getInstance().reference.child("Product").child("Classify").child("Electronic_Device")
+        databaseReference = FirebaseDatabase.getInstance().reference.child("Product").child("Classify").child("Watch")
 
         click_Classify4 = findViewById(R.id.click_classify4)
         tv_Name_Product4 = findViewById(R.id.tv_name_product4)
@@ -105,6 +105,8 @@ class WatchActivity : AppCompatActivity() {
         val authentic = chkAuthentic4.isChecked
         price = formatPrice(price.toDouble())
 
+        val rate = 0.00
+
         val productelectronicId = databaseReference.push().key
 
         if (productelectronicId != null) {
@@ -118,6 +120,11 @@ class WatchActivity : AppCompatActivity() {
             productReference.child("material").setValue(material)
             productReference.child("quantity").setValue(quantity)
             productReference.child("authentic").setValue(authentic)
+
+            //thêm rate
+            productReference.child("rate").setValue(rate)
+
+
             val imgSelectedDrawable = tv_Showimages4.drawable
             if (imgSelectedDrawable != null && imgSelectedDrawable is BitmapDrawable) {
                 val bitmap = imgSelectedDrawable.bitmap
