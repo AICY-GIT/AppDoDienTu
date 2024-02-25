@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
 import android.widget.Button
-import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -18,8 +17,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tk_app.HMac.Api.CreateOrder
 import com.example.tk_app.MainActivity
 import com.example.tk_app.R
-import com.example.tk_app.account.User
 import com.example.tk_app.classify_product.CartItem
+import com.example.tk_app.google_map_and_address.googleMapActivity
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -57,20 +57,28 @@ class PurchaseActivity : AppCompatActivity() {
     private val merchantCode = "CGV19072017"
     private val merchantNameLabel = "APP DO DIEN TU"
     private val description = "Thanh toan MoMo"
-
+    private lateinit var btnCHooseLocation: Button
+    private lateinit var btnSave:Button
+    private lateinit var shippingFeeTextView:TextView
+    private var shippingCost:Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_purchase)
-        //mapping
-        userNameTextView = findViewById(R.id.userNameTextView)
-        userEmailTextView = findViewById(R.id.userEmailTextView)
-        userPhoneTextView = findViewById(R.id.userPhoneTextView)
-        shippingAddressEditText = findViewById(R.id.shippingAddressEditText)
-        rbCashOnDelivery = findViewById(R.id.rb_whenship_purchase)
-        rbPayWithMomo=findViewById(R.id.rb_withMomo_purchase)
-        rbPayWithZalo=findViewById(R.id.rb_withZalo_purchase)
-        rgPaymentMethod=findViewById(R.id.rg_paymentMenthod_purchase)
+
+        Mapping()
+        //get data from map
+        val userSelectedPoint: LatLng? = intent.getParcelableExtra("userSelectedPoint")
+        val distance: Double = intent.getDoubleExtra("distance", 0.0)
+
+        userSelectedPoint?.let {
+            shippingAddressEditText.setText("$it")
+        }
+        distance?.let {
+            shippingCost = (it * 0.15).toInt()
+            shippingFeeTextView.setText(shippingCost.toString())
+        }
+
         //khoi tao zalo
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
@@ -79,19 +87,17 @@ class PurchaseActivity : AppCompatActivity() {
         AppMoMoLib.getInstance().setEnvironment(AppMoMoLib.ENVIRONMENT.DEVELOPMENT); // AppMoMoLib.ENVIRONMENT.PRODUCTION
         totalPriceTextView = findViewById(R.id.totalPriceTextView)
         productListTextView = findViewById(R.id.productListTextView)
-        val saveButton: Button = findViewById(R.id.btn_buy_purchase)
-        saveButton.setOnClickListener {
-            savePaymentInfoToFirebase()
-        }
-        // Receive data from Intent
-        val totalCartPrice = intent.getStringExtra("totalCartPrice")
+        //get data from cart
+        val totalCartPriceString = intent.getStringExtra("totalCartPrice")
+        val totalCartPrice = totalCartPriceString?.toDoubleOrNull() ?: 0.0
         val productList = intent.getParcelableArrayListExtra<CartItem>("productList")
 
         if (productList != null) {
-            totalPriceTextView.text = "$totalCartPrice"
-            if (totalCartPrice != null) {
-                amount=totalCartPrice
-            };
+
+            totalPriceTextView.text = (totalCartPrice + shippingCost).toString()
+            totalCartPriceString?.let {
+                amount=it
+            }
             recyclerView = findViewById(R.id.recyclerView)
             recyclerView.layoutManager = LinearLayoutManager(this)
             cartAdapter = CartAdapter(this, productList)
@@ -105,6 +111,23 @@ class PurchaseActivity : AppCompatActivity() {
         } else {
             // Handle the case when productList is null
         }
+       //button fun
+        btnCHooseLocation.setOnClickListener{
+            val i = Intent(this, googleMapActivity::class.java)
+            i.putParcelableArrayListExtra("productList", productList)
+            i.putExtra("totalCartPrice", totalCartPriceString)
+            startActivity(i)
+        }
+        btnSave.setOnClickListener {
+            savePaymentInfoToFirebase()
+        }
+        // Receive data from Intent
+
+
+
+
+
+
 
 
         // Tham chiếu đến Firebase Database và lấy thông tin người dùng
@@ -328,5 +351,18 @@ class PurchaseActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         ZaloPaySDK.getInstance().onResult(intent)
+    }
+    private fun Mapping(){
+        userNameTextView = findViewById(R.id.userNameTextView)
+        userEmailTextView = findViewById(R.id.userEmailTextView)
+        userPhoneTextView = findViewById(R.id.userPhoneTextView)
+        shippingAddressEditText = findViewById(R.id.shippingAddressEditText)
+        rbCashOnDelivery = findViewById(R.id.rb_whenship_purchase)
+        rbPayWithMomo=findViewById(R.id.rb_withMomo_purchase)
+        rbPayWithZalo=findViewById(R.id.rb_withZalo_purchase)
+        rgPaymentMethod=findViewById(R.id.rg_paymentMenthod_purchase)
+        btnCHooseLocation = findViewById(R.id.btn_ChooseLocation_purchase)
+        btnSave = findViewById(R.id.btn_buy_purchase)
+        shippingFeeTextView = findViewById(R.id.tv_shippingFee_purchase)
     }
 }
