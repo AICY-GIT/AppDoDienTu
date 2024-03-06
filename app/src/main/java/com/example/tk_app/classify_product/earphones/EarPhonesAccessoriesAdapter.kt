@@ -31,7 +31,7 @@ class EarPhonesAccessoriesAdapter(private val products3: List<ProductEarPhonesAc
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = products3[position]
         //giới hạn kí tự
-        val maxNameLength = 8
+        val maxNameLength = 12
         val truncatedName = product.name?.let { name ->
             if (name.length > maxNameLength) {
                 "${name.substring(0, maxNameLength)}..."
@@ -45,8 +45,8 @@ class EarPhonesAccessoriesAdapter(private val products3: List<ProductEarPhonesAc
             .placeholder(R.drawable.baseline_person_24)
             .into(holder.tv_Images_Show_Phone)
 
-        holder.tv_Price_Show_Phone.text = "price: ${product.price}"
-        holder.tv_Name_Show_Phone.text = "name: ${truncatedName}"
+        holder.tv_Price_Show_Phone.text = "${product.price} VND"
+        holder.tv_Name_Show_Phone.text = "${truncatedName}"
 
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, DetailEarPhoneActivity::class.java)

@@ -69,8 +69,8 @@ class DetailAccessoryActivity : AppCompatActivity() {
                     if (product2 != null) {
                         // Hiển thị thông tin sản phẩm trong các TextView và ImageView
                         tv_Type_Product_Women.text = "Type: ${product2?.type}"
-                        tv_Name_Product_Women.text = "Product Name: ${product2?.name}"
-                        tv_Price_Product_Women.text = "Price: ${product2?.price}"
+                        tv_Name_Product_Women.text = "${product2?.name}"
+                        tv_Price_Product_Women.text = "${product2?.price} VND"
                         tv_Details_Product_Women.text = "Details: ${product2?.details}"
                         tv_Origin_Product_Women.text = "Origin: ${product2?.origin}"
                         tv_Material_Product_Women.text = "Material: ${product2?.material}"
@@ -118,7 +118,7 @@ class DetailAccessoryActivity : AppCompatActivity() {
 
                                         // Lưu giá trị trung bình rate vào product2
                                         product2.rate = averageRating
-                                        tv_Rate_Product.text = "Rate: %.2f".format(averageRating)
+                                        tv_Rate_Product.text = "%.2f".format(averageRating)
                                     }
 
                                     override fun onCancelled(databaseError: DatabaseError) {
@@ -127,7 +127,7 @@ class DetailAccessoryActivity : AppCompatActivity() {
                                 })
                         } else {
                             // Xử lý khi productWomenId không tồn tại (ví dụ: hiển thị giá trị mặc định)
-                            tv_Rate_Product.text = "Rate: N/A"
+                            tv_Rate_Product.text = "N/A"
                         }
 
                         //thêm rate

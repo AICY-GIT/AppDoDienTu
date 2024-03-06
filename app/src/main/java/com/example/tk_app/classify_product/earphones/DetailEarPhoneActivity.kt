@@ -69,9 +69,9 @@ class DetailEarPhoneActivity : AppCompatActivity() {
                     if (product3 != null) {
                         // Hiển thị thông tin sản phẩm trong các TextView và ImageView
                         tv_Type_Product_Phone.text = "Type: ${product3?.type}"
-                        tv_Name_Product_Phone.text = "Product Name: ${product3?.name}"
-                        tv_Price_Product_Phone.text = "Price: ${product3?.price}"
-                        tv_Details_Product_Phone.text = "Details: ${product3?.details}"
+                        tv_Name_Product_Phone.text = "${product3?.name}"
+                        tv_Price_Product_Phone.text = "${product3?.price}"
+                        tv_Details_Product_Phone.text = "Details: ${product3?.details} VND"
                         tv_Origin_Product_Phone.text = "Origin: ${product3?.origin}"
                         tv_Material_Product_Phone.text = "Material: ${product3?.material}"
                         tv_Quantity_Product_Phone.text = "Quantity: ${product3?.quantity}"
@@ -119,7 +119,7 @@ class DetailEarPhoneActivity : AppCompatActivity() {
 
                                         // Lưu giá trị trung bình rate vào product2
                                         product3.rate = averageRating
-                                        tv_Rate_Product.text = "Rate: %.2f".format(averageRating)
+                                        tv_Rate_Product.text = "%.2f".format(averageRating)
                                     }
 
                                     override fun onCancelled(databaseError: DatabaseError) {
@@ -128,7 +128,7 @@ class DetailEarPhoneActivity : AppCompatActivity() {
                                 })
                         } else {
                             // Xử lý khi productWomenId không tồn tại (ví dụ: hiển thị giá trị mặc định)
-                            tv_Rate_Product.text = "Rate: N/A"
+                            tv_Rate_Product.text = "N/A"
                         }
 
                         //thêm rate

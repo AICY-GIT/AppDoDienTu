@@ -31,7 +31,7 @@ class ProductsAccessoryAdapter (private val products2: List<ProductAccessory>) :
         val product = products2[position]
 
         //giới hạn kí tự
-        val maxNameLength = 8
+        val maxNameLength = 12
         val truncatedName = product.name?.let { name ->
             if (name.length > maxNameLength) {
                 "${name.substring(0, maxNameLength)}..."
@@ -45,8 +45,8 @@ class ProductsAccessoryAdapter (private val products2: List<ProductAccessory>) :
             .placeholder(R.drawable.baseline_person_24)
             .into(holder.tv_Images_Show_Women)
 
-        holder.tv_Price_Show_Women.text = "price: ${product.price}"
-        holder.tv_Name_Show_Women.text = "name: $truncatedName"
+        holder.tv_Price_Show_Women.text = "${product.price} VND"
+        holder.tv_Name_Show_Women.text = "$truncatedName"
 
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, DetailAccessoryActivity::class.java)

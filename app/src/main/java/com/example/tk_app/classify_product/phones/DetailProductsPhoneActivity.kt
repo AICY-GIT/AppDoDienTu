@@ -33,7 +33,8 @@ class DetailProductsPhoneActivity : AppCompatActivity() {
     private lateinit var tv_Quantity_Product_Men: TextView
     private lateinit var ig_Images_Product_Men: ImageView
 
-    private lateinit var tv_Rate_Product: TextView
+    private lateinit var tv_Rate_Product: RatingBar
+    private lateinit var tv_Rate_Product_text: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +51,7 @@ class DetailProductsPhoneActivity : AppCompatActivity() {
 
         //thêm rate
         tv_Rate_Product = findViewById(R.id.tv_rate_product_men)
+        tv_Rate_Product_text = findViewById(R.id.tv_rate_product_men_text)
 
         // Lấy productmenId từ Intent
         val productmenId = intent.getStringExtra("productmenId") ?: ""
@@ -67,8 +69,8 @@ class DetailProductsPhoneActivity : AppCompatActivity() {
                     if (product != null) {
                         // Hiển thị thông tin sản phẩm trong các TextView và ImageView
                         tv_Type_Product_Men.text = "Type: ${product?.type}"
-                        tv_Name_Product_Men.text = "Product Name: ${product?.name}"
-                        tv_Price_Product_Men.text = "Price: ${product?.price}"
+                        tv_Name_Product_Men.text = "${product?.name}"
+                        tv_Price_Product_Men.text = "${product?.price} VND"
                         tv_Details_Product_Men.text = "Details: ${product?.details}"
                         tv_Origin_Product_Men.text = "Origin: ${product?.origin}"
                         tv_Material_Product_Men.text = "Material: ${product?.material}"
@@ -117,7 +119,8 @@ class DetailProductsPhoneActivity : AppCompatActivity() {
 
                                         // Lưu giá trị trung bình rate vào product2
                                         product.rate = averageRating
-                                        tv_Rate_Product.text = "Rate: %.2f".format(averageRating)
+                                        tv_Rate_Product.setRating(averageRating.toFloat())
+                                        tv_Rate_Product_text.text = "%.2f".format(averageRating)
                                     }
 
                                     override fun onCancelled(databaseError: DatabaseError) {
@@ -126,7 +129,8 @@ class DetailProductsPhoneActivity : AppCompatActivity() {
                                 })
                         } else {
                             // Xử lý khi productWomenId không tồn tại (ví dụ: hiển thị giá trị mặc định)
-                            tv_Rate_Product.text = "Rate: N/A"
+                            tv_Rate_Product.setRating(0f)
+                            tv_Rate_Product_text.text = "N/A"
                         }
 
                         //thêm rate

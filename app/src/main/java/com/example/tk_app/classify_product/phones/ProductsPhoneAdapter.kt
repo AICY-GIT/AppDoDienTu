@@ -30,7 +30,7 @@ class ProductsPhoneAdapter(private val products: List<ProductPhone>) : RecyclerV
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = products[position]
         //giới hạn kí tự
-        val maxNameLength = 8
+        val maxNameLength = 12
         val truncatedName = product.name?.let { name ->
             if (name.length > maxNameLength) {
                 "${name.substring(0, maxNameLength)}..."
@@ -43,8 +43,8 @@ class ProductsPhoneAdapter(private val products: List<ProductPhone>) : RecyclerV
             .load(product.imageUrl)
             .placeholder(R.drawable.baseline_person_24)
             .into(holder.tv_Images_Show_Men)
-        holder.tv_Price_Show_Men.text = "price: ${product.price}"
-        holder.tv_Name_Show_Men.text = "name: ${truncatedName}"
+        holder.tv_Price_Show_Men.text = "${product.price} VND"
+        holder.tv_Name_Show_Men.text = "${truncatedName}"
 
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, DetailProductsPhoneActivity::class.java)

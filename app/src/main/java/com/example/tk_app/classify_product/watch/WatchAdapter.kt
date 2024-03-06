@@ -32,7 +32,7 @@ class WatchAdapter  (private val products4: List<ProductWatch>) : RecyclerView.A
         val product = products4[position]
 
         //giới hạn kí tự
-        val maxNameLength = 8
+        val maxNameLength = 12
         val truncatedName = product.name?.let { name ->
             if (name.length > maxNameLength) {
                 "${name.substring(0, maxNameLength)}..."
@@ -44,8 +44,8 @@ class WatchAdapter  (private val products4: List<ProductWatch>) : RecyclerView.A
             .load(product.imageUrl)
             .placeholder(R.drawable.baseline_person_24)
             .into(holder.tv_Images_Show_Electronic)
-        holder.tv_Price_Show_Electronic.text = "price: ${product.price}"
-        holder.tv_Name_Show_Electronic.text = "name: ${truncatedName}"
+        holder.tv_Price_Show_Electronic.text = "${product.price} VND"
+        holder.tv_Name_Show_Electronic.text = "${truncatedName}"
 
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, DetailWatchActivity::class.java)
