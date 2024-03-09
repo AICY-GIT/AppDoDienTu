@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,7 +29,7 @@ class CartActivity : AppCompatActivity() {
     private val productList: MutableList<CartItem> = ArrayList()
     var totalCartPrice: BigDecimal = BigDecimal.ZERO
     lateinit var btnBuy: Button
-    lateinit var btnReturn:Button
+    lateinit var btnReturn:ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

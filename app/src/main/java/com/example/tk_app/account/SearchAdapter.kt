@@ -43,8 +43,8 @@ class SearchAdapter(private val context: Context, private val productList: List<
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         val product = searchList[position]
         holder.productNameTextView.text = product.name
-        holder.productPriceTextView.text = "Price: $" + product.price
-        holder.productQuantityTextView.text = "Quantity: " + product.quantity
+        holder.productPriceTextView.text = product.price
+        holder.productQuantityTextView.text = "Số lượng còn lại: " + product.quantity
 
         Glide.with(context)
             .load(product.imageUrl)

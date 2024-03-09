@@ -13,13 +13,13 @@ import com.example.tk_app.R
 class ProductsPhoneAdapter(private val products: List<ProductPhone>) : RecyclerView.Adapter<ProductsPhoneAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tv_Images_Show_Men: ImageView = view.findViewById(R.id.tv_images_show_men)
-        val tv_Price_Show_Men: TextView = view.findViewById(R.id.tv_price_show_men)
-        val tv_Name_Show_Men: TextView = view.findViewById(R.id.tv_name_show_men)
+        val tv_Images_Show_Men: ImageView = view.findViewById(R.id.tv_images_show)
+        val tv_Price_Show_Men: TextView = view.findViewById(R.id.tv_price_show)
+        val tv_Name_Show_Men: TextView = view.findViewById(R.id.tv_name_show)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_products_phone, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_products, parent, false)
         return ViewHolder(view)
     }
 
@@ -29,22 +29,22 @@ class ProductsPhoneAdapter(private val products: List<ProductPhone>) : RecyclerV
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = products[position]
-        //giới hạn kí tự
-        val maxNameLength = 12
-        val truncatedName = product.name?.let { name ->
-            if (name.length > maxNameLength) {
-                "${name.substring(0, maxNameLength)}..."
-            } else {
-                name
-            }
-        } ?: ""
+//        //giới hạn kí tự
+//        val maxNameLength = 12
+//        val truncatedName = product.name?.let { name ->
+//            if (name.length > maxNameLength) {
+//                "${name.substring(0, maxNameLength)}..."
+//            } else {
+//                name
+//            }
+//        } ?: ""
 
         Glide.with(holder.tv_Images_Show_Men.context)
             .load(product.imageUrl)
             .placeholder(R.drawable.baseline_person_24)
             .into(holder.tv_Images_Show_Men)
         holder.tv_Price_Show_Men.text = "${product.price} VND"
-        holder.tv_Name_Show_Men.text = "${truncatedName}"
+        holder.tv_Name_Show_Men.text = "${product.name}"
 
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, DetailProductsPhoneActivity::class.java)
