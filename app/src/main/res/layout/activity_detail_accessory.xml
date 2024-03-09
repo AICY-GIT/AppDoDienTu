@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_home"
     android:padding="16dp"
     tools:context=".classify_product.accessory.DetailAccessoryActivity">
 
@@ -19,63 +20,73 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ig_images_product_women"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:text="Thể loại" />
 
     <TextView
         android:id="@+id/tv_name_product_women"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_type_product_women"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:text="Tên" />
 
     <TextView
         android:id="@+id/tv_price_product_women"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_name_product_women"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:text="Giá" />
 
     <TextView
         android:id="@+id/tv_details_product_women"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_price_product_women"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:text="Chi tiết" />
 
     <TextView
         android:id="@+id/tv_origin_product_women"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_details_product_women"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:text="Xuất sứ" />
 
     <TextView
         android:id="@+id/tv_material_product_women"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_origin_product_women"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:text="Nguyên liệu" />
+
     <TextView
         android:id="@+id/tv_quantity_product_women"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_material_product_women"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:text="Số lượng" />
+
     <TextView
         android:id="@+id/tv_rate_product_women"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_quantity_product_women"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:text="Đánh giá" />
+
     <Button
         android:id="@+id/btn_show_details2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Thêm vào giỏ hàng"
+        android:layout_below="@+id/tv_rate_product_women"
         android:layout_marginStart="100dp"
         android:onClick="goToCartActivity"
-        android:layout_below="@+id/tv_rate_product_women"
-        />
+        android:text="Thêm vào giỏ hàng" />
 
     <Button
         android:id="@+id/btn_review2"

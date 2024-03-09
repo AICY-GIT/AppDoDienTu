@@ -14,13 +14,13 @@ import com.example.tk_app.classify_product.earphones.DetailEarPhoneActivity
 class EarPhonesAccessoriesAdapter(private val products3: List<ProductEarPhonesAccessories>) : RecyclerView.Adapter<EarPhonesAccessoriesAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tv_Images_Show_Phone: ImageView = view.findViewById(R.id.tv_images_show_phone)
-        val tv_Price_Show_Phone: TextView = view.findViewById(R.id.tv_price_show_phone)
-        val tv_Name_Show_Phone: TextView = view.findViewById(R.id.tv_name_show_phone)
+        val tv_Images_Show_Phone: ImageView = view.findViewById(R.id.tv_images_show)
+        val tv_Price_Show_Phone: TextView = view.findViewById(R.id.tv_price_show)
+        val tv_Name_Show_Phone: TextView = view.findViewById(R.id.tv_name_show)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_products_earphone, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_products, parent, false)
         return ViewHolder(view)
     }
 
@@ -30,23 +30,23 @@ class EarPhonesAccessoriesAdapter(private val products3: List<ProductEarPhonesAc
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = products3[position]
-        //giới hạn kí tự
-        val maxNameLength = 8
-        val truncatedName = product.name?.let { name ->
-            if (name.length > maxNameLength) {
-                "${name.substring(0, maxNameLength)}..."
-            } else {
-                name
-            }
-        } ?: ""
+//        //giới hạn kí tự
+//        val maxNameLength = 12
+//        val truncatedName = product.name?.let { name ->
+//            if (name.length > maxNameLength) {
+//                "${name.substring(0, maxNameLength)}..."
+//            } else {
+//                name
+//            }
+//        } ?: ""
 
         Glide.with(holder.tv_Images_Show_Phone.context)
             .load(product.imageUrl)
             .placeholder(R.drawable.baseline_person_24)
             .into(holder.tv_Images_Show_Phone)
 
-        holder.tv_Price_Show_Phone.text = "price: ${product.price}"
-        holder.tv_Name_Show_Phone.text = "name: ${truncatedName}"
+        holder.tv_Price_Show_Phone.text = "${product.price} VND"
+        holder.tv_Name_Show_Phone.text = "${product.name}"
 
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, DetailEarPhoneActivity::class.java)

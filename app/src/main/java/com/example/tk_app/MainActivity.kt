@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
 
         // Check if it's an instance of HomeFragment and then call reloadFragment
-        if (currentFragment is HomeFragment) {
+        if (currentFragment is CategoryFragment) {
             currentFragment.reloadFragment()
         }
     }

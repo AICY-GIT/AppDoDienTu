@@ -24,32 +24,34 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 class DetailProductsPhoneActivity : AppCompatActivity() {
-    private lateinit var tv_Type_Product_Men: TextView
-    private lateinit var tv_Name_Product_Men: TextView
-    private lateinit var tv_Price_Product_Men: TextView
-    private lateinit var tv_Details_Product_Men: TextView
-    private lateinit var tv_Origin_Product_Men: TextView
-    private lateinit var tv_Material_Product_Men: TextView
-    private lateinit var tv_Quantity_Product_Men: TextView
-    private lateinit var ig_Images_Product_Men: ImageView
+    private lateinit var tv_Type_Product: TextView
+    private lateinit var tv_Name_Product: TextView
+    private lateinit var tv_Price_Product: TextView
+    private lateinit var tv_Details_Product: TextView
+    private lateinit var tv_Origin_Product: TextView
+    private lateinit var tv_Material_Product: TextView
+    private lateinit var tv_Quantity_Product: TextView
+    private lateinit var ig_Images_Product: ImageView
 
-    private lateinit var tv_Rate_Product: TextView
+    private lateinit var tv_Rate_Product: RatingBar
+    private lateinit var tv_Rate_Product_text: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detai_products_phone)
+        setContentView(R.layout.activity_detai_products)
 
-        tv_Type_Product_Men = findViewById(R.id.tv_type_product_men)
-        tv_Name_Product_Men = findViewById(R.id.tv_name_product_men)
-        tv_Price_Product_Men = findViewById(R.id.tv_price_product_men)
-        ig_Images_Product_Men = findViewById(R.id.ig_images_product_men)
-        tv_Origin_Product_Men = findViewById(R.id.tv_origin_product_men)
-        tv_Material_Product_Men = findViewById(R.id.tv_material_product_men)
-        tv_Quantity_Product_Men = findViewById(R.id.tv_quantity_product_men)
-        tv_Details_Product_Men = findViewById(R.id.tv_details_product_men)
+        tv_Type_Product = findViewById(R.id.tv_type_product)
+        tv_Name_Product = findViewById(R.id.tv_name_product)
+        tv_Price_Product = findViewById(R.id.tv_price_product)
+        ig_Images_Product = findViewById(R.id.ig_images_product)
+        tv_Origin_Product = findViewById(R.id.tv_origin_product)
+        tv_Material_Product = findViewById(R.id.tv_material_product)
+        tv_Quantity_Product = findViewById(R.id.tv_quantity_product)
+        tv_Details_Product = findViewById(R.id.tv_details_product)
 
         //thêm rate
-        tv_Rate_Product = findViewById(R.id.tv_rate_product_men)
+        tv_Rate_Product = findViewById(R.id.tv_rate_product)
+        tv_Rate_Product_text = findViewById(R.id.tv_rate_product_text)
 
         // Lấy productmenId từ Intent
         val productmenId = intent.getStringExtra("productmenId") ?: ""
@@ -66,19 +68,18 @@ class DetailProductsPhoneActivity : AppCompatActivity() {
                     val product = snapshot.getValue(ProductPhone::class.java)
                     if (product != null) {
                         // Hiển thị thông tin sản phẩm trong các TextView và ImageView
-                        tv_Type_Product_Men.text = "Type: ${product?.type}"
-                        tv_Name_Product_Men.text = "Product Name: ${product?.name}"
-                        tv_Price_Product_Men.text = "Price: ${product?.price}"
-                        tv_Details_Product_Men.text = "Details: ${product?.details}"
-                        tv_Origin_Product_Men.text = "Origin: ${product?.origin}"
-                        tv_Material_Product_Men.text = "Material: ${product?.material}"
-                        tv_Quantity_Product_Men.text = "Quantity: ${product?.quantity}"
-
+                        tv_Type_Product.text = "${product?.type}"
+                        tv_Name_Product.text = "${product?.name}"
+                        tv_Price_Product.text = "${product?.price} VND"
+                        tv_Details_Product.text = "${product?.details}"
+                        tv_Origin_Product.text = "${product?.origin}"
+                        tv_Material_Product.text = "${product?.material}"
+                        tv_Quantity_Product.text = "${product?.quantity}"
 
                         if (product?.imageUrl != null) {
                             Glide.with(this@DetailProductsPhoneActivity)
                                 .load(product.imageUrl)
-                                .into(ig_Images_Product_Men)
+                                .into(ig_Images_Product)
                         }
 
                         //thêm rate
@@ -117,7 +118,8 @@ class DetailProductsPhoneActivity : AppCompatActivity() {
 
                                         // Lưu giá trị trung bình rate vào product2
                                         product.rate = averageRating
-                                        tv_Rate_Product.text = "Rate: %.2f".format(averageRating)
+                                        tv_Rate_Product.setRating(averageRating.toFloat())
+                                        tv_Rate_Product_text.text = "%.2f".format(averageRating)
                                     }
 
                                     override fun onCancelled(databaseError: DatabaseError) {
@@ -126,7 +128,8 @@ class DetailProductsPhoneActivity : AppCompatActivity() {
                                 })
                         } else {
                             // Xử lý khi productWomenId không tồn tại (ví dụ: hiển thị giá trị mặc định)
-                            tv_Rate_Product.text = "Rate: N/A"
+                            tv_Rate_Product.setRating(0f)
+                            tv_Rate_Product_text.text = "N/A"
                         }
 
                         //thêm rate
@@ -235,12 +238,12 @@ class DetailProductsPhoneActivity : AppCompatActivity() {
                             // Set the product name in the dialog
                             tv_Quantity_Show_Add_Men.text = product.quantity
                             dialogProductName.text = product.name
-                            dialogProductPrice.text = "Price: ${product.price}"
+                            dialogProductPrice.text = "${product.price} VND"
                             editQuantity.setText("1")
                             btnDecrease.setOnClickListener {
                                 val currentQuantity = editQuantity.text.toString().toInt()
                                 if (currentQuantity > 1) {
-                                    editQuantity.setText((currentQuantity - 1).toString())
+                                    editQuantity.setText("Số lượng còn lại: "+(currentQuantity - 1).toString())
                                 }
                             }
 
@@ -345,3 +348,4 @@ class DetailProductsPhoneActivity : AppCompatActivity() {
         }
     }
 }
+

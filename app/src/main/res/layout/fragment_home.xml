@@ -1,104 +1,284 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:background="@drawable/background_start" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/icon_app" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="THẾ GIỚI ĐIỆN TỬ"
+                    android:textColor="@color/white"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/iv_home_cart"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/home_cart"
+                    android:layout_marginStart="120dp"/>
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/btn_click_search"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/baseline_search_24"
-                android:gravity="start" />
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="70dp"
+                android:layout_marginStart="20dp"
+                android:text="Chào mừng"
+                android:textColor="@color/white"
+                android:textSize="20dp" />
+            <TextView
+                android:id="@+id/home_customer_name"
+                android:layout_width="360dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="70dp"
+                android:text="Tên người dùng"
+                android:layout_marginStart="130dp"
+                android:textColor="@color/white"
+                android:textSize="20dp" />
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="114dp"
+                android:layout_marginEnd="12dp"
+                app:closeIcon="@drawable/baseline_clear_24"
+                android:background="@color/white"
+                app:iconifiedByDefault="false"
+                app:queryHint="Search..."
+                app:searchHintIcon="@null"
+                app:searchIcon="@drawable/baseline_search_24" />
+            <LinearLayout
+                android:id="@+id/recyclerViewContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:background="@color/white"
+                android:elevation="8dp"
+                android:layout_below="@id/search"
+                android:visibility="gone">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/searchResultRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+            <ViewFlipper
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginTop="224dp"
+                android:autoStart="true"
+                android:flipInterval="2000"
+                android:inAnimation="@android:anim/fade_in"
+                android:outAnimation="@android:anim/fade_out">
+
+                <ImageView
+                    android:id="@+id/home1"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:background="@drawable/home1" />
+
+                <ImageView
+                    android:id="@+id/home2"
+                    android:layout_width="346dp"
+                    android:layout_height="180dp"
+                    android:background="@drawable/home2"
+                    android:contentDescription="home1" />
+
+                <ImageView
+                    android:id="@+id/home3"
+                    android:layout_width="346dp"
+                    android:layout_height="180dp"
+                    android:background="@drawable/home3"
+                    android:contentDescription="home1" />
+            </ViewFlipper>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="430dp"
+                android:padding="20dp">
+
+                <ImageView
+                    android:layout_width="165dp"
+                    android:layout_height="160dp"
+                    android:background="@drawable/home4" />
+                <ImageView
+                    android:layout_width="165dp"
+                    android:layout_height="160dp"
+                    android:layout_marginLeft="40dp"
+                    android:background="@drawable/home5" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="393dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="680dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:orientation="horizontal"
+                >
+                <HorizontalScrollView
+                    android:layout_width="393dp"
+                    android:layout_height="150dp">
+                    <LinearLayout
+                        android:layout_width="393dp"
+                        android:layout_height="150dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        >
+                        <ImageView
+                            android:id="@+id/bansanphamtrangchu"
+                            android:layout_width="88dp"
+                            android:layout_height="142dp"
+                            android:scaleType="center"
+                            android:src="@drawable/buger" />
+
+                        <ImageView
+                            android:layout_width="88dp"
+                            android:layout_height="142dp"
+                            android:scaleType="center"
+                            android:layout_marginStart="20dp"
+                            android:src="@drawable/hotdog" />
+
+                        <ImageView
+                            android:layout_width="88dp"
+                            android:layout_height="142dp"
+                            android:scaleType="center"
+                            android:layout_marginStart="20dp"
+                            android:src="@drawable/thit" />
+
+                        <ImageView
+                            android:layout_width="88dp"
+                            android:layout_height="142dp"
+                            android:scaleType="center"
+                            android:layout_marginStart="20dp"
+                            android:src="@drawable/piza" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="620dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Thể loại"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tv_show_all"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="-100dp"
+                    android:text="Show all"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    />
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_marginLeft="-15dp"
+                    android:layout_marginTop="1dp"
+                    android:src="@drawable/arrows" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/btn_click_on_cart"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/baseline_shopping_cart_24"
-                android:gravity="end"
-                android:onClick="goToCartActivity" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginTop="830dp"
+                android:text="Đề xuất"
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
-        </LinearLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:gravity="center"
-            android:text="Điện thoại" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="153dp"
+                android:layout_marginTop="880dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_home_phone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:padding="16dp" />
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:gravity="center"
-            android:text="Phụ kiện" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_home_accessory"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:padding="16dp" />
+                        <ImageView
+                            android:layout_width="230dp"
+                            android:layout_height="153dp"
+                            android:scaleType="center"
+                            android:src="@drawable/home6" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:gravity="center"
-            android:text="Tai nghe" />
+                        <ImageView
+                            android:layout_width="230dp"
+                            android:layout_height="153dp"
+                            android:layout_marginLeft="20dp"
+                            android:scaleType="center"
+                            android:src="@drawable/home7" />
+                    </LinearLayout>
+                </HorizontalScrollView>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_home_earrphone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:padding="16dp" />
+            </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:gravity="center"
-            android:text="Đồng hồ" />
+        </RelativeLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_home_watch"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:padding="16dp" />
-    </LinearLayout>
-
+    </ScrollView>
 
 </ScrollView>
 
