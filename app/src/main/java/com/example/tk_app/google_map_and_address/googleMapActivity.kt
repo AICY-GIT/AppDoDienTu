@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import com.example.tk_app.R
-import com.example.tk_app.classify_product.CartItem
+import com.example.tk_app.classify_product.CartItemModel
 import com.example.tk_app.pay.PurchaseActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -24,7 +24,7 @@ class googleMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_google_map)
-        val productList = intent.getParcelableArrayListExtra<CartItem>("productList")
+        val productList = intent.getParcelableArrayListExtra<CartItemModel>("productList")
         val totalCartPriceString = intent.getStringExtra("totalCartPrice")
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)

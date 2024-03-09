@@ -7,7 +7,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tk_app.R
-import com.example.tk_app.classify_product.CartItem
+import com.example.tk_app.classify_product.CartItemModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -16,7 +16,7 @@ import com.google.firebase.database.ValueEventListener
 class SearchActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var searchAdapter: SearchAdapter
-    private var productList: MutableList<CartItem> = ArrayList()
+    private var productList: MutableList<CartItemModel> = ArrayList()
     private lateinit var searchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +35,7 @@ class SearchActivity : AppCompatActivity() {
                 productList.clear()
                 for (categorySnapshot in snapshot.children) {
                     for (productSnapshot in categorySnapshot.children) {
-                        val product = productSnapshot.getValue(CartItem::class.java)
+                        val product = productSnapshot.getValue(CartItemModel::class.java)
                         if (product != null) {
                             productList.add(product)
                             product.productmenId = productSnapshot.key

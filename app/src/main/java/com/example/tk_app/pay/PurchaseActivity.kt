@@ -1,6 +1,7 @@
 package com.example.tk_app.pay
 
 import CartAdapter
+import OrderDetailsModel
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,8 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tk_app.HMac.Api.CreateOrder
 import com.example.tk_app.MainActivity
+import com.example.tk_app.OrderModel
 import com.example.tk_app.R
-import com.example.tk_app.classify_product.CartItem
+import com.example.tk_app.classify_product.CartItemModel
 import com.example.tk_app.google_map_and_address.googleMapActivity
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
@@ -35,6 +37,9 @@ import vn.zalopay.sdk.Environment
 import vn.zalopay.sdk.ZaloPayError
 import vn.zalopay.sdk.ZaloPaySDK
 import vn.zalopay.sdk.listeners.PayOrderListener
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class PurchaseActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
@@ -61,7 +66,8 @@ class PurchaseActivity : AppCompatActivity() {
     private lateinit var btnSave:Button
     private lateinit var shippingFeeTextView:TextView
     private var shippingCost:Int = 0
-
+    private var totalcost:Double= 0.0;
+    private lateinit var productList: ArrayList<CartItemModel>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_purchase)
@@ -90,11 +96,12 @@ class PurchaseActivity : AppCompatActivity() {
         //get data from cart
         val totalCartPriceString = intent.getStringExtra("totalCartPrice")
         val totalCartPrice = totalCartPriceString?.toDoubleOrNull() ?: 0.0
-        val productList = intent.getParcelableArrayListExtra<CartItem>("productList")
+        productList = intent.getParcelableArrayListExtra<CartItemModel>("productList") as? ArrayList<CartItemModel> ?: ArrayList()
 
         if (productList != null) {
 
-            totalPriceTextView.text = (totalCartPrice + shippingCost).toString()
+            totalcost=totalCartPrice + shippingCost
+            totalPriceTextView.text = totalcost.toString()
             totalCartPriceString?.let {
                 amount=it
             }
@@ -122,14 +129,6 @@ class PurchaseActivity : AppCompatActivity() {
             savePaymentInfoToFirebase()
         }
         // Receive data from Intent
-
-
-
-
-
-
-
-
         // Tham chiếu đến Firebase Database và lấy thông tin người dùng
         val userID = FirebaseAuth.getInstance().currentUser?.uid
         databaseReference = FirebaseDatabase.getInstance().reference.child("Account/User").child(userID!!)
@@ -172,7 +171,8 @@ class PurchaseActivity : AppCompatActivity() {
             return // Dừng quá trình lưu nếu không đủ điều kiện
         }
         if(isCashOnDeliveryChecked){
-            updatePaymentToFirebase(shippingAddress,userID)
+            //updatePaymentToFirebase(shippingAddress,userID)
+            createOrderFirebase(userID,"CoD");
         }else if(isPayWithMomo){
             if (userID != null) {
                 requestPaymentMomo(userID)
@@ -181,49 +181,125 @@ class PurchaseActivity : AppCompatActivity() {
             RequestZalo()
         }
     }
-    private fun updatePaymentToFirebase(shippingAddress: String, userID: String?) {
-        // Lưu thông tin thanh toán
+//    private fun updatePaymentToFirebase(shippingAddress: String, userID: String?) {
+//        // Lưu thông tin thanh toán
+//
+//        val isCashOnDeliveryChecked = rbCashOnDelivery.isChecked
+//        val isPayWithZalo = rbPayWithZalo.isChecked
+//        val isPayWithMomo = rbPayWithMomo.isChecked
+//
+//        val paymentRef = FirebaseDatabase.getInstance().reference.child("Payments").child(userID!!)
+//        val newPaymentKey = paymentRef.push().key
+//
+//        // Sử dụng child() để xác định đường dẫn cụ thể trong Firebase
+//        val path = "Payments/$userID/$newPaymentKey"
+//        val paymentInfoRef = FirebaseDatabase.getInstance().reference.child(path)
+//
+//        val paymentInfo = Payment(newPaymentKey, totalcost.toString(), shippingAddress, isCashOnDeliveryChecked, isPayWithMomo, isPayWithZalo)
+//
+//        // Sử dụng setValue() để lưu thông tin thanh toán theo đường dẫn cụ thể
+//        paymentInfoRef.setValue(paymentInfo)
+//            .addOnSuccessListener {
+//                val cartReference = FirebaseDatabase.getInstance().reference.child("Cart").child("Cart_Fashion").child(userID!!)
+//                // Update status to 'complete' in the cart
+//                cartReference.addListenerForSingleValueEvent(object : ValueEventListener {
+//                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                        for (productSnapshot in dataSnapshot.children) {
+//                            val productStatus = productSnapshot.child("status").value.toString()
+//                            if (productStatus == "wait") {
+//                                productSnapshot.ref.updateChildren(mapOf("status" to "complete"))
+//                            }
+//                        }
+//                    }
+//
+//                    override fun onCancelled(databaseError: DatabaseError) {
+//                        // Handle error if needed
+//                    }
+//                })
+//                Toast.makeText(this, "Mua hàng thành công!", Toast.LENGTH_SHORT).show()
+//                val intent = Intent(this@PurchaseActivity, MainActivity::class.java)
+//                startActivity(intent)
+//                finish()
+//            }
+//            .addOnFailureListener {
+//                Toast.makeText(this, "Lỗi khi lưu thông tin thanh toán!", Toast.LENGTH_SHORT).show()
+//            }
+//    }
+private fun createOrderDetailsFirebase(orderKey: String, userId: String) {
+    val orderDetailList: MutableList<OrderDetailsModel> = mutableListOf()
 
-        val isCashOnDeliveryChecked = rbCashOnDelivery.isChecked
-        val isPayWithZalo = rbPayWithZalo.isChecked
-        val isPayWithMomo = rbPayWithMomo.isChecked
+    for (item in productList.orEmpty()) {
+        val orderDetail = OrderDetailsModel(orderKey, item.price, "", item.productmenId, item.quantity, getCurrentDateTimeAsString())
+        orderDetailList.add(orderDetail)
+    }
 
-        val paymentRef = FirebaseDatabase.getInstance().reference.child("Payments").child(userID!!)
-        val newPaymentKey = paymentRef.push().key
+    // Save each OrderDetailsModel to Firebase with userId
+    for (orderDetail in orderDetailList) {
+        saveOrderDetailToFirebase(orderDetail, userId)
+    }
 
-        // Sử dụng child() để xác định đường dẫn cụ thể trong Firebase
-        val path = "Payments/$userID/$newPaymentKey"
-        val paymentInfoRef = FirebaseDatabase.getInstance().reference.child(path)
-
-        val paymentInfo = Payment(newPaymentKey, totalPriceTextView.text.toString(), shippingAddress, isCashOnDeliveryChecked, isPayWithMomo, isPayWithZalo)
-
-        // Sử dụng setValue() để lưu thông tin thanh toán theo đường dẫn cụ thể
-        paymentInfoRef.setValue(paymentInfo)
-            .addOnSuccessListener {
-                val cartReference = FirebaseDatabase.getInstance().reference.child("Cart").child("Cart_Fashion").child(userID!!)
-                // Update status to 'complete' in the cart
-                cartReference.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        for (productSnapshot in dataSnapshot.children) {
-                            val productStatus = productSnapshot.child("status").value.toString()
-                            if (productStatus == "wait") {
-                                productSnapshot.ref.updateChildren(mapOf("status" to "complete"))
-                            }
-                        }
-                    }
-
-                    override fun onCancelled(databaseError: DatabaseError) {
-                        // Handle error if needed
-                    }
-                })
-                Toast.makeText(this, "Mua hàng thành công!", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this@PurchaseActivity, MainActivity::class.java)
-                startActivity(intent)
-                finish()
+    // Update status to 'complete' in the cart
+    val cartReference = FirebaseDatabase.getInstance().reference.child("Cart").child("Cart_Fashion").child(userId)
+    cartReference.addListenerForSingleValueEvent(object : ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            for (productSnapshot in dataSnapshot.children) {
+                val productStatus = productSnapshot.child("status").value.toString()
+                if (productStatus == "wait") {
+                    productSnapshot.ref.child("status").setValue("complete")
+                }
             }
-            .addOnFailureListener {
-                Toast.makeText(this, "Lỗi khi lưu thông tin thanh toán!", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {
+            // Handle error if needed
+        }
+    })
+}
+
+    private fun saveOrderDetailToFirebase(orderDetail: OrderDetailsModel, userId: String) {
+        val databaseReference = FirebaseDatabase.getInstance().reference
+        val newOrderDetailKey = databaseReference.child("OrderDetails").child(userId).push().key
+
+        if (newOrderDetailKey != null) {
+            orderDetail.orderDetailsId=newOrderDetailKey
+            val path = "OrderDetails/$userId/$newOrderDetailKey"
+            val orderDetailRef = databaseReference.child(path)
+
+            orderDetailRef.setValue(orderDetail)
+                .addOnSuccessListener {
+                    // Handle success if needed
+                }
+                .addOnFailureListener {
+                    // Handle failure if needed
+                }
+        }
+    }
+
+    private fun createOrderFirebase(userID: String?,paymentMetod:String) {
+        if (userID != null) {
+            val myOrderModel = OrderModel("", totalcost.toString(), shippingCost.toString(), "Dang giao", userID,paymentMetod)
+
+            val databaseReference = FirebaseDatabase.getInstance().reference
+            val newOrderKey = databaseReference.child("Orders").child(userID).push().key
+
+            if (newOrderKey != null) {
+                myOrderModel.orderId = newOrderKey
+                val path = "Orders/$userID/$newOrderKey"
+                val orderRef = databaseReference.child(path)
+
+                orderRef.setValue(myOrderModel)
+                    .addOnSuccessListener {
+                        createOrderDetailsFirebase(newOrderKey, userID)
+                        Toast.makeText(this, "Order placed successfully!", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@PurchaseActivity, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(this, "Error saving order information!", Toast.LENGTH_SHORT).show()
+                    }
             }
+        }
     }
 
 
@@ -251,7 +327,7 @@ class PurchaseActivity : AppCompatActivity() {
         //client extra data
         eventValue["requestId"] = merchantCode + "merchant_billId_" + System.currentTimeMillis()
         eventValue["partnerCode"] = merchantCode
-        val productList = intent.getParcelableArrayListExtra<CartItem>("productList")
+        val productList = intent.getParcelableArrayListExtra<CartItemModel>("productList")
         //Example extra data
         val gson = Gson()
         val cartItemJsonArray = JSONArray()
@@ -294,7 +370,7 @@ class PurchaseActivity : AppCompatActivity() {
                         // Call updatePaymentToFirebase function here
                         val userID = FirebaseAuth.getInstance().currentUser?.uid
                         val shippingAddress = shippingAddressEditText.text.toString()
-                        updatePaymentToFirebase(shippingAddress, userID)
+                        createOrderFirebase(userID,"MoMo");
                     } else {
                         Toast.makeText(this,"message: that bai",Toast.LENGTH_SHORT)
                     }
@@ -333,7 +409,7 @@ class PurchaseActivity : AppCompatActivity() {
                         TODO("Not yet implemented")
                         val userID = FirebaseAuth.getInstance().currentUser?.uid
                         val shippingAddress = shippingAddressEditText.text.toString()
-                        updatePaymentToFirebase(shippingAddress, userID)
+                        createOrderFirebase(userID,"ZaloPay");
                     }
                     override fun onPaymentCanceled(p0: String?, p1: String?) {
                         TODO("Not yet implemented")
@@ -364,5 +440,10 @@ class PurchaseActivity : AppCompatActivity() {
         btnCHooseLocation = findViewById(R.id.btn_ChooseLocation_purchase)
         btnSave = findViewById(R.id.btn_buy_purchase)
         shippingFeeTextView = findViewById(R.id.tv_shippingFee_purchase)
+    }
+    fun getCurrentDateTimeAsString(): String {
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+        val currentDateTime = Date()
+        return dateFormat.format(currentDateTime)
     }
 }

@@ -7,9 +7,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.tk_app.R
-import com.example.tk_app.classify_product.CartItem
+import com.example.tk_app.classify_product.CartItemModel
 
-class CartAdapter(private val context: Context, private val productList: List<CartItem>) :
+class CartAdapter(private val context: Context, private val productList: List<CartItemModel>) :
     RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
 
     inner class CartViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

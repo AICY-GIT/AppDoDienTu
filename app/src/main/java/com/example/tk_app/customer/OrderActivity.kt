@@ -5,20 +5,17 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tk_app.MainActivity
 import com.example.tk_app.R
 import com.example.tk_app.account.LoginActivity
-import com.example.tk_app.classify_product.CartItem
 import com.example.tk_app.pay.Payment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import java.math.BigDecimal
 
 class OrderActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView

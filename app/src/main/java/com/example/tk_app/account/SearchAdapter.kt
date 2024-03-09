@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.tk_app.R
-import com.example.tk_app.classify_product.CartItem
+import com.example.tk_app.classify_product.CartItemModel
 import com.example.tk_app.classify_product.accessory.DetailAccessoryActivity
 import com.example.tk_app.classify_product.earphones.DetailEarPhoneActivity
 import com.example.tk_app.classify_product.phones.DetailProductsPhoneActivity
@@ -18,10 +18,10 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class SearchAdapter(private val context: Context, private val productList: List<CartItem>) :
+class SearchAdapter(private val context: Context, private val productList: List<CartItemModel>) :
     RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
 
-    private var searchList: List<CartItem> = ArrayList()
+    private var searchList: List<CartItemModel> = ArrayList()
 
     inner class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val productImageView: ImageView = itemView.findViewById(R.id.productImageView)
@@ -35,7 +35,7 @@ class SearchAdapter(private val context: Context, private val productList: List<
         return SearchViewHolder(itemView)
     }
 
-    fun updateSearchList(searchList: List<CartItem>) {
+    fun updateSearchList(searchList: List<CartItemModel>) {
         this.searchList = searchList
         notifyDataSetChanged()
     }
