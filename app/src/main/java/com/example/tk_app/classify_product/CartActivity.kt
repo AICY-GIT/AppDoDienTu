@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tk_app.MainActivity
 import com.example.tk_app.R
 import com.example.tk_app.account.LoginActivity
-import com.example.tk_app.fragment.HomeFragment
 import com.example.tk_app.pay.PurchaseActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -25,7 +24,7 @@ import java.math.BigDecimal
 class CartActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var cartAdapter: CartAdapter
-    private val productList: MutableList<CartItem> = ArrayList()
+    private val productList: MutableList<CartItemModel> = ArrayList()
     var totalCartPrice: BigDecimal = BigDecimal.ZERO
     lateinit var btnBuy: Button
     lateinit var btnReturn:Button
@@ -42,13 +41,15 @@ class CartActivity : AppCompatActivity() {
         }
         btnBuy.setOnClickListener {
             // Tạo intent và đưa dữ liệu vào intent
-            val intent = Intent(this, PurchaseActivity::class.java)
-            intent.putExtra("totalCartPrice", totalCartPrice.toString()) // Tổng giá giỏ hàng
-            intent.putParcelableArrayListExtra(
-                "productList",
-                ArrayList(productList)
-            ) // Danh sách sản phẩm trong giỏ hàng
-            startActivity(intent)
+          if(productList!=null){
+              val intent = Intent(this, PurchaseActivity::class.java)
+              intent.putExtra("totalCartPrice", totalCartPrice.toString()) // Tổng giá giỏ hàng
+              intent.putParcelableArrayListExtra(
+                  "productList",
+                  ArrayList(productList)
+              ) // Danh sách sản phẩm trong giỏ hàng
+              startActivity(intent)
+          }
         }
             // Kiểm tra người dùng hiện tại từ Firebase Authentication
         val currentUser = FirebaseAuth.getInstance().currentUser
@@ -76,7 +77,7 @@ class CartActivity : AppCompatActivity() {
 
 
                         for (productSnapshot in snapshot.children) {
-                            val product = productSnapshot.getValue(CartItem::class.java)
+                            val product = productSnapshot.getValue(CartItemModel::class.java)
                             val productStatus = productSnapshot.child("status").getValue(String::class.java)
 
                             if (product != null && productStatus == "wait") {
