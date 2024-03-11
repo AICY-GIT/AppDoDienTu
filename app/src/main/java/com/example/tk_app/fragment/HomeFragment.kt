@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tk_app.R
 import com.example.tk_app.account.SearchActivity
 import com.example.tk_app.classify_product.CartActivity
-import com.example.tk_app.classify_product.CartItem
+import com.example.tk_app.classify_product.CartItemModel
 import com.example.tk_app.classify_product.watch.WatchAdapter
 import com.example.tk_app.classify_product.watch.ProductWatch
 import com.example.tk_app.classify_product.phones.ProductPhone
@@ -52,7 +52,7 @@ class HomeFragment : Fragment() {
     private lateinit var searchView: SearchView
     private lateinit var recyclerView: RecyclerView
     private lateinit var searchAdapter: SearchAdapter
-    private var productList: MutableList<CartItem> = mutableListOf() // Khởi tạo trực tiếp
+    private var productList: MutableList<CartItemModel> = mutableListOf() // Khởi tạo trực tiếp
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,7 +82,7 @@ class HomeFragment : Fragment() {
                 productList.clear()
                 for (categorySnapshot in snapshot.children) {
                     for (productSnapshot in categorySnapshot.children) {
-                        val product = productSnapshot.getValue(CartItem::class.java)
+                        val product = productSnapshot.getValue(CartItemModel::class.java)
                         if (product != null) {
                             productList.add(product)
                             product.productmenId = productSnapshot.key
