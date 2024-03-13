@@ -228,8 +228,8 @@ class PurchaseActivity : AppCompatActivity() {
 private fun createOrderDetailsFirebase(orderKey: String, userId: String) {
     val orderDetailList: MutableList<OrderDetailsModel> = mutableListOf()
 
-    for (item in productList.orEmpty()) {
-        val orderDetail = OrderDetailsModel(orderKey, item.price, "", item.productmenId, item.quantity, getCurrentDateTimeAsString())
+    for (item in productList) {
+        val orderDetail = OrderDetailsModel(orderKey, item.price, "", item.productId, item.quantity, getCurrentDateTimeAsString())
         orderDetailList.add(orderDetail)
     }
 
@@ -277,7 +277,10 @@ private fun createOrderDetailsFirebase(orderKey: String, userId: String) {
 
     private fun createOrderFirebase(userID: String?,paymentMetod:String) {
         if (userID != null) {
-            val myOrderModel = OrderModel("", totalcost.toString(), shippingCost.toString(), "Dang giao", userID,paymentMetod)
+            //thêm địa chỉ
+            val shippingAddress = shippingAddressEditText.text.toString()
+
+            val myOrderModel = OrderModel("", totalcost.toString(), shippingCost.toString(), "Dang giao", userID,paymentMetod,getCurrentDateTimeAsString(),shippingAddress)
 
             val databaseReference = FirebaseDatabase.getInstance().reference
             val newOrderKey = databaseReference.child("Orders").child(userID).push().key

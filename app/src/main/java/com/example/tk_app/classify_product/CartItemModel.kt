@@ -6,7 +6,7 @@
         val name: String? = null,
         val price: String? = null,
         val quantity: String? = null,
-        var productmenId: String? = null,
+        var productId: String? = null,
         val status: String? = null,
         var imageUrl: String? = null
     ) : Parcelable {
@@ -23,7 +23,7 @@
             parcel.writeString(name)
             parcel.writeString(price)
             parcel.writeString(quantity)
-            parcel.writeString(productmenId)
+            parcel.writeString(productId)
             parcel.writeString(status)
             parcel.writeString(imageUrl)
         }

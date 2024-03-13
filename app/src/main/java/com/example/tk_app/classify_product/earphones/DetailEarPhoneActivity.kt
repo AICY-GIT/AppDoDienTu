@@ -280,7 +280,8 @@ class DetailEarPhoneActivity : AppCompatActivity() {
                                         "name" to productName,
                                         "price" to productPrice,
                                         "quantity" to quantity,
-                                        "productphoneId" to productphoneId,
+                                        //sửa lại Id để lưu vào order
+                                        "productId" to productphoneId,
                                         "status" to "confirmation pending",
                                         "imageUrl" to imageUrl
                                     )

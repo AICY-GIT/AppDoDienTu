@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/category_fragment"
+    android:background="@drawable/background_home"
     tools:ignore="InvalidId">
 
     <LinearLayout
@@ -40,7 +41,7 @@
                 android:layout_height="40dp"
                 android:layout_gravity="end"
                 android:background="@drawable/search"
-                android:layout_marginLeft="70dp"/>
+                android:layout_marginLeft="100dp"/>
             <TextView
                 android:id="@+id/btn_click_on_cart"
                 android:layout_width="40dp"

@@ -276,7 +276,8 @@ class DetailProductsPhoneActivity : AppCompatActivity() {
                                         "name" to productName,
                                         "price" to productPrice,
                                         "quantity" to quantity,
-                                        "productmenId" to productmenId,
+                                        //sửa lại Id để lưu vào order
+                                        "productId" to productmenId,
                                         "status" to "confirmation pending",
                                         "imageUrl" to imageUrl
                                     )

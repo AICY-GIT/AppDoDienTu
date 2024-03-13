@@ -279,7 +279,8 @@ class DetailWatchActivity : AppCompatActivity() {
                                         "name" to productName,
                                         "price" to productPrice,
                                         "quantity" to quantity,
-                                        "productelectronicId" to productelectronicId,
+                                        //sửa lại Id để lưu vào order
+                                        "productId" to productelectronicId,
                                         "status" to "confirmation pending",
                                         "imageUrl" to imageUrl
                                     )
