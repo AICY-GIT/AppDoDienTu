@@ -5,30 +5,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".account.AdminActivity">
-<TextView
-    android:id="@+id/btn_click_classify"
-    android:layout_width="250dp"
-    android:layout_height="50dp"
-    android:text="Thêm sản phẩm"
-    android:textSize="16dp"
-    android:textStyle="bold"
-    android:textColor="@color/black"
-    android:background="@drawable/btn_click"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    android:gravity="center"/>
+
     <TextView
-        android:id="@+id/btn_click_products"
-        android:layout_marginTop="150dp"
+        android:id="@+id/btn_click_classify"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:text="Danh sách đơn hàng"
+        android:layout_marginTop="88dp"
+        android:background="@drawable/btn_click"
+        android:gravity="center"
+        android:text="Add prduct"
+        android:textColor="@color/black"
         android:textSize="16dp"
         android:textStyle="bold"
-        android:textColor="@color/black"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/btn_click"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        android:gravity="center"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/btn_click_products"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="200dp"
+        android:background="@drawable/btn_click"
+        android:gravity="center"
+        android:text="Order List"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/btn_click_voucher"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="304dp"
+        android:background="@drawable/btn_click"
+        android:gravity="center"
+        android:text="Add voucher"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
