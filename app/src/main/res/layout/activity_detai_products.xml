@@ -202,7 +202,7 @@
                 android:layout_gravity="end"
                 android:id="@+id/btn_show_details"
                 android:layout_width="150dp"
-                android:layout_height="100dp"
+                android:layout_height="80dp"
                 android:gravity="center"
                 android:backgroundTint="#F44336"
                 android:text="THÊM VÀO GIỎ HÀNG" />
