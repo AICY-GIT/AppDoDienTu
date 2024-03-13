@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.tk_app.OrderDetailActivity
 import com.example.tk_app.OrderModel
 import com.example.tk_app.R
 import com.example.tk_app.classify_product.accessory.DetailAccessoryActivity
