@@ -85,7 +85,7 @@ class HomeFragment : Fragment() {
                         val product = productSnapshot.getValue(CartItemModel::class.java)
                         if (product != null) {
                             productList.add(product)
-                            product.productmenId = productSnapshot.key
+                            product.productId = productSnapshot.key
                         }
                     }
                 }

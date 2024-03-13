@@ -279,7 +279,8 @@ class DetailAccessoryActivity : AppCompatActivity() {
                                         "name" to productName,
                                         "price" to productPrice,
                                         "quantity" to quantity,
-                                        "productWomenId" to productWomenId,
+                                        //sửa lại Id để lưu vào order
+                                        "productId" to productWomenId,
                                         "status" to "confirmation pending",
                                         "imageUrl" to imageUrl
                                     )

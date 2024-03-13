@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -38,29 +38,31 @@
                     android:textColor="@color/white"
                     android:textSize="20dp"
                     android:textStyle="bold" />
+
                 <ImageView
                     android:id="@+id/iv_home_cart"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/home_cart"
-                    android:layout_marginStart="120dp"/>
+                    android:layout_marginStart="120dp"
+                    android:background="@drawable/home_cart" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="70dp"
                 android:layout_marginStart="20dp"
+                android:layout_marginTop="70dp"
                 android:text="Chào mừng"
                 android:textColor="@color/white"
                 android:textSize="20dp" />
+
             <TextView
                 android:id="@+id/home_customer_name"
                 android:layout_width="360dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="70dp"
-                android:text="Tên người dùng"
                 android:layout_marginStart="130dp"
+                android:layout_marginTop="70dp"
+                android:text="quý khách!"
                 android:textColor="@color/white"
                 android:textSize="20dp" />
 
@@ -72,35 +74,37 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="114dp"
                 android:layout_marginEnd="12dp"
-                app:closeIcon="@drawable/baseline_clear_24"
                 android:background="@color/white"
+                app:closeIcon="@drawable/baseline_clear_24"
                 app:iconifiedByDefault="false"
                 app:queryHint="Search..."
                 app:searchHintIcon="@null"
                 app:searchIcon="@drawable/baseline_search_24" />
+
             <LinearLayout
                 android:id="@+id/recyclerViewContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/search"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:background="@color/white"
                 android:elevation="8dp"
-                android:layout_below="@id/search"
                 android:visibility="gone">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/searchResultRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
+
             <ViewFlipper
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
                 android:layout_marginTop="224dp"
+                android:layout_marginEnd="40dp"
                 android:autoStart="true"
                 android:flipInterval="2000"
                 android:inAnimation="@android:anim/fade_in"
@@ -131,14 +135,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
                 android:layout_marginTop="430dp"
+                android:layout_marginEnd="20dp"
                 android:padding="20dp">
 
                 <ImageView
                     android:layout_width="165dp"
                     android:layout_height="160dp"
                     android:background="@drawable/home4" />
+
                 <ImageView
                     android:layout_width="165dp"
                     android:layout_height="160dp"
@@ -149,50 +154,102 @@
             <LinearLayout
                 android:layout_width="393dp"
                 android:layout_height="150dp"
-                android:layout_marginTop="680dp"
                 android:layout_marginStart="30dp"
+                android:layout_marginTop="680dp"
                 android:layout_marginEnd="30dp"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
+
                 <HorizontalScrollView
                     android:layout_width="393dp"
                     android:layout_height="150dp">
+
                     <LinearLayout
                         android:layout_width="393dp"
                         android:layout_height="150dp"
                         android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        >
-                        <ImageView
-                            android:id="@+id/bansanphamtrangchu"
-                            android:layout_width="88dp"
-                            android:layout_height="142dp"
-                            android:scaleType="center"
-                            android:src="@drawable/buger" />
+                        android:layout_marginEnd="10dp">
 
-                        <ImageView
-                            android:layout_width="88dp"
-                            android:layout_height="142dp"
-                            android:scaleType="center"
-                            android:layout_marginStart="20dp"
-                            android:src="@drawable/hotdog" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="150dp"
+                            android:orientation="vertical">
 
-                        <ImageView
-                            android:layout_width="88dp"
-                            android:layout_height="142dp"
-                            android:scaleType="center"
-                            android:layout_marginStart="20dp"
-                            android:src="@drawable/thit" />
+                            <ImageView
+                                android:id="@+id/bansanphamtrangchu"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:scaleType="center"
+                                android:src="@drawable/dienthoai" />
 
-                        <ImageView
-                            android:layout_width="88dp"
-                            android:layout_height="142dp"
-                            android:scaleType="center"
+                            <TextView
+                                android:layout_width="100dp"
+                                android:layout_height="30dp"
+                                android:gravity="center"
+                                android:text="Điên thoại"
+                                android:textSize="20dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="150dp"
                             android:layout_marginStart="20dp"
-                            android:src="@drawable/piza" />
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:scaleType="center"
+                                android:src="@drawable/phukien" />
+
+                            <TextView
+                                android:layout_width="100dp"
+                                android:layout_height="30dp"
+                                android:gravity="center"
+                                android:text="Phụ kiện"
+                                android:textSize="20dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="150dp"
+                            android:layout_marginStart="20dp"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:scaleType="center"
+                                android:src="@drawable/tainghe" />
+
+                            <TextView
+                                android:layout_width="100dp"
+                                android:layout_height="30dp"
+                                android:gravity="center"
+                                android:text="Tai nghe"
+                                android:textSize="20dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="150dp"
+                            android:layout_marginStart="20dp"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:scaleType="center"
+                                android:src="@drawable/dongho" />
+
+                            <TextView
+                                android:layout_width="100dp"
+                                android:layout_height="30dp"
+                                android:gravity="center"
+                                android:text="Đồng hồ"
+                                android:textSize="20dp" />
+                        </LinearLayout>
                     </LinearLayout>
                 </HorizontalScrollView>
-
 
 
             </LinearLayout>
@@ -201,11 +258,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
                 android:layout_marginTop="620dp"
-                android:orientation="horizontal"
+                android:layout_marginRight="30dp"
                 android:gravity="center"
-                >
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -213,6 +269,7 @@
                     android:text="Thể loại"
                     android:textSize="20dp"
                     android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/tv_show_all"
                     android:layout_width="80dp"
@@ -220,8 +277,8 @@
                     android:layout_marginLeft="-100dp"
                     android:text="Show all"
                     android:textSize="16dp"
-                    android:textStyle="bold"
-                    />
+                    android:textStyle="bold" />
+
                 <ImageView
                     android:layout_width="10dp"
                     android:layout_height="10dp"
@@ -234,8 +291,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"
                 android:layout_marginTop="830dp"
+                android:layout_marginEnd="30dp"
                 android:text="Đề xuất"
                 android:textSize="20dp"
                 android:textStyle="bold" />
@@ -243,8 +300,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="153dp"
-                android:layout_marginTop="880dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="880dp"
                 android:layout_marginEnd="10dp"
                 android:orientation="horizontal"
                 android:paddingLeft="20dp"

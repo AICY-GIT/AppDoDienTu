@@ -51,7 +51,7 @@ class SearchAdapter(private val context: Context, private val productList: List<
             .into(holder.productImageView)
 
         holder.itemView.setOnClickListener {
-            val productId = product.productmenId
+            val productId = product.productId
 
             val intent = createDetailIntent(holder.itemView.context, productId.orEmpty())
 

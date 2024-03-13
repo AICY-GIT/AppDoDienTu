@@ -8,6 +8,7 @@ import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tk_app.MainActivity
+import com.example.tk_app.OrderModel
 import com.example.tk_app.R
 import com.example.tk_app.account.LoginActivity
 import com.example.tk_app.pay.Payment
@@ -20,7 +21,7 @@ import com.google.firebase.database.ValueEventListener
 class OrderActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var orderAdapter: OrderAdapter
-    private val orderList: MutableList<Payment> = ArrayList()
+    private val orderList: MutableList<OrderModel> = ArrayList()
     lateinit var btnReturn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,12 +51,12 @@ class OrderActivity : AppCompatActivity() {
 
             if (userUID != null) {
                 val databaseReference =
-                    FirebaseDatabase.getInstance().reference.child("Payments")
+                    FirebaseDatabase.getInstance().reference.child("Orders")
                         .child(userUID)
                 databaseReference.addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         for (orderSnapshot in snapshot.children) {
-                            val order = orderSnapshot.getValue(Payment::class.java)
+                            val order = orderSnapshot.getValue(OrderModel::class.java)
                             if (order != null) {
                                 orderList.add(order)
                             }
