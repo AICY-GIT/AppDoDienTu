@@ -64,10 +64,10 @@
             android:id="@+id/btn_ChooseLocation_purchase"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="end"
+
             android:layout_weight="1"
             android:backgroundTint="#FF5722"
-            android:text="Chọn vị trí" />
+            android:text="Choose Location" />
 
         <EditText
             android:id="@+id/shippingAddressEditText"
@@ -111,6 +111,28 @@
             android:textColor="#FF5722"
             android:textSize="25dp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+
+            <EditText
+                android:id="@+id/applyVoucherEditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="20dp"
+                android:layout_weight="8"
+                android:hint="Code Voucher" />
+            <Button
+                android:id="@+id/btn_ApplyVoucher_purchase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#FF5722"
+                android:text="Apply Voucher" />
+        </LinearLayout>
+
         <RadioGroup
             android:id="@+id/rg_paymentMenthod_purchase"
             android:layout_width="match_parent"
@@ -121,7 +143,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Thanh toán khi nhận hàng"
-                android:textSize="18dp" />
+                android:textSize="20dp" />
 
             <RadioButton
                 android:id="@+id/rb_withZalo_purchase"

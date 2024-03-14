@@ -19,6 +19,7 @@ import com.example.tk_app.HMac.Api.CreateOrder
 import com.example.tk_app.MainActivity
 import com.example.tk_app.OrderModel
 import com.example.tk_app.R
+import com.example.tk_app.VoucherModel
 import com.example.tk_app.classify_product.CartItemModel
 import com.example.tk_app.google_map_and_address.googleMapActivity
 import com.google.android.gms.maps.model.LatLng
@@ -29,6 +30,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.gson.Gson
+import com.google.rpc.Code
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -68,6 +70,8 @@ class PurchaseActivity : AppCompatActivity() {
     private var shippingCost:Int = 0
     private var totalcost:Double= 0.0;
     private lateinit var productList: ArrayList<CartItemModel>
+    private lateinit var btnCheckVoucher:Button
+    private lateinit var applyVoucherEditText:EditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_purchase)
@@ -90,20 +94,23 @@ class PurchaseActivity : AppCompatActivity() {
         StrictMode.setThreadPolicy(policy)
         ZaloPaySDK.init(2553, Environment.SANDBOX);
         //khoi tao momo
-        AppMoMoLib.getInstance().setEnvironment(AppMoMoLib.ENVIRONMENT.DEVELOPMENT); // AppMoMoLib.ENVIRONMENT.PRODUCTION
+        AppMoMoLib.getInstance()
+            .setEnvironment(AppMoMoLib.ENVIRONMENT.DEVELOPMENT); // AppMoMoLib.ENVIRONMENT.PRODUCTION
         totalPriceTextView = findViewById(R.id.totalPriceTextView)
         productListTextView = findViewById(R.id.productListTextView)
         //get data from cart
         val totalCartPriceString = intent.getStringExtra("totalCartPrice")
         val totalCartPrice = totalCartPriceString?.toDoubleOrNull() ?: 0.0
-        productList = intent.getParcelableArrayListExtra<CartItemModel>("productList") as? ArrayList<CartItemModel> ?: ArrayList()
+        productList =
+            intent.getParcelableArrayListExtra<CartItemModel>("productList") as? ArrayList<CartItemModel>
+                ?: ArrayList()
 
         if (productList != null) {
 
-            totalcost=totalCartPrice + shippingCost
+            totalcost = totalCartPrice + shippingCost
             totalPriceTextView.text = totalcost.toString()
             totalCartPriceString?.let {
-                amount=it
+                amount = it
             }
             recyclerView = findViewById(R.id.recyclerView)
             recyclerView.layoutManager = LinearLayoutManager(this)
@@ -118,8 +125,8 @@ class PurchaseActivity : AppCompatActivity() {
         } else {
             // Handle the case when productList is null
         }
-       //button fun
-        btnCHooseLocation.setOnClickListener{
+        //button fun
+        btnCHooseLocation.setOnClickListener {
             val i = Intent(this, googleMapActivity::class.java)
             i.putParcelableArrayListExtra("productList", productList)
             i.putExtra("totalCartPrice", totalCartPriceString)
@@ -131,7 +138,8 @@ class PurchaseActivity : AppCompatActivity() {
         // Receive data from Intent
         // Tham chiếu đến Firebase Database và lấy thông tin người dùng
         val userID = FirebaseAuth.getInstance().currentUser?.uid
-        databaseReference = FirebaseDatabase.getInstance().reference.child("Account/User").child(userID!!)
+        databaseReference =
+            FirebaseDatabase.getInstance().reference.child("Account/User").child(userID!!)
 
         // Lắng nghe sự thay đổi dữ liệu từ Firebase Database
         databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -150,6 +158,14 @@ class PurchaseActivity : AppCompatActivity() {
                 // Xử lý khi có lỗi xảy ra khi truy xuất dữ liệu từ Firebase
             }
         })
+        btnCheckVoucher.setOnClickListener {
+            val code = applyVoucherEditText.text.toString()
+            if (code.isNotBlank()) {
+                checkVoucherCodeExist(code)
+            }else{
+                Toast.makeText(this, "Empty code field!", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
     private fun savePaymentInfoToFirebase() {
         val userID = FirebaseAuth.getInstance().currentUser?.uid
@@ -443,10 +459,54 @@ private fun createOrderDetailsFirebase(orderKey: String, userId: String) {
         btnCHooseLocation = findViewById(R.id.btn_ChooseLocation_purchase)
         btnSave = findViewById(R.id.btn_buy_purchase)
         shippingFeeTextView = findViewById(R.id.tv_shippingFee_purchase)
+        btnCheckVoucher=findViewById(R.id.btn_ApplyVoucher_purchase)
+        applyVoucherEditText=findViewById(R.id.applyVoucherEditText)
     }
     fun getCurrentDateTimeAsString(): String {
         val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
         val currentDateTime = Date()
         return dateFormat.format(currentDateTime)
+    }
+    fun checkVoucherCodeExist(code: String){
+        val code = applyVoucherEditText.text.toString()
+        if (code.isNotEmpty()) {
+            val databaseReference = FirebaseDatabase.getInstance().reference
+            // Assuming 'database' is your Firebase database reference
+            databaseReference.child("voucher").addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (voucherSnapshot in dataSnapshot.children) {
+                        val voucher = voucherSnapshot.getValue(VoucherModel::class.java)
+                        if (voucher?.code == code) {
+                            handleVoucher(voucher)
+                            Log.d("Voucher", "Voucher found: $voucher")
+                            break
+                        }
+                    }
+                }
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle possible errors.
+                }
+            })
+        }
+    }
+    fun handleVoucher(voucher: VoucherModel) {
+        val discountPercent: Double? = voucher.discountPercentage?.toDoubleOrNull()
+        val maxDiscount: Double? = voucher.maxDiscount?.toDoubleOrNull()
+        var reducedPrice:Double=0.0
+        if (discountPercent != null &&maxDiscount!=null&& discountPercent in 0.0..100.0) {
+            val discountDecimal = discountPercent / 100.0
+
+            val savedPrice=totalcost*discountDecimal
+            if(savedPrice>maxDiscount){
+                 reducedPrice = totalcost -maxDiscount
+            }else{
+                 reducedPrice = totalcost * (1 - discountDecimal)
+            }
+        } else {
+            // Handle invalid discount percentage
+            println("Invalid discount percentage: ${voucher.discountPercentage}")
+        }
+        Log.d("Voucher", "Total cost: $totalcost, Reduced price: $reducedPrice")
+        totalPriceTextView.text = reducedPrice.toString()
     }
 }

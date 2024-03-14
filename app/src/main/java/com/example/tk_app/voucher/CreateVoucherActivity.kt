@@ -46,10 +46,10 @@ class CreateVoucherActivity : AppCompatActivity() {
     }
     private fun CreateVoucher(): VoucherModel {
         val voucher = VoucherModel(
-            voucherId = null, // You may generate a unique ID here, or Firebase will generate one when pushing to the database
+            voucherId = null , // You may generate a unique ID here, or Firebase will generate one when pushing to the database
             name = edt_voucher_name.text.toString(),
             code = edt_voucher_code.text.toString(),
-            dicountPercentage = edt_voucher_discountPercentage.text.toString(),
+            discountPercentage = edt_voucher_discountPercentage.text.toString(),
             maxDiscount = edt_voucher_maxDiscount.text.toString(),
             amount = edt_voucher_amount.text.toString(),
             dateStart = getDateFromDatePicker(dp_voucher_dateStart),
