@@ -197,50 +197,6 @@ class PurchaseActivity : AppCompatActivity() {
             RequestZalo()
         }
     }
-//    private fun updatePaymentToFirebase(shippingAddress: String, userID: String?) {
-//        // Lưu thông tin thanh toán
-//
-//        val isCashOnDeliveryChecked = rbCashOnDelivery.isChecked
-//        val isPayWithZalo = rbPayWithZalo.isChecked
-//        val isPayWithMomo = rbPayWithMomo.isChecked
-//
-//        val paymentRef = FirebaseDatabase.getInstance().reference.child("Payments").child(userID!!)
-//        val newPaymentKey = paymentRef.push().key
-//
-//        // Sử dụng child() để xác định đường dẫn cụ thể trong Firebase
-//        val path = "Payments/$userID/$newPaymentKey"
-//        val paymentInfoRef = FirebaseDatabase.getInstance().reference.child(path)
-//
-//        val paymentInfo = Payment(newPaymentKey, totalcost.toString(), shippingAddress, isCashOnDeliveryChecked, isPayWithMomo, isPayWithZalo)
-//
-//        // Sử dụng setValue() để lưu thông tin thanh toán theo đường dẫn cụ thể
-//        paymentInfoRef.setValue(paymentInfo)
-//            .addOnSuccessListener {
-//                val cartReference = FirebaseDatabase.getInstance().reference.child("Cart").child("Cart_Fashion").child(userID!!)
-//                // Update status to 'complete' in the cart
-//                cartReference.addListenerForSingleValueEvent(object : ValueEventListener {
-//                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                        for (productSnapshot in dataSnapshot.children) {
-//                            val productStatus = productSnapshot.child("status").value.toString()
-//                            if (productStatus == "wait") {
-//                                productSnapshot.ref.updateChildren(mapOf("status" to "complete"))
-//                            }
-//                        }
-//                    }
-//
-//                    override fun onCancelled(databaseError: DatabaseError) {
-//                        // Handle error if needed
-//                    }
-//                })
-//                Toast.makeText(this, "Mua hàng thành công!", Toast.LENGTH_SHORT).show()
-//                val intent = Intent(this@PurchaseActivity, MainActivity::class.java)
-//                startActivity(intent)
-//                finish()
-//            }
-//            .addOnFailureListener {
-//                Toast.makeText(this, "Lỗi khi lưu thông tin thanh toán!", Toast.LENGTH_SHORT).show()
-//            }
-//    }
 private fun createOrderDetailsFirebase(orderKey: String, userId: String) {
     val orderDetailList: MutableList<OrderDetailsModel> = mutableListOf()
 
@@ -467,7 +423,7 @@ private fun createOrderDetailsFirebase(orderKey: String, userId: String) {
         val currentDateTime = Date()
         return dateFormat.format(currentDateTime)
     }
-    fun checkVoucherCodeExist(code: String){
+    fun checkVoucherCodeExist(code: String) {
         val code = applyVoucherEditText.text.toString()
         if (code.isNotEmpty()) {
             val databaseReference = FirebaseDatabase.getInstance().reference
@@ -476,7 +432,8 @@ private fun createOrderDetailsFirebase(orderKey: String, userId: String) {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (voucherSnapshot in dataSnapshot.children) {
                         val voucher = voucherSnapshot.getValue(VoucherModel::class.java)
-                        if (voucher?.code == code) {
+                        val amountString = voucher?.amount
+                        if (voucher?.code == code && amountString != null && amountString.isNotEmpty() && amountString.toDouble() > 0) {
                             handleVoucher(voucher)
                             Log.d("Voucher", "Voucher found: $voucher")
                             break
@@ -489,19 +446,23 @@ private fun createOrderDetailsFirebase(orderKey: String, userId: String) {
             })
         }
     }
+
     fun handleVoucher(voucher: VoucherModel) {
         val discountPercent: Double? = voucher.discountPercentage?.toDoubleOrNull()
         val maxDiscount: Double? = voucher.maxDiscount?.toDoubleOrNull()
-        var reducedPrice:Double=0.0
-        if (discountPercent != null &&maxDiscount!=null&& discountPercent in 0.0..100.0) {
+        var reducedPrice: Double = 0.0
+        if (discountPercent != null && maxDiscount != null && discountPercent in 0.0..100.0) {
             val discountDecimal = discountPercent / 100.0
 
-            val savedPrice=totalcost*discountDecimal
-            if(savedPrice>maxDiscount){
-                 reducedPrice = totalcost -maxDiscount
-            }else{
-                 reducedPrice = totalcost * (1 - discountDecimal)
+            val savedPrice = totalcost * discountDecimal
+            if (savedPrice > maxDiscount) {
+                reducedPrice = totalcost - maxDiscount
+            } else {
+                reducedPrice = totalcost * (1 - discountDecimal)
             }
+
+            // Decrement the amount in the database
+            decrementVoucherAmount(voucher.voucherId)
         } else {
             // Handle invalid discount percentage
             println("Invalid discount percentage: ${voucher.discountPercentage}")
@@ -509,4 +470,27 @@ private fun createOrderDetailsFirebase(orderKey: String, userId: String) {
         Log.d("Voucher", "Total cost: $totalcost, Reduced price: $reducedPrice")
         totalPriceTextView.text = reducedPrice.toString()
     }
+
+    fun decrementVoucherAmount(voucherId: String?) {
+        voucherId?.let {
+            val databaseReference = FirebaseDatabase.getInstance().reference
+            val voucherRef = databaseReference.child("voucher").child(voucherId)
+
+            // Get current amount from database
+            voucherRef.child("amount").addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val currentAmount = dataSnapshot.getValue(String::class.java)?.toIntOrNull() ?: return
+
+                    // Update amount in the database by decrementing it
+                    val newAmount = (currentAmount - 1).coerceAtLeast(0) // Ensure amount doesn't go negative
+                    voucherRef.child("amount").setValue(newAmount.toString())
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle possible errors.
+                }
+            })
+        }
+    }
+
 }
