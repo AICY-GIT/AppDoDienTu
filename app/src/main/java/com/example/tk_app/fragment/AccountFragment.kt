@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.example.tk_app.OrderDetailActivity
 import com.example.tk_app.R
 import com.example.tk_app.account.EditAccountActivity
 import com.example.tk_app.account.LoginActivity
@@ -133,7 +134,7 @@ class AccountFragment : Fragment() {
         }
 
         proOrder.setOnClickListener {
-            val intent = Intent(requireActivity(), OrderActivity::class.java)
+            val intent = Intent(requireActivity(), OrderDetailActivity::class.java)
             startActivity(intent)
         }
     }

@@ -12,8 +12,9 @@
         app:cardCornerRadius="8dp">
 
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:id="@+id/iv_product_image"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="20dp"
             android:src="@drawable/edit_1" />
@@ -22,7 +23,7 @@
             android:id="@+id/tv_order_ID"
             android:layout_width="200dp"
             android:layout_height="20dp"
-            android:layout_marginStart="100dp"
+            android:layout_marginStart="150dp"
             android:layout_marginTop="20dp"
             android:text="Ngày đặt mua"
             android:textStyle="bold" />
@@ -30,8 +31,8 @@
         <TextView
             android:id="@+id/tv_order_address"
             android:layout_width="200dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="150dp"
             android:layout_marginTop="50dp"
             android:text="Địa chỉ"
             android:textStyle="bold" />
@@ -40,7 +41,7 @@
             android:id="@+id/tv_order_payment"
             android:layout_width="200dp"
             android:layout_height="20dp"
-            android:layout_marginStart="100dp"
+            android:layout_marginStart="150dp"
             android:layout_marginTop="80dp"
             android:text="Hình thức thanh toán"
             android:textStyle="bold" />
@@ -49,7 +50,7 @@
             android:id="@+id/tv_order_total_price"
             android:layout_width="200dp"
             android:layout_height="20dp"
-            android:layout_marginStart="100dp"
+            android:layout_marginStart="150dp"
             android:layout_marginTop="110dp"
             android:text="Tổng số tiền"
             android:textStyle="bold" />
