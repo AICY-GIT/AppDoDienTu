@@ -91,7 +91,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".OrderDetailActivity"
+            android:exported="false">
+        </activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDpXuKyfT-uysNrzNSw-ktAH75rUU1nIe4" />

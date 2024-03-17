@@ -7,9 +7,9 @@ class OrderDetailsModel(
     var orderDetailsId: String?,
     var productId: String?,
     var amount: String?,
-    var orderDate: Any? // Use Any to allow ServerValue.TIMESTAMP
+    var orderDate: String?, // Use Any to allow ServerValue.TIMESTAMP
 ) {
     // Default constructor
-
+    constructor() : this(null, null, null, null, null, null)
     // Primary constructor with date paramete
 }
