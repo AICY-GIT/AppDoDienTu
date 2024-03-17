@@ -1,10 +1,10 @@
 package com.example.tk_app
 
+import OrderDetailAdapter
 import OrderDetailsModel
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,16 +14,13 @@ import com.google.firebase.database.*
 
 class OrderDetailActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var orderDetailAdapter: OrderDetailAdapter
-    private val productList: MutableList<OrderDetailsModel> = ArrayList()
-    private lateinit var btnReturn: ImageView
+    private lateinit var orderAdapter: OrderDetailAdapter
+    private val orderList: MutableList<OrderDetailsModel> = ArrayList()
+    private lateinit var btnReturn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_order_detail)
-
-        // Đọc dữ liệu từ Intent
-        val orderId = intent.getStringExtra("orderId")
+        setContentView(R.layout.activity_order)
 
         btnReturn = findViewById(R.id.btn_return_order)
         btnReturn.setOnClickListener {
@@ -32,56 +29,41 @@ class OrderDetailActivity : AppCompatActivity() {
             finishAffinity()
         }
 
-        // Kiểm tra người dùng hiện tại từ Firebase Authentication
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser == null) {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
-            finish() // Đóng màn hình giỏ hàng
+            finish() // Close the shopping cart screen
         } else {
             recyclerView = findViewById(R.id.recyclerView)
             recyclerView.layoutManager = LinearLayoutManager(this)
-            orderDetailAdapter = OrderDetailAdapter(this, productList)
-            recyclerView.adapter = orderDetailAdapter
+            orderAdapter = OrderDetailAdapter(this, orderList, FirebaseDatabase.getInstance().reference.child("Product"))
+            recyclerView.adapter = orderAdapter
 
-            // Lấy ID người dùng hiện tại từ Firebase Authentication
+            // Get the ID of the current user from Firebase Authentication
             val userUID = FirebaseAuth.getInstance().currentUser?.uid
+
             if (userUID != null) {
                 val databaseReference =
-                    FirebaseDatabase.getInstance().reference.child("OrderDetails").child(userUID)
-
-                // Thêm listener để lắng nghe sự thay đổi trong danh sách orderDetails
-                databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        productList.clear() // Xóa dữ liệu cũ trước khi thêm dữ liệu mới
-                        for (orderDetailsSnapshot in dataSnapshot.children) {
-                            val orderDetailsId = orderDetailsSnapshot.key
-
-                            // Kiểm tra xem orderId có trong danh sách orderdetailsId hay không
-                            if (orderDetailsId == orderId) {
-                                val orderDetailsModel = orderDetailsSnapshot.getValue(OrderDetailsModel::class.java)
-                                if (orderDetailsModel != null) {
-                                    productList.add(orderDetailsModel)
-                                }
-                            }
-                            else{
-                                Toast.makeText(
-                                this@OrderDetailActivity,
-                                orderId + "\n" + orderDetailsId,
-                                Toast.LENGTH_SHORT
-                            ).show()
+                    FirebaseDatabase.getInstance().reference.child("OrderDetails")
+                        .child(userUID)
+                databaseReference.addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        orderList.clear() // Clear the list before adding new data
+                        for (orderSnapshot in snapshot.children) {
+                            val order = orderSnapshot.getValue(OrderDetailsModel::class.java)
+                            if (order != null) {
+                                orderList.add(order)
                             }
                         }
-                        // Thông báo adapter rằng dữ liệu đã thay đổi
-                        orderDetailAdapter.notifyDataSetChanged()
+                        orderAdapter.notifyDataSetChanged()
                     }
 
-                    override fun onCancelled(databaseError: DatabaseError) {
-                        // Xử lý lỗi nếu có
+                    override fun onCancelled(error: DatabaseError) {
+                        // Handle errors if needed
                     }
                 })
             }
-
         }
     }
 }
