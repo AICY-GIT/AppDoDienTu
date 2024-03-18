@@ -55,8 +55,10 @@ class OrderDetailAdapter(
                     for (classifySnapshot in snapshot.children) {
                         val productSnapshot = classifySnapshot.child(productId)
                         if (productSnapshot.exists()) {
-                            val productName = productSnapshot.child("name").getValue(String::class.java)
-                            val productImage = productSnapshot.child("imageUrl").getValue(String::class.java)
+                            val productName =
+                                productSnapshot.child("name").getValue(String::class.java)
+                            val productImage =
+                                productSnapshot.child("imageUrl").getValue(String::class.java)
 
                             // Kiểm tra xem dữ liệu có tồn tại hay không trước khi gán
                             if (productName != null && productImage != null) {
@@ -69,13 +71,18 @@ class OrderDetailAdapter(
                     }
                     if (!found) {
                         // Xử lý trường hợp không tìm thấy productId
-                        Toast.makeText(context, "Product ID not found", Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(context, "Product ID not found", Toast.LENGTH_SHORT).show()
+                        val params = holder.itemView.layoutParams
+                        params.height = 0 // Đặt chiều cao của item thành 0 để ẩn nó
+                        holder.itemView.layoutParams = params
                     }
+
                 }
 
                 override fun onCancelled(error: DatabaseError) {
                     // Xử lý lỗi cơ sở dữ liệu
-                    Toast.makeText(context, "Database Error: ${error.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Database Error: ${error.message}", Toast.LENGTH_SHORT)
+                        .show()
                 }
             })
         } else {

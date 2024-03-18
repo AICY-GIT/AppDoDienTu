@@ -23,6 +23,22 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/btn_click_show_product"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="420dp"
+        android:background="@drawable/btn_click"
+        android:gravity="center"
+        android:text="Show prduct"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/btn_click_products"
         android:layout_width="250dp"
         android:layout_height="50dp"

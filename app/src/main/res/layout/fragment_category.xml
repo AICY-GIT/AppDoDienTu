@@ -51,6 +51,50 @@
                 android:onClick="goToCartActivity"
                 android:background="@drawable/home_cart" />
         </LinearLayout>
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tất cả" />
+
+                <Button
+                    android:id="@+id/cate_dienthoai"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Điện thoại" />
+
+                <Button
+                    android:id="@+id/cate_phukien"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phụ kiện" />
+
+                <Button
+                    android:id="@+id/cate_taignhe"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tai nghe" />
+
+                <Button
+                    android:id="@+id/cate_dongho"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đồng hồ" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
 
 
         <TextView
