@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tk_app.R
@@ -48,8 +50,15 @@ class CategoryFragment : Fragment() {
     private val productsList3 = mutableListOf<ProductEarPhonesAccessories>()
     private val productsList4 = mutableListOf<ProductWatch>()
 
+    private lateinit var btn_all: Button
+    private lateinit var btn_dienthoai: Button
+    private lateinit var btn_phukien: Button
+    private lateinit var btn_tainghe: Button
+    private lateinit var btn_dongho: Button
+
     private lateinit var btn_Click_On_Cart: TextView
     private lateinit var btn_Click_Search: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -69,25 +78,54 @@ class CategoryFragment : Fragment() {
         val show_List_Electronic = view.findViewById<RecyclerView>(R.id.rv_home_watch)
         show_List_Men_Fashion.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         productAdapter = ProductsPhoneAdapter(productsList)
+
+
+        // Tiếp tục xử lý logic tương ứng với categoryId
+
         show_List_Men_Fashion.adapter = productAdapter
         // Gọi hàm để lấy dữ liệu từ Firebase Realtime Database
-        fetchProductData()
+
 
         show_List_Women_Fashion.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         productAdapter2 = ProductsAccessoryAdapter(productsList2)
         show_List_Women_Fashion.adapter = productAdapter2
-        fetchProductData2()
+
 
         show_List_Phone.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         productAdapter3 = EarPhonesAccessoriesAdapter(productsList3)
         show_List_Phone.adapter = productAdapter3
-        fetchProductData3()
+
 
         show_List_Electronic.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         productAdapter4 = WatchAdapter(productsList4)
         show_List_Electronic.adapter = productAdapter4
         // Gọi hàm để lấy dữ liệu từ Firebase Realtime Database
-        fetchProductData4()
+
+
+        val categoryId = arguments?.getString("categoryId")
+//        Toast.makeText(requireContext(), categoryId, Toast.LENGTH_SHORT).show()
+        when (categoryId) {
+            "1" -> {
+                fetchProductData()
+            }
+            "2" -> {
+                fetchProductData2()
+            }
+            "3" -> {
+                fetchProductData3()
+            }
+            "4" -> {
+                fetchProductData4()
+            }
+            else-> {
+                fetchProductData()
+                fetchProductData2()
+                fetchProductData3()
+                fetchProductData4()
+            }
+        }
+
+
         //cart
         btn_Click_On_Cart = view.findViewById(R.id.btn_click_on_cart)
         btn_Click_On_Cart.setOnClickListener {
@@ -101,7 +139,40 @@ class CategoryFragment : Fragment() {
             val intent = Intent(requireContext(), SearchActivity::class.java)
             startActivity(intent)
         }
+        // Button "Tất cả"
+        btn_all = view.findViewById(R.id.all)
+        btn_all.setOnClickListener {
+            clearFragment()
+            reloadFragment()
+        }
 
+        // Button "Điện thoại"
+        btn_dienthoai = view.findViewById(R.id.cate_dienthoai)
+        btn_dienthoai.setOnClickListener {
+            clearFragment()
+            fetchProductData()
+        }
+
+        // Button "Phụ kiện"
+        btn_phukien = view.findViewById(R.id.cate_phukien)
+        btn_phukien.setOnClickListener {
+            clearFragment()
+            fetchProductData2()
+        }
+
+        // Button "Tai nghe"
+        btn_tainghe = view.findViewById(R.id.cate_taignhe)
+        btn_tainghe.setOnClickListener {
+            clearFragment()
+            fetchProductData3()
+        }
+
+        // Button "Đồng hồ"
+        btn_dongho = view.findViewById(R.id.cate_dongho)
+        btn_dongho.setOnClickListener {
+            clearFragment()
+            fetchProductData4()
+        }
 
         return view
     }
@@ -252,6 +323,35 @@ class CategoryFragment : Fragment() {
         fetchProductData3()
         fetchProductData4()
     }
+    fun reloadFragment1() {
+        clearFragment()
+        fetchProductData()
+    }
+    fun reloadFragment2() {
+        clearFragment()
+        fetchProductData2()
+    }
+    fun reloadFragment3() {
+        clearFragment()
+        fetchProductData3()
+    }
+    fun reloadFragment4() {
+        clearFragment()
+        fetchProductData4()
+    }
+    private fun clearFragment() {
+        productsList.clear()
+        productAdapter.notifyDataSetChanged()
+
+        productsList2.clear()
+        productAdapter2.notifyDataSetChanged()
+
+        productsList3.clear()
+        productAdapter3.notifyDataSetChanged()
+
+        productsList4.clear()
+        productAdapter4.notifyDataSetChanged()
+    }
 
     companion object {
         /**
@@ -264,7 +364,7 @@ class CategoryFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(param1: String?, param2: String) =
             CategoryFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)

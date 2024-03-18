@@ -17,17 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.tk_app.R
-import com.example.tk_app.account.SearchActivity
 import com.example.tk_app.classify_product.CartActivity
 import com.example.tk_app.classify_product.CartItemModel
-import com.example.tk_app.classify_product.watch.WatchAdapter
-import com.example.tk_app.classify_product.watch.ProductWatch
-import com.example.tk_app.classify_product.phones.ProductPhone
-import com.example.tk_app.classify_product.phones.ProductsPhoneAdapter
-import com.example.tk_app.classify_product.earphones.EarPhonesAccessoriesAdapter
-import com.example.tk_app.classify_product.earphones.ProductEarPhonesAccessories
-import com.example.tk_app.classify_product.accessory.ProductAccessory
-import com.example.tk_app.classify_product.accessory.ProductsAccessoryAdapter
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -47,12 +38,16 @@ private const val ARG_PARAM2 = "param2"
 class HomeFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
-    private lateinit var iv_home_cart:ImageView
+    private lateinit var iv_home_cart: ImageView
     private lateinit var tv_click_show_all: TextView
     private lateinit var searchView: SearchView
     private lateinit var recyclerView: RecyclerView
     private lateinit var searchAdapter: SearchAdapter
     private var productList: MutableList<CartItemModel> = mutableListOf() // Khởi tạo trực tiếp
+    private lateinit var btn_home_dienthoai: LinearLayout
+    private lateinit var btn_home_phukien: LinearLayout
+    private lateinit var btn_home_tainghe: LinearLayout
+    private lateinit var btn_home_dongho: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,7 +120,25 @@ class HomeFragment : Fragment() {
             transaction.addToBackStack(null)
             transaction.commit()
         }
+        val btnHomeDienthoai = view.findViewById<LinearLayout>(R.id.ln_home_dienthoai)
+        btnHomeDienthoai.setOnClickListener {
+            onCategorySelected("1") // 1 represents điện thoại category
+        }
 
+        val btnHomePhukien = view.findViewById<LinearLayout>(R.id.ln_home_phukien)
+        btnHomePhukien.setOnClickListener {
+            onCategorySelected("2") // 2 represents phụ kiện category
+        }
+
+        val btnHomeTainghe = view.findViewById<LinearLayout>(R.id.ln_home_tainghe)
+        btnHomeTainghe.setOnClickListener {
+            onCategorySelected("3") // 3 represents tai nghe category
+        }
+
+        val btnHomeDongho = view.findViewById<LinearLayout>(R.id.ln_home_dongho)
+        btnHomeDongho.setOnClickListener {
+            onCategorySelected("4") // 4 represents đồng hồ category
+        }
         val iv_home_cart = view.findViewById<ImageView>(R.id.iv_home_cart)
         iv_home_cart.setOnClickListener {
             val intent = Intent(requireContext(), CartActivity::class.java)
@@ -151,14 +164,25 @@ class HomeFragment : Fragment() {
         )
     }
 
+    fun onCategorySelected(categoryId: String?) {
+        val categoryFragment = CategoryFragment()
+        val bundle = Bundle()
+        bundle.putString("categoryId", categoryId)
+        categoryFragment.arguments = bundle
 
+        val fragmentManager = requireFragmentManager()
+        val transaction = fragmentManager.beginTransaction()
+        transaction.replace(R.id.fragmentContainer, categoryFragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
     companion object {
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(param1: String, param2: String?) =
             HomeFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    param2?.let { putString(ARG_PARAM2, it) } // Kiểm tra nullability trước khi thêm vào Bundle
                 }
             }
     }

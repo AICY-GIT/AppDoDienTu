@@ -164,6 +164,7 @@
                     android:layout_height="wrap_content">
 
                     <LinearLayout
+                        android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -171,13 +172,13 @@
                        >
 
                         <LinearLayout
+                            android:id="@+id/ln_home_dienthoai"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:background="@drawable/khung"
                             android:orientation="vertical">
 
                             <ImageView
-                                android:id="@+id/bansanphamtrangchu"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_margin="15dp"
@@ -194,6 +195,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/ln_home_phukien"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginStart="20dp"
@@ -219,6 +221,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/ln_home_tainghe"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
@@ -242,6 +245,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/ln_home_dongho"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
