@@ -141,72 +141,63 @@ class DetailAccessoryActivity : AppCompatActivity() {
                         btnReview.setOnClickListener {
                             val userUID = FirebaseAuth.getInstance().currentUser?.uid
                             if (userUID != null) {
-                                val cartFashionReference =
-                                    FirebaseDatabase.getInstance().reference.child("Cart")
-                                        .child("Cart_Fashion")
+                                val orderDetailsReference =
+                                    FirebaseDatabase.getInstance().reference.child("OrderDetails")
                                         .child(userUID)
 
-                                // Kiểm tra sự tồn tại của productId trong Cart_Fashion của người dùng
-                                val productIdToCheck = product.productWomenId
-                                cartFashionReference.orderByChild("productWomenId")
-                                    .equalTo(productIdToCheck)
-                                    .addListenerForSingleValueEvent(object :
-                                        ValueEventListener {
-                                        override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                            if (dataSnapshot.exists()) {
-                                                // Nếu productId tồn tại, cho phép người dùng đánh giá
-                                                val dialogBuilder =
-                                                    AlertDialog.Builder(this@DetailAccessoryActivity)
-                                                dialogBuilder.setTitle("Đánh giá \"${product.name}\"")
+                                val orderDetailQuery = orderDetailsReference.orderByChild("productId").equalTo(productIdToCheck)
 
-                                                val dialogView = layoutInflater.inflate(
-                                                    R.layout.rating_dialog,
-                                                    null
+                                orderDetailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
+                                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                        if (dataSnapshot.exists()) {
+                                            // Nếu sản phẩm tồn tại trong giỏ hàng của người dùng, cho phép đánh giá
+                                            val dialogBuilder = AlertDialog.Builder(this@DetailAccessoryActivity)
+                                            dialogBuilder.setTitle("Đánh giá \"${product.name}\"")
+
+                                            val dialogView = layoutInflater.inflate(R.layout.rating_dialog, null)
+                                            val ratingBar = dialogView.findViewById<RatingBar>(R.id.ratingBar)
+
+                                            dialogBuilder.setView(dialogView)
+
+                                            dialogBuilder.setPositiveButton("Lưu") { dialog, _ ->
+                                                val userRating = ratingBar.rating.toDouble()
+                                                val review = Review(
+                                                    productId = product.productWomenId,
+                                                    userId = userUID,
+                                                    rate = userRating
                                                 )
-                                                val ratingBar =
-                                                    dialogView.findViewById<RatingBar>(R.id.ratingBar)
 
-                                                dialogBuilder.setView(dialogView)
+                                                // Thêm đánh giá vào Firebase Realtime Database
+                                                saveReviewToFirebase(review)
 
-                                                dialogBuilder.setPositiveButton("Lưu") { dialog, _ ->
-                                                    val userRating = ratingBar.rating.toDouble()
-                                                    val review = Review(
-                                                        productId = product.productWomenId,
-                                                        userId = userUID,
-                                                        rate = userRating
-                                                    )
+                                                // Cập nhật thông tin hiển thị trên màn hình
+                                                recreate()
 
-                                                    // Thêm đánh giá vào Firebase Realtime Database
-                                                    saveReviewToFirebase(review)
-
-                                                    // Cập nhật thông tin hiển thị trên màn hình
-                                                    recreate()
-
-                                                    dialog.dismiss()
-                                                }
-                                                dialogBuilder.setNegativeButton("Hủy") { dialog, _ ->
-                                                    dialog.dismiss()
-                                                }
-
-                                                val dialog = dialogBuilder.create()
-                                                dialog.show()
-
-                                            } else {
-                                                // Nếu productId không tồn tại, thông báo lỗi
-                                                Toast.makeText(
-                                                    this@DetailAccessoryActivity,
-                                                    "Bạn cần mua sản phẩm để đánh giá.",
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
+                                                dialog.dismiss()
                                             }
-                                        }
+                                            dialogBuilder.setNegativeButton("Hủy") { dialog, _ ->
+                                                dialog.dismiss()
+                                            }
 
-                                        override fun onCancelled(databaseError: DatabaseError) {
-                                            // Xử lý lỗi nếu cần
+                                            val dialog = dialogBuilder.create()
+                                            dialog.show()
+                                        } else {
+                                            // Nếu sản phẩm không tồn tại trong giỏ hàng của người dùng, hiển thị thông báo lỗi
+                                            Toast.makeText(
+                                                this@DetailAccessoryActivity,
+                                                "Bạn cần mua sản phẩm để đánh giá.",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
                                         }
-                                    })
+                                    }
+
+                                    override fun onCancelled(databaseError: DatabaseError) {
+                                        // Xử lý lỗi nếu cần thiết
+                                    }
+                                })
                             }
                         }
+
 
                         val btnShowDetails = findViewById<Button>(R.id.btn_show_details)
                         // Set an onClickListener for the button
