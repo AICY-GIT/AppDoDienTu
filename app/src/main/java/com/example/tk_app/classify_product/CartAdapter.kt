@@ -41,7 +41,8 @@ class CartAdapter(
         Glide.with(context)
             .load(product.imageUrl)
             .into(holder.productImageView)
-
+        //xóa sản phẩm
+        holder.productDelete.visibility = View.VISIBLE
         holder.productDelete.setOnClickListener {
             val adapterPosition = holder.adapterPosition
             if (adapterPosition != RecyclerView.NO_POSITION) {

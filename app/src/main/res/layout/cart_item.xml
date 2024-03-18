@@ -60,7 +60,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_marginTop="-30dp"
-                android:background="@drawable/baseline_delete_24" />
+                android:background="@drawable/baseline_delete_24"
+                android:visibility="gone"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
