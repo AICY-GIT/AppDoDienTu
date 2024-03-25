@@ -81,13 +81,13 @@ class OrderDetailAdapter(
 
                 override fun onCancelled(error: DatabaseError) {
                     // Xử lý lỗi cơ sở dữ liệu
-                    Toast.makeText(context, "Database Error: ${error.message}", Toast.LENGTH_SHORT)
-                        .show()
+//                    Toast.makeText(context, "Database Error: ${error.message}", Toast.LENGTH_SHORT)
+//                        .show()
                 }
             })
         } else {
             // Xử lý trường hợp productId là null
-            Toast.makeText(context, "Product ID is null", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(context, "Product ID is null", Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -8,6 +8,7 @@ import com.example.tk_app.R
 import com.example.tk_app.classify_product.ClassifyActivity
 import com.example.tk_app.classify_product.admin_products.ProductListActivity
 import com.example.tk_app.classify_product.admin_products.ProductsActivity
+import com.example.tk_app.customer.OrderActivity
 import com.example.tk_app.voucher.CreateVoucherActivity
 
 class AdminActivity : AppCompatActivity() {
@@ -25,7 +26,7 @@ class AdminActivity : AppCompatActivity() {
         }
         btn_click_products = findViewById(R.id.btn_click_products)
         btn_click_products.setOnClickListener {
-            val intent = Intent(this, ProductsActivity::class.java)
+            val intent = Intent(this,OrderActivity::class.java)
             startActivity(intent)
         }
         btn_click_voucher = findViewById(R.id.btn_click_voucher)
