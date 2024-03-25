@@ -50,24 +50,26 @@ class OrderActivity : AppCompatActivity() {
 
 
             if (userUID != null) {
-                val databaseReference =
-                    FirebaseDatabase.getInstance().reference.child("Orders")
-                        .child(userUID)
+                val databaseReference = FirebaseDatabase.getInstance().reference.child("Orders")
                 databaseReference.addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        for (orderSnapshot in snapshot.children) {
-                            val order = orderSnapshot.getValue(OrderModel::class.java)
-                            if (order != null) {
-                                orderList.add(order)
+                        for (userSnapshot in snapshot.children) {
+                            for (orderSnapshot in userSnapshot.children) {
+                                val order = orderSnapshot.getValue(OrderModel::class.java)
+                                if (order != null) {
+                                    orderList.add(order)
+                                }
                             }
                         }
                         orderAdapter.notifyDataSetChanged()
                     }
+
                     override fun onCancelled(error: DatabaseError) {
                         // Xử lý lỗi nếu cần
                     }
                 })
             }
+
         }
-    }
+}
 }
